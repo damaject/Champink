@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <title>ChampInk - Champs</title>
+</head>
+<body>
+    <h1>ChampInk Champs</h1>
+    <h2>Чемпионаты</h2>
+    <div th:each="champ:${champs}">
+        <div th:text="${'Чемпионат ' + champ.getName() + ' (' + champ.getId() + ')'}"></div>
+    </div>
+</body>
+</html>

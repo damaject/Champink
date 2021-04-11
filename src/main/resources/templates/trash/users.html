@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <title>Spring - Users</title>
+</head>
+<body>
+    <h1>Все пользователи</h1>
+    <div th:each="element:${user}">
+        <a th:text="${'Имя: ' + element.getName() + ', Возраст: ' + element.getAge() + ', E-mail: ' + element.getEmail()}"></a>
+    </div>
+    <hr>
+    <a href="/users/new">add</a>
+</body>
+</html>

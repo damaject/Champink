@@ -7,25 +7,19 @@
     <header>
         <a class="header-title usn" href="/">Champink</a>
         <a class="header-button usn" href="/">Главная</a>
-        <a class="header-button hbs usn" href="">Чемпионаты</a>
+        <a class="header-button hbs usn" href="/champs">Чемпионаты</a>
         <a class="header-button usn" href="">События</a>
         <a class="header-button usn" href="">Команды</a>
         <a class="header-button usn" href="">Вход</a>
     </header>
 
     <div class="page-content">
-        <h1>Champink Champs</h1>
-        <h2>Чемпионаты</h2>
-        <div th:each="champ:${champs}">
+        <h2>Чемпионат</h2>
+        <div>
             <div th:text="${'Чемпионат ' + champ.getName() + ' (' + champ.getId() + ')'}"></div>
-            <a th:href="${'champ/' + champ.getId()}">Перейти</a>
         </div>
 
-        <h2>Нет твоего чемпионата в списке? Создай новый!</h2>
-        <form action="/champs/new" method="post">
-            <input type="text" name="name" placeholder="Имя"><br>
-            <button type="submit">Создать</button>
-        </form>
+        <a href="/champs">Все чемпионаты</a>
     </div>
 
     <div th:replace="/blocks/footer"></div>

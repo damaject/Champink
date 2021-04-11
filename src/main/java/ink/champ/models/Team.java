@@ -5,27 +5,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name="champs")
-public class Champ {
+@Entity(name="teams")
+public class Team {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long sportId;
     private String name;
 
-    public Champ() { }
-    public Champ(String name, Long sportId) {
-        this.name = name;
-        this.sportId = sportId;
-    }
-
     public Long getId() { return id; }
-    public Long getSportId() { return sportId; }
     public String getName() { return name; }
-
     public void setId(Long id) { this.id = id; }
-    public void setSportId(Long sportId) { this.sportId = sportId; }
     public void setName(String name) { this.name = name; }
-
 }

@@ -4,24 +4,34 @@
     <link th:replace="blocks/head">
 </head>
 <body>
-    <header>
-        <a class="header-title usn" href="/">Champink</a>
-        <a class="header-button usn" href="/">Главная</a>
-        <a class="header-button hbs usn" href="/champs">Чемпионаты</a>
-        <a class="header-button usn" href="">События</a>
-        <a class="header-button usn" href="">Команды</a>
-        <a class="header-button usn" href="">Вход</a>
-    </header>
+    <div class="menu-left usn">
+        <div class="menu-left-title">
+            <a class="menu-left-title-logo" href="/">Champink</a>
+            <a class="menu-left-title-user" href="">Давыдов М.С.</a>
+        </div>
+        <a class="btn menu-left-button" href="">Публичные</a>
+        <a class="btn menu-left-button" href="">Кнопка 2</a>
+        <a class="btn menu-left-button" href="">Кнопка 3</a>
+        <a class="btn menu-left-button" href="">Кнопка 4</a>
+        <a class="btn menu-left-button" href="">Кнопка 5</a>
+        <div class="menu-left-footer">Champink © 2021<br>All rights reserved</div>
+    </div>
+
+    <div class="menu-top usn">
+        <a class="btn menu-top-button" href="/champs">Чемпионаты</a>
+        <a class="btn menu-top-button" href="">Команды</a>
+        <a class="btn menu-top-button" href="">Игроки</a>
+    </div>
 
     <div class="page-content">
+        <div class="page-content-header"></div>
+
         <h2>Чемпионат</h2>
         <div>
             <div th:text="${'Чемпионат ' + champ.getName() + ' (' + champ.getId() + ')'}"></div>
         </div>
-
-        <a href="/champs">Все чемпионаты</a>
     </div>
 
-    <div th:replace="blocks/footer"></div>
+    <link rel="stylesheet" type="text/css" href="/css/style-onload.css">
 </body>
 </html>

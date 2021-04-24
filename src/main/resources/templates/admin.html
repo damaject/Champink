@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head><link th:replace="blocks/head"></head>
+<body>
+<div class="menu-left usn">
+    <div th:replace="blocks/menu-left-title"></div>
+
+    <a class="btn menu-left-button" href="">Публичные</a>
+    <a class="btn menu-left-button" href="">Кнопка 2</a>
+    <a class="btn menu-left-button" href="">Кнопка 3</a>
+    <a class="btn menu-left-button" href="">Кнопка 4</a>
+    <a class="btn menu-left-button" href="">Кнопка 5</a>
+    <div class="menu-left-footer">Champink © 2021<br>All rights reserved</div>
+</div>
+
+<div th:replace="blocks/menu-top"></div>
+
+<div class="page-content">
+    <div class="pc-header">Администратор</div>
+    Типа панель администратора...
+    <div class="champ-block" th:each="user : ${users}">
+        <div th:text="${'Пользователь ' + user.getUsername() + ', пароль: ' + user.getPassword() + ', id: ' + user.getId()}"></div>
+    </div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="/css/style-onload.css">
+</body>
+</html>

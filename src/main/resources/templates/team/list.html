@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head><link th:replace="blocks/head"></head>
+<body>
+<div class="menu-left usn">
+    <div th:replace="blocks/menu-left-title"></div>
+
+    <a class="btn menu-left-button" href="">Публичные</a>
+    <a class="btn menu-left-button" href="">Кнопка 2</a>
+    <a class="btn menu-left-button" href="">Кнопка 3</a>
+    <a class="btn menu-left-button" href="">Кнопка 4</a>
+    <a class="btn menu-left-button" href="">Кнопка 5</a>
+    <div class="menu-left-footer">Champink © 2021<br>All rights reserved</div>
+</div>
+
+<div th:replace="blocks/menu-top"></div>
+
+<div class="page-content">
+    <div class="pc-header">
+        <div class="pc-header-title">Публичные команды</div>
+        <a class="btn-link pc-header-btn" href="/team/new">Создать новую</a>
+    </div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="/css/style-onload.css">
+</body>
+</html>

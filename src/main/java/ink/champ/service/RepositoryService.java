@@ -31,5 +31,14 @@ public class RepositoryService {
         return repChamps.findById(id).get();
     }
 
+    public User getUserByUsername(String username) {
+        return repUsers.findByUsername(username);
+    }
+
     public void addNewChamp(Champ champ) { repChamps.save(champ); }
+    public void addNewUser(User user) { repUsers.save(user); }
+
+//    public User getUserByEmail(String email) {
+//        return repUsers.
+//    }
 }

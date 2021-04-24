@@ -16,9 +16,15 @@
     <div th:replace="blocks/menu-top"></div>
 
     <div class="page-content">
-        <div class="pc-header"></div>
-        Сервис Champink!<br>
-        Создавайте свои команды, добавляйте игроков и проводите чемпионаты!
+        <div class="pc-header">Авторизация</div>
+        <form class="pc-form" method="post" th:action="@{/login}">
+<!--        <form class="pc-form" action="/post/auth/login" method="post">-->
+            <label>Логин<br><input type="text" name="username" placeholder="Введите логин..." required></label>
+            <label>Пароль<br><input type="password" name="password" placeholder="Введите пароль..." required></label>
+            <button class="btn pc-form-submit" type="submit">Войти</button>
+            <a href="/auth?action=registration">Регистрация</a>
+            <a href="/auth?action=restore">Забыли пароль?</a>
+        </form>
     </div>
 
     <link rel="stylesheet" type="text/css" href="/css/style-onload.css">

@@ -13,6 +13,11 @@ public class Team {
     private Long id;
     private String name;
 
+    public Team() { }
+    public Team(String name) {
+        this.name = name;
+    }
+
     public Long getId() { return id; }
     public String getName() { return name; }
     public void setId(Long id) { this.id = id; }

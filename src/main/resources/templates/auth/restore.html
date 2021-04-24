@@ -16,9 +16,13 @@
     <div th:replace="blocks/menu-top"></div>
 
     <div class="page-content">
-        <div class="pc-header"></div>
-        Сервис Champink!<br>
-        Создавайте свои команды, добавляйте игроков и проводите чемпионаты!
+        <div class="pc-header">Восстановление</div>
+        <form class="pc-form" action="/post/auth/restore" method="post">
+            <label>Email<br><input type="email" name="email" placeholder="Введите email..." required></label>
+            <button class="btn pc-form-submit" type="submit">Восстановить</button>
+            <a href="/auth?action=login">Авторизация</a>
+            <a href="/auth?action=registration">Регистрация</a>
+        </form>
     </div>
 
     <link rel="stylesheet" type="text/css" href="/css/style-onload.css">

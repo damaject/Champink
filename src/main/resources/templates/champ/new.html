@@ -16,9 +16,21 @@
     <div th:replace="blocks/menu-top"></div>
 
     <div class="page-content">
-        <div class="pc-header"></div>
-        Сервис Champink!<br>
-        Создавайте свои команды, добавляйте игроков и проводите чемпионаты!
+        <div class="pc-header">
+            <div class="pc-header-title">Создание нового чемпионата</div>
+        </div>
+
+        <form class="pc-form" action="/post/champ/new" method="post">
+            <label>Название<br><input type="text" name="name" placeholder="Введите название..." required></label>
+            <label>Вид спорта<br>
+                <select name="sport">
+                    <option th:each="sport : ${sports}" th:value="${sport.getId()}" th:text="${sport.getName()}"></option>
+                </select>
+            </label>
+            <br>
+            <button class="btn pc-form-submit" type="submit">Создать чемпионат</button>
+            <a href="/champs">Отмена</a>
+        </form>
     </div>
 
     <link rel="stylesheet" type="text/css" href="/css/style-onload.css">

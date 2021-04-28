@@ -1,29 +1,20 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head><link th:replace="blocks/head"></head>
 <body>
-    <div class="menu-left usn">
-        <div th:replace="blocks/menu-left-title"></div>
-
-        <a class="btn menu-left-button" href="">Публичные</a>
-        <a class="btn menu-left-button" href="">Кнопка 2</a>
-        <a class="btn menu-left-button" href="">Кнопка 3</a>
-        <a class="btn menu-left-button" href="">Кнопка 4</a>
-        <a class="btn menu-left-button" href="">Кнопка 5</a>
-        <div class="menu-left-footer">Champink © 2021<br>All rights reserved</div>
-    </div>
-
-    <div th:replace="blocks/menu-top"></div>
+    <div th:replace="blocks/menu"></div>
 
     <div class="page-content">
-        <div class="pc-header">Авторизация</div>
+        <div class="pc-header">
+            <div class="pc-header-title">Авторизация</div>
+        </div>
         <form class="pc-form" method="post" th:action="@{/login}">
-<!--        <form class="pc-form" action="/post/auth/login" method="post">-->
-            <label>Логин<br><input type="text" name="username" placeholder="Введите логин..." required></label>
-            <label>Пароль<br><input type="password" name="password" placeholder="Введите пароль..." required></label>
+            <label>Логин<input type="text" name="username" placeholder="Введите логин..." required/></label>
+            <label>Пароль<input type="password" name="password" placeholder="Введите пароль..." required/></label>
+            <label class="pc-form-info" th:text="${param.logout} ? 'Вы вышли из аккаунта' : (${param.error} ? 'Ошибка авторизации' : ' ')"></label>
             <button class="btn pc-form-submit" type="submit">Войти</button>
-            <a href="/auth?action=registration">Регистрация</a>
-            <a href="/auth?action=restore">Забыли пароль?</a>
+            <a href="/registration">Регистрация</a>
+            <a href="/restore">Забыли пароль?</a>
         </form>
     </div>
 

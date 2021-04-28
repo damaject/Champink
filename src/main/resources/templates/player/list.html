@@ -1,27 +1,22 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head><link th:replace="blocks/head"></head>
 <body>
-<div class="menu-left usn">
-    <div th:replace="blocks/menu-left-title"></div>
+    <div th:replace="blocks/menu"></div>
 
-    <a class="btn menu-left-button" href="">Публичные</a>
-    <a class="btn menu-left-button" href="">Кнопка 2</a>
-    <a class="btn menu-left-button" href="">Кнопка 3</a>
-    <a class="btn menu-left-button" href="">Кнопка 4</a>
-    <a class="btn menu-left-button" href="">Кнопка 5</a>
-    <div class="menu-left-footer">Champink © 2021<br>All rights reserved</div>
-</div>
-
-<div th:replace="blocks/menu-top"></div>
-
-<div class="page-content">
-    <div class="pc-header">
-        <div class="pc-header-title">Публичные игроки</div>
-        <a class="btn-link pc-header-btn" href="/player/new">Создать нового</a>
+    <div class="page-content">
+        <div class="pc-header">
+            <div class="pc-header-title"><i class="fas fa-user"></i> Игроки</div>
+            <a class="btn-link pc-header-btn" href="/player/new">Создать нового</a>
+        </div>
+        <a class="player-block" th:each="player : ${players}" th:href="${'player/' + player.getId()}">
+            <div class="pb-title" th:text="${player.getName()}"></div>
+            <div class="pb-teams">Команд: 5</div>
+            <div class="pb-icon"><i class="fas fa-user"></i></div>
+            <div class="pb-icon-role"><i class="fas fa-user-tie"></i></div>
+        </a>
     </div>
-</div>
 
-<link rel="stylesheet" type="text/css" href="/css/style-onload.css">
+    <link rel="stylesheet" type="text/css" href="/css/style-onload.css">
 </body>
 </html>

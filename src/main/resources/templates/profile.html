@@ -1,23 +1,21 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head><link th:replace="blocks/head"></head>
 <body>
-    <div class="menu-left usn">
-        <div th:replace="blocks/menu-left-title"></div>
-
-        <a class="btn menu-left-button" href="">Публичные</a>
-        <a class="btn menu-left-button" href="">Кнопка 2</a>
-        <a class="btn menu-left-button" href="">Кнопка 3</a>
-        <a class="btn menu-left-button" href="">Кнопка 4</a>
-        <a class="btn menu-left-button" href="">Кнопка 5</a>
-        <div class="menu-left-footer">Champink © 2021<br>All rights reserved</div>
-    </div>
-
-    <div th:replace="blocks/menu-top"></div>
+    <div th:replace="blocks/menu"></div>
 
     <div class="page-content">
-        <div class="pc-header">Профиль</div>
-        Типа Ваш профиль...
+        <div class="pc-header">
+            <div class="pc-header-title">Профиль</div>
+        </div>
+<!--        <h6 th:inline="text">Hello test: [[${#httpServletRequest.remoteUser}]]!</h6>-->
+        <div th:text="${'Имя: ' + user.getName()}"></div>
+        <div th:text="${'Логин: ' + user.getUsername()}"></div>
+        <div th:text="${'Почта: ' + user.getEmail()}"></div>
+        <div th:text="${'ID: ' + user.getId()}"></div>
+        <form class="pc-form" method="post" th:action="@{/logout}">
+            <button class="btn pc-form-submit" type="submit">Выйти из аккаунта</button>
+        </form>
     </div>
 
     <link rel="stylesheet" type="text/css" href="/css/style-onload.css">

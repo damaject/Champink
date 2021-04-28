@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head><link th:replace="blocks/head"></head>
+<body>
+    <div th:replace="blocks/menu"></div>
+
+    <div class="page-content">
+        <div class="pc-header">
+            <div class="pc-header-title"><i class="fas fa-user-tie"></i> Администратор - Все чемпионаты</div>
+        </div>
+        <table>
+            <thead><tr><th>ID</th><th>Название</th><th>Вид спорта</th><th>Создатель</th></tr></thead>
+            <tbody>
+            <tr th:each="champ : ${champs}">
+                <td th:text="${champ.getId()}"></td>
+                <td th:text="${champ.getName()}"></td>
+                <td th:text="${champ.getSport().getName()}"></td>
+                <td th:text="${champ.getUser().getName() + ' (' + champ.getUser().getId() + ')'}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <link rel="stylesheet" type="text/css" href="/css/style-onload.css">
+</body>
+</html>

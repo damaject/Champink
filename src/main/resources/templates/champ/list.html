@@ -1,27 +1,21 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head><link th:replace="blocks/head"></head>
 <body>
-    <div class="menu-left usn">
-        <div th:replace="blocks/menu-left-title"></div>
-
-        <a class="btn menu-left-button" href="">Публичные</a>
-        <a class="btn menu-left-button" href="">Кнопка 2</a>
-        <a class="btn menu-left-button" href="">Кнопка 3</a>
-        <a class="btn menu-left-button" href="">Кнопка 4</a>
-        <a class="btn menu-left-button" href="">Кнопка 5</a>
-        <div class="menu-left-footer">Champink © 2021<br>All rights reserved</div>
-    </div>
-
-    <div th:replace="blocks/menu-top"></div>
+    <div th:replace="blocks/menu"></div>
 
     <div class="page-content">
         <div class="pc-header">
-            <div class="pc-header-title">Публичные чемпионаты</div>
+            <div class="pc-header-title"><i class="fas fa-trophy"></i> Чемпионаты</div>
             <a class="btn-link pc-header-btn" href="/champ/new">Создать новый</a>
         </div>
         <a class="champ-block" th:each="champ : ${champs}" th:href="${'champ/' + champ.getId()}">
-            <div th:text="${'Чемпионат ' + champ.getName() + ' (' + champ.getId() + ')'}"></div>
+            <div class="cb-title" th:text="${champ.getName()}"></div>
+            <div class="cb-format">Плей-офф</div>
+            <div class="cb-teams">Команд: 10</div>
+            <div class="cb-icon"><i class="fas fa-trophy"></i></div>
+            <div class="cb-icon"><i class="fas fa-trophy"></i></div>
+            <div class="cb-icon-role"><i class="fas fa-user-tie"></i></div>
         </a>
     </div>
 

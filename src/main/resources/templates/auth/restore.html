@@ -1,27 +1,19 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head><link th:replace="blocks/head"></head>
 <body>
-    <div class="menu-left usn">
-        <div th:replace="blocks/menu-left-title"></div>
-
-        <a class="btn menu-left-button" href="">Публичные</a>
-        <a class="btn menu-left-button" href="">Кнопка 2</a>
-        <a class="btn menu-left-button" href="">Кнопка 3</a>
-        <a class="btn menu-left-button" href="">Кнопка 4</a>
-        <a class="btn menu-left-button" href="">Кнопка 5</a>
-        <div class="menu-left-footer">Champink © 2021<br>All rights reserved</div>
-    </div>
-
-    <div th:replace="blocks/menu-top"></div>
+    <div th:replace="blocks/menu"></div>
 
     <div class="page-content">
-        <div class="pc-header">Восстановление</div>
+        <div class="pc-header">
+            <div class="pc-header-title">Восстановление</div>
+        </div>
         <form class="pc-form" action="/post/auth/restore" method="post">
-            <label>Email<br><input type="email" name="email" placeholder="Введите email..." required></label>
+            <label>Email<input type="email" name="email" placeholder="Введите email..." required/></label>
+            <label class="pc-form-info"></label>
             <button class="btn pc-form-submit" type="submit">Восстановить</button>
-            <a href="/auth?action=login">Авторизация</a>
-            <a href="/auth?action=registration">Регистрация</a>
+            <a href="/login">Авторизация</a>
+            <a href="/registration">Регистрация</a>
         </form>
     </div>
 

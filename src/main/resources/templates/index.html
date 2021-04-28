@@ -1,24 +1,22 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head><link th:replace="blocks/head"></head>
 <body>
-    <div class="menu-left usn">
-        <div th:replace="blocks/menu-left-title"></div>
-
-        <a class="btn menu-left-button" href="">Публичные</a>
-        <a class="btn menu-left-button" href="">Кнопка 2</a>
-        <a class="btn menu-left-button" href="">Кнопка 3</a>
-        <a class="btn menu-left-button" href="">Кнопка 4</a>
-        <a class="btn menu-left-button" href="">Кнопка 5</a>
-        <div class="menu-left-footer">Champink © 2021<br>All rights reserved</div>
-    </div>
-
-    <div th:replace="blocks/menu-top"></div>
+    <div th:replace="blocks/menu"></div>
 
     <div class="page-content">
-        <div class="pc-header"></div>
+        <div class="pc-header">
+            <div class="pc-header-title">Champink</div>
+        </div>
         Сервис Champink!<br>
         Создавайте свои команды, добавляйте игроков и проводите чемпионаты!
+        <p>Spring Security Thymeleaf tutorial</p>
+        <div sec:authorize="hasAuthority('USER')">Text visible to user.</div>
+        <div sec:authorize="hasAuthority('ADMIN')">Text visible to admin.</div>
+        <div sec:authorize="isAuthenticated()">
+            Text visible only to authenticated users.
+        </div>
+
     </div>
 
     <link rel="stylesheet" type="text/css" href="/css/style-onload.css">

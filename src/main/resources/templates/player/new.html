@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head><link th:replace="blocks/head"></head>
+<body>
+    <div th:replace="blocks/menu"></div>
+
+    <div class="page-content">
+        <div class="pc-header">
+            <div class="pc-header-title"><i class="fas fa-plus"></i> Создание нового игрока</div>
+        </div>
+
+        <form class="pc-form" action="/post/player/new" method="post">
+            <label>Имя<input type="text" name="name" placeholder="Введите имя..." maxlength="25" required></label>
+            <label><input type="checkbox" name="privat" checked>Приватный игрок</label>
+            <button class="btn pc-form-submit" type="submit">Создать игрока</button>
+            <a href="/players">Отмена</a>
+        </form>
+    </div>
+
+    <link rel="stylesheet" type="text/css" href="/css/style-onload.css">
+</body>
+</html>

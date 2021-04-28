@@ -1,0 +1,71 @@
+<div class="menu-left usn">
+    <div class="menu-left-title">
+        <a class="menu-left-title-logo" href="/" title="Champink!"><i class="fas fa-trophy"></i> Champink</a>
+        <a class="menu-left-title-user btn-link" href="/profile" th:text="${name}"></a>
+    </div>
+
+    <div class="menu-left-section-top" th:if="${page == 'champ'}">
+        <a class="btn menu-left-button" th:classappend="${subpage == 'global' ? 'active':''}" href="/champs?subpage=global"><i class="fas fa-globe-americas"></i> Глобальные</a>
+    </div>
+
+    <div class="menu-left-section" th:if="${page == 'champ'}">
+        <div class="menu-left-section-title">Пользовательские</div>
+        <a class="btn menu-left-button" th:classappend="${subpage == 'u-all' ? 'active':''}" href="/champs?subpage=u-all"><i class="fas fa-user"></i> Все</a>
+        <a class="btn menu-left-button" th:classappend="${subpage == 'u-owner' ? 'active':''}" href="/champs?subpage=u-owner"><i class="fas fa-user-tie"></i> Владелец</a>
+        <a class="btn menu-left-button" th:classappend="${subpage == 'u-manager' ? 'active':''}" href="/champs?subpage=u-manager"><i class="fas fa-user-cog"></i> Менеджер</a>
+        <a class="btn menu-left-button" th:classappend="${subpage == 'u-judge' ? 'active':''}" href="/champs?subpage=u-judge"><i class="fas fa-user-edit"></i> Судья</a>
+        <a class="btn menu-left-button" th:classappend="${subpage == 'u-viewer' ? 'active':''}" href="/champs?subpage=u-viewer"><i class="fas fa-user-tag"></i> Зритель</a>
+        <a class="btn menu-left-button" th:classappend="${subpage == 'u-request' ? 'active':''}" href="/champs?subpage=u-request"><i class="fas fa-user-clock"></i> Запросы</a>
+        <a class="btn menu-left-button" th:classappend="${subpage == 'u-invite' ? 'active':''}" href="/champs?subpage=u-invite"><i class="fas fa-user-plus"></i> Приглашения</a>
+    </div>
+
+    <div class="menu-left-section-top" th:if="${page == 'team'}">
+        <a class="btn menu-left-button" href=""><i class="fas fa-globe-americas"></i> Глобальные</a>
+    </div>
+
+    <div class="menu-left-section" th:if="${page == 'team'}">
+        <div class="menu-left-section-title">Пользовательские</div>
+        <a class="btn menu-left-button" href=""><i class="fas fa-user"></i> Все</a>
+        <a class="btn menu-left-button" href=""><i class="fas fa-user-tie"></i> Владелец</a>
+        <a class="btn menu-left-button" href=""><i class="fas fa-user-cog"></i> Менеджер</a>
+        <a class="btn menu-left-button" href=""><i class="fas fa-user-tag"></i> Зритель</a>
+        <a class="btn menu-left-button" href=""><i class="fas fa-user-clock"></i> Запросы</a>
+        <a class="btn menu-left-button" href=""><i class="fas fa-user-plus"></i> Приглашения</a>
+    </div>
+
+    <div class="menu-left-section-top" th:if="${page == 'player'}">
+        <a class="btn menu-left-button" href=""><i class="fas fa-globe-americas"></i> Глобальные</a>
+    </div>
+
+    <div class="menu-left-section" th:if="${page == 'player'}">
+        <div class="menu-left-section-title">Пользовательские</div>
+        <a class="btn menu-left-button" href=""><i class="fas fa-user"></i> Все</a>
+        <a class="btn menu-left-button" href=""><i class="fas fa-user-tie"></i> Владелец</a>
+        <a class="btn menu-left-button" href=""><i class="fas fa-user-cog"></i> Менеджер</a>
+        <a class="btn menu-left-button" href=""><i class="fas fa-user-tag"></i> Зритель</a>
+        <a class="btn menu-left-button" href=""><i class="fas fa-user-clock"></i> Запросы</a>
+        <a class="btn menu-left-button" href=""><i class="fas fa-user-plus"></i> Приглашения</a>
+    </div>
+
+    <div class="menu-left-section" sec:authorize="hasAuthority('ADMIN')" th:if="${page == 'admin'}">
+        <div class="menu-left-section-title">Администратор</div>
+        <a class="btn menu-left-button" href="/admin/users">Пользователи</a>
+        <a class="btn menu-left-button" href="/admin/champs">Чемпионаты</a>
+        <a class="btn menu-left-button" href="/admin/teams">Команды</a>
+        <a class="btn menu-left-button" href="/admin/players">Игроки</a>
+    </div>
+
+    <div class="menu-left-section-bottom">
+        <div class="menu-left-section-title"></div>
+        <a class="btn menu-left-button" href="/admin" sec:authorize="hasAuthority('ADMIN')"><i class="fas fa-user-tie"></i> Администратор</a>
+        <a class="btn menu-left-button" href="/about"><i class="fas fa-info-circle"></i> О сервисе</a>
+    </div>
+
+    <div class="menu-left-footer">Champink © 2021<br>All rights reserved</div>
+</div>
+
+<div class="menu-top usn">
+    <a class="btn menu-top-button" th:classappend="${page == 'champ' ? 'active':''}" href="/champs?subpage=global">Чемпионаты</a>
+    <a class="btn menu-top-button" th:classappend="${page == 'team' ? 'active':''}" href="/teams?subpage=global">Команды</a>
+    <a class="btn menu-top-button" th:classappend="${page == 'player' ? 'active':''}" href="/players?subpage=global">Игроки</a>
+</div>

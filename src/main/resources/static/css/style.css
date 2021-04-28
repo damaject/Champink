@@ -29,6 +29,23 @@ select {
     width: 400px;
     font-size: 19px;
 }
+table {
+    border-collapse: collapse;
+}
+table tr {
+    border-bottom: 1px solid #FFBF00;
+}
+table th {
+    padding: 10px;
+    border-left: 1px solid #FFBF00;
+    border-right: 1px solid #FFBF00;
+}
+table td {
+    padding: 5px;
+    border-left: 1px solid #FFBF00;
+    border-right: 1px solid #FFBF00;
+}
+
 
 /*** BTN ***/
 .btn {
@@ -44,7 +61,11 @@ select {
     color: #000000;
     text-decoration-line: underline;
 }
-.btn-link:hover {
+.btn-link-y {
+    color: #FFBF00;
+    text-decoration-line: underline;
+}
+.btn-link:hover, .btn-link-y:hover {
     color: #FF0000;
 }
 
@@ -66,7 +87,7 @@ select {
 }
 .menu-left-title-logo {
     top: 12px;
-    left: 30px;
+    left: 20px;
     color: #000000;
     position: absolute;
     font-size: 24px;
@@ -75,7 +96,7 @@ select {
 }
 .menu-left-title-user {
     top: 41px;
-    left: 30px;
+    left: 20px;
     color: #000000;
     position: absolute;
     font-size: 14px;
@@ -87,14 +108,38 @@ select {
     height: 20px;
     background-color: #000000;
 }
+.menu-left-section {
+
+}
+.menu-left-section-bottom {
+    left: 0;
+    bottom: 54px;
+    width: 100%;
+    position: absolute;
+    /*border-top: #000000 solid 2px;*/
+}
+.menu-left-section-top .menu-left-button:nth-of-type(1) {
+    border-top: none;
+}
+.menu-left-section-bottom .menu-left-button:nth-last-of-type(1) {
+    border-bottom: none;
+}
+.menu-left-section-title {
+    color: #000000;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-bottom: 3px;
+    font-weight: 900;
+    font-size: 12px;
+}
 .menu-left-button {
-    width: 168px;
+    width: 178px;
     height: 50px;
     display: block;
     font-size: 14px;
     font-weight: 600;
     line-height: 50px;
-    padding-left: 30px;
+    padding-left: 20px;
     border-bottom: #000000 solid 2px;
     background-size: 24px;
     background-image: url('/img/icon_arrow_right.svg');
@@ -102,6 +147,7 @@ select {
     background-position: 171px 13px;
 }
 .menu-left-button:nth-of-type(1) {
+    border-top: #000000 solid 2px;
     margin-top: 2px;
 }
 .menu-left-footer {
@@ -118,6 +164,10 @@ select {
     text-align: center;
     text-transform: uppercase;
     border-top: #000000 solid 2px;
+}
+.menu-left-button.active {
+    color: #FFBF00;
+    background-color: #000000;
 }
 
 
@@ -213,7 +263,14 @@ select {
     display: block;
     margin-top: 20px;
 }
-.pc-form input {
+.pc-form .pc-form-info {
+    color: #FF0000;
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: 300;
+    text-align: center;
+}
+.pc-form input, .pc-form select {
     color: #FFBF00;
     width: 100%;
     height: 40px;
@@ -226,14 +283,21 @@ select {
     border: #FFBF00 solid 2px;
 }
 .pc-form input::placeholder {
-    /*color: white;*/
+    /*color: #FFBF00;*/
+    color: #895A00;
     font-weight: 400;
+    /*opacity: 0.75;*/
+}
+.pc-form input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+    margin: 0 10px 0 0;
 }
 .pc-form button {
     width: 100%;
     height: 40px;
     border: #FFBF00 solid 2px;
-    margin-top: 30px;
+    margin-top: 20px;
     margin-bottom: 10px;
     font-size: 14px;
     font-weight: 600;
@@ -247,16 +311,193 @@ select {
     width: 300px;
     height: 100px;
     display: inline-block;
+    position: relative;
     margin-top: 10px;
     margin-right: 10px;
     box-sizing: border-box;
     border: #FFBF00 solid 2px;
+}
+.champ-block:hover {
+    color: #000000;
+    background-color: #FFBF00;
+}
+.champ-block .cb-title {
+    top: 36px;
+    left: 0;
+    width: 296px;
+    position: absolute;
+    font-size: 17px;
+    text-align: center;
+    font-weight: 700;
+    line-height: 24px;
+}
+.champ-block .cb-format {
+    top: 60px;
+    left: 0;
+    width: 296px;
+    position: absolute;
+    font-size: 12px;
+    text-align: center;
+    font-weight: 400;
+    line-height: 16px;
+}
+.champ-block .cb-teams {
+    left: 8px;
+    bottom: 4px;
+    position: absolute;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+}
+.champ-block .cb-icon {
+    top: 8px;
+    left: 136px;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    font-size: 20px;
+    text-align: center;
+    font-weight: 700;
+    line-height: 24px;
+}
+.champ-block .cb-icon-role {
+    right: 3px;
+    bottom: 3px;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 700;
+    line-height: 18px;
+}
+
+
+/*** TEAM BLOCK ***/
+.team-block {
+    color: #FFBF00;
+    width: 300px;
+    height: 80px;
+    display: inline-block;
+    position: relative;
+    margin-top: 10px;
+    margin-right: 10px;
+    box-sizing: border-box;
+    border: #FFBF00 solid 2px;
+}
+.team-block:hover {
+    color: #000000;
+    background-color: #FFBF00;
+}
+.team-block .tb-title {
+    top: 8px;
+    left: 40px;
+    position: absolute;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 24px;
+}
+.team-block .tb-players {
+    left: 8px;
+    bottom: 22px;
+    position: absolute;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+}
+.team-block .tb-champs {
+    left: 8px;
+    bottom: 4px;
+    position: absolute;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+}
+.team-block .tb-icon {
+    top: 8px;
+    left: 10px;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    font-size: 20px;
+    text-align: center;
+    font-weight: 700;
+    line-height: 24px;
+}
+.team-block .tb-icon-role {
+    right: 3px;
+    bottom: 3px;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 700;
+    line-height: 18px;
+}
+
+
+/*** PLAYER BLOCK ***/
+.player-block {
+    color: #FFBF00;
+    width: 300px;
+    height: 60px;
+    display: inline-block;
+    position: relative;
+    margin-top: 10px;
+    margin-right: 10px;
+    box-sizing: border-box;
+    border: #FFBF00 solid 2px;
+}
+.player-block:hover {
+    color: #000000;
+    background-color: #FFBF00;
+}
+.player-block .pb-title {
+    top: 8px;
+    left: 40px;
+    position: absolute;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 24px;
+}
+.player-block .pb-teams {
+    left: 8px;
+    bottom: 4px;
+    position: absolute;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+}
+.player-block .pb-icon {
+    top: 8px;
+    left: 10px;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    font-size: 20px;
+    text-align: center;
+    font-weight: 700;
+    line-height: 24px;
+}
+.player-block .pb-icon-role {
+    right: 3px;
+    bottom: 3px;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 700;
+    line-height: 18px;
 }
 
 
 /*** OTHER ***/
 input:focus, select:focus, textarea:focus, button:focus { outline: none; }
 .dn { display: none; }
+.db { display: block; }
+.dib { display: inline-block; }
 .taj { text-align: justify; }
 .usn {
     -webkit-user-select: none;

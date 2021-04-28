@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head><link th:replace="blocks/head"></head>
+<body>
+    <div th:replace="blocks/menu"></div>
+
+    <div class="page-content">
+        <div class="pc-header">
+            <div class="pc-header-title"><i class="fas fa-plus"></i> Создание новой команды</div>
+        </div>
+
+        <form class="pc-form" action="/post/team/new" method="post">
+            <label>Название<input type="text" name="name" placeholder="Введите название..." maxlength="25" required></label>
+            <label><input type="checkbox" name="privat" checked>Приватная команда</label>
+            <i class="fas fa-dragon"></i>
+            <i class="fas fa-tshirt"></i>
+            <i class="fas fa-gem"></i>
+            <i class="fas fa-crown"></i>
+            <i class="fas fa-bomb"></i>
+            <i class="fas fa-shield-alt"></i>
+            <i class="fas fa-skull"></i>
+            <button class="btn pc-form-submit" type="submit">Создать команду</button>
+            <a href="/teams">Отмена</a>
+        </form>
+    </div>
+
+    <link rel="stylesheet" type="text/css" href="/css/style-onload.css">
+</body>
+</html>

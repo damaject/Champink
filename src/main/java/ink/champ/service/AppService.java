@@ -1,36 +1,30 @@
 package ink.champ.service;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import ink.champ.models.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 @Service
-public class AppService {
+public class AppService implements UserDetailsService {
 
-    private enum Role { Guest, User, Admin }
+    @Autowired private RepositoryService service;
 
-    private Role userRole;
-    private String userName = "Test";
-    private int userId = -1;
+    @Override public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return service.getUserByUsername(username);
+    }
 
-    public int getUserId() { return userId; }
-    public String getUserName() { return userName; }
+    public void updateModel(User user, Model model, String page, String subpage, String title) {
+        System.out.println(title + " " + page + " " + subpage);
+        String name = user != null ? user.getName() : "Гость";
 
-    public void updateModel(Model model, String page, String title) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userName = auth.getName();
-        if (userName.equals("anonymousUser")) userName = "Гость";
-
-        checkUserAuth();
         model.addAttribute("page", page);
+        model.addAttribute("subpage", subpage);
         model.addAttribute("title", title);
-        model.addAttribute("userName", userName);
+        model.addAttribute("name", name);
     }
 
-    public void checkUserAuth() {
-        userRole = Role.Guest;
-        userName = "Гость";
-        userId = 0;
-    }
 }

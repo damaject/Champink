@@ -1,29 +1,23 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head><link th:replace="blocks/head"></head>
 <body>
-    <div class="menu-left usn">
-        <div th:replace="blocks/menu-left-title"></div>
-
-        <a class="btn menu-left-button" href="">Публичные</a>
-        <a class="btn menu-left-button" href="">Кнопка 2</a>
-        <a class="btn menu-left-button" href="">Кнопка 3</a>
-        <a class="btn menu-left-button" href="">Кнопка 4</a>
-        <a class="btn menu-left-button" href="">Кнопка 5</a>
-        <div class="menu-left-footer">Champink © 2021<br>All rights reserved</div>
-    </div>
-
-    <div th:replace="blocks/menu-top"></div>
+    <div th:replace="blocks/menu"></div>
 
     <div class="page-content">
-        <div class="pc-header">Регистрация</div>
+        <div class="pc-header">
+            <div class="pc-header-title">Регистрация</div>
+        </div>
+
         <form class="pc-form" action="/post/auth/registration" method="post">
-<!--            <label>Имя<br><input type="text" name="name" placeholder="Введите имя..." required></label>-->
-            <label>Логин<br><input type="text" name="username" placeholder="Введите логин..." required></label>
-            <label>Пароль<br><input type="password" name="password" placeholder="Введите пароль..." required></label>
-            <label>Повторите пароль<br><input type="password" name="password2" placeholder="Введите пароль..." required></label>
+            <label>Имя<input type="text" name="name" placeholder="Введите имя..." required/></label>
+            <label>Почта<input type="email" name="email" placeholder="Введите почту..." required/></label>
+            <label>Логин<input type="text" name="username" placeholder="Введите логин..." required/></label>
+            <label>Пароль<input type="password" name="password" placeholder="Введите пароль..." required/></label>
+            <label>Повторите пароль<input type="password" name="password2" placeholder="Введите пароль..." required/></label>
+            <label class="pc-form-info"></label>
             <button class="btn pc-form-submit" type="submit">Зарегистрироваться</button>
-            <a href="/auth?action=login">Авторизация</a>
+            <a href="/login">Авторизация</a>
         </form>
     </div>
 

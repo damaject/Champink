@@ -1,9 +1,6 @@
 package ink.champ.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name="champs")
 public class Champ {
@@ -11,21 +8,37 @@ public class Champ {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long sportId;
+
+    @Column(length = 25)
     private String name;
 
+    private boolean privat;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "sport_id")
+    private Sport sport;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Champ() { }
-    public Champ(String name, Long sportId) {
+    public Champ(String name, boolean privat, Sport sport, User user) {
         this.name = name;
-        this.sportId = sportId;
+        this.privat = privat;
+        this.sport = sport;
+        this.user = user;
     }
 
-    public Long getId() { return id; }
-    public Long getSportId() { return sportId; }
-    public String getName() { return name; }
-
     public void setId(Long id) { this.id = id; }
-    public void setSportId(Long sportId) { this.sportId = sportId; }
     public void setName(String name) { this.name = name; }
+    public void setPrivate(boolean privat) { this.privat = privat; }
+    public void setSport(Sport sport) { this.sport = sport; }
+    public void setUser(User user) { this.user = user; }
 
+    public Long getId() { return id; }
+    public String getName() { return name; }
+    public boolean isPrivate() { return privat; }
+    public Sport getSport() { return sport; }
+    public User getUser() { return user; }
 }

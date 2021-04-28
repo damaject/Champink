@@ -1,5 +1,4 @@
-/*** BTN ***/
-.btn {
+.btn, .champ-block, .team-block, .player-block  {
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;

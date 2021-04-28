@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head><link th:replace="blocks/head"></head>
+<body>
+    <div th:replace="blocks/menu"></div>
+
+    <div class="page-content">
+        <div class="pc-header">
+            <div class="pc-header-title"><i class="fas fa-user-tie"></i> Администратор - Все игроки</div>
+        </div>
+        <table>
+            <thead><tr><th>ID</th><th>Имя</th><th>Создатель</th></tr></thead>
+            <tbody>
+            <tr th:each="player : ${players}">
+                <td th:text="${player.getId()}"></td>
+                <td th:text="${player.getName()}"></td>
+                <td th:text="${player.getUser().getName() + ' (' + player.getUser().getId() + ')'}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <link rel="stylesheet" type="text/css" href="/css/style-onload.css">
+</body>
+</html>

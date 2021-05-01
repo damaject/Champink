@@ -343,7 +343,7 @@ table td {
 }
 .champ-block .cb-teams {
     left: 8px;
-    bottom: 4px;
+    bottom: 5px;
     position: absolute;
     font-size: 12px;
     font-weight: 400;
@@ -399,7 +399,7 @@ table td {
 }
 .team-block .tb-players {
     left: 8px;
-    bottom: 22px;
+    bottom: 5px;
     position: absolute;
     font-size: 12px;
     font-weight: 400;
@@ -407,7 +407,7 @@ table td {
 }
 .team-block .tb-champs {
     left: 8px;
-    bottom: 4px;
+    bottom: 24px;
     position: absolute;
     font-size: 12px;
     font-weight: 400;
@@ -463,7 +463,7 @@ table td {
 }
 .player-block .pb-teams {
     left: 8px;
-    bottom: 4px;
+    bottom: 5px;
     position: absolute;
     font-size: 12px;
     font-weight: 400;
@@ -490,6 +490,50 @@ table td {
     text-align: center;
     font-weight: 700;
     line-height: 18px;
+}
+
+
+/*** LIST BLOCK ***/
+.list-block {
+    color: #FFBF00;
+    width: 400px;
+    height: 45px;
+    display: block;
+    position: relative;
+    margin-top: 5px;
+    box-sizing: border-box;
+    border: #FFBF00 solid 2px;
+}
+.list-block:hover {
+    color: #000000;
+    background-color: #FFBF00;
+}
+.list-block .lb-title {
+    top: 8px;
+    left: 40px;
+    position: absolute;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 24px;
+}
+.list-block .lb-position {
+    top: 12px;
+    right: 8px;
+    position: absolute;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+}
+.list-block .lb-icon {
+    top: 8px;
+    left: 10px;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    font-size: 20px;
+    text-align: center;
+    font-weight: 700;
+    line-height: 24px;
 }
 
 

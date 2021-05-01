@@ -7,37 +7,55 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RepositoryService {
 
-    @Autowired private SportRepository repSports;
-    @Autowired private ChampRepository repChamps;
-    @Autowired private TeamRepository repTeams;
-    @Autowired private PlayerRepository repPlayers;
-    @Autowired private UserRepository repUsers;
+    @Autowired private SportRepository sports;
+    @Autowired private ChampRepository champs;
+    @Autowired private ChampTeamRepository champTeams;
+    @Autowired private ChampRoleRepository champRoles;
+    @Autowired private TeamRepository teams;
+    @Autowired private TeamPlayerRepository teamPlayers;
+    @Autowired private TeamRoleRepository teamRoles;
+    @Autowired private PlayerRepository players;
+    @Autowired private PlayerRoleRepository playerRoles;
+    @Autowired private UserRepository users;
 
-    public List<Champ> getChamps() { return repChamps.findAll(Sort.by(Sort.Direction.DESC, "id")); }
-    public List<Sport> getSports() { return repSports.findAll(Sort.by(Sort.Direction.DESC, "id")); }
-    public List<User> getUsers() { return repUsers.findAll(Sort.by(Sort.Direction.DESC, "id")); }
-    public List<Team> getTeams() { return repTeams.findAll(Sort.by(Sort.Direction.DESC, "id")); }
-    public List<Player> getPlayers() { return repPlayers.findAll(Sort.by(Sort.Direction.DESC, "id")); }
+    private Sort sortDescId = Sort.by(Sort.Direction.DESC, "id");
 
-    public Sport getSportById(Long id) { return repSports.findById(id).get(); }
-    public Champ getChampById(Long id) { return repChamps.findById(id).get(); }
-    public Team getTeamById(Long id) { return repTeams.findById(id).get(); }
-    public Player getPlayerById(Long id) { return repPlayers.findById(id).get(); }
+    public List<User> getUsers() { return users.findAll(sortDescId); }
+    public List<Sport> getSports() { return sports.findAll(sortDescId); }
+    public List<Champ> getChamps() { return champs.findAll(sortDescId); }
+    public List<Team> getTeams() { return teams.findAll(sortDescId); }
+    public List<Player> getPlayers() { return players.findAll(sortDescId); }
 
-    public User getUserByUsername(String username) {
-        return repUsers.findByUsername(username);
-    }
+    public List<Champ> getUserChamps(User user) { return champs.findChampsByUser(user, sortDescId); }
+    public List<Team> getUserTeams(User user) { return teams.findTeamsByUser(user, sortDescId); }
+    public List<Player> getUserPlayers(User user) { return players.findPlayersByUser(user, sortDescId); }
+    public List<ChampTeam> getChampTeams(Champ champ) { return champTeams.findChampTeamsByChamp(champ, sortDescId); }
+    public List<TeamPlayer> getTeamPlayers(Team team) { return teamPlayers.findTeamPlayersByTeam(team, sortDescId); }
 
-    public void addNewUser(User user) { repUsers.save(user); }
-    public void addNewChamp(Champ champ) { repChamps.save(champ); }
-    public void addNewTeam(Team team) { repTeams.save(team); }
-    public void addNewPlayer(Player player) { repPlayers.save(player); }
+    public Sport getSportById(Long id) { return sports.findById(id).get(); }
+    public Champ getChampById(Long id) { return champs.findById(id).get(); }
+    public Team getTeamById(Long id) { return teams.findById(id).get(); }
+    public Player getPlayerById(Long id) { return players.findById(id).get(); }
 
+    public User getUserByUsername(String username) { return users.findByUsername(username); }
+
+    public void addNewUser(User user) { users.save(user); }
+    public void addNewChamp(Champ champ) { champs.save(champ); }
+    public void addNewTeam(Team team) { teams.save(team); }
+    public void addNewPlayer(Player player) { players.save(player); }
+    public void addNewTeamPlayer(TeamPlayer teamPlayer) { teamPlayers.save(teamPlayer); }
+    public void addNewChampTeam(ChampTeam champTeam) { champTeams.save(champTeam); }
+    public void addNewChampRole(ChampRole role) { champRoles.save(role); }
+    public void addNewTeamRole(TeamRole role) { teamRoles.save(role); }
+    public void addNewPlayerRole(PlayerRole role) { playerRoles.save(role); }
+
+    public void saveChampRole(ChampRole role) { champRoles.save(role); }
+    public void saveTeamRole(TeamRole role) { teamRoles.save(role); }
+    public void savePlayerRole(PlayerRole role) { playerRoles.save(role); }
 
 //    public Champ getChampByIdOld(Long id) {
 //        Optional<Users> users = usersRepository.findById(id);

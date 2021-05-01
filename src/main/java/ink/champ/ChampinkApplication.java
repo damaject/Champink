@@ -8,7 +8,7 @@ public class ChampinkApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ChampinkApplication.class, args);
-        System.out.println("Champink is started...");
+        System.out.println("Champink is started... http://localhost:20202/");
     }
 
 }

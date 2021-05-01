@@ -9,11 +9,14 @@
             <div class="pc-header-title"><i class="fas fa-user"></i> Игроки</div>
             <a class="btn-link pc-header-btn" href="/player/new">Создать нового</a>
         </div>
-        <a class="player-block" th:each="player : ${players}" th:href="${'player/' + player.getId()}">
+        <a class="player-block" th:each="player : ${players}" th:href="${'/player/' + player.getId()}" th:with="role = ${player.getUserRole(user)}">
             <div class="pb-title" th:text="${player.getName()}"></div>
-            <div class="pb-teams">Команд: 5</div>
+            <div class="pb-teams" th:text="${'Команд: ' + player.getTeamsCount()}"></div>
             <div class="pb-icon"><i class="fas fa-user"></i></div>
-            <div class="pb-icon-role"><i class="fas fa-user-tie"></i></div>
+            <div class="pb-icon-role" th:if="${role > 0}">
+                <i class="fas fa-user-tag" th:if="${role == 1}"></i>
+                <i class="fas fa-user-tie" th:if="${role == 4}"></i>
+            </div>
         </a>
     </div>
 

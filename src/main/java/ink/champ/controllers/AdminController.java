@@ -8,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AdminController {
@@ -16,43 +17,38 @@ public class AdminController {
     @Autowired private RepositoryService service;
 
     private final String page = "admin";
+    private String subpage;
 
     @GetMapping("/admin")
-    public String admin(@AuthenticationPrincipal User user, Model model) {
+    public String admin(@RequestParam(required = false) String subpage, @AuthenticationPrincipal User user, Model model) {
         if (user == null || !user.isAdmin()) return "redirect:/login";
-        app.updateModel(user, model, page, "", "Champink - Администратор");
+        if (subpage != null) {
+            this.subpage = subpage;
+            return "redirect:/admin";
+        }
+        if (this.subpage == null) this.subpage = "";
+
+        app.updateModel(user, model, page, this.subpage, "Champink - Администратор");
+        if (this.subpage.equals("users")) {
+            model.addAttribute("users", service.getUsers());
+            return "admin/users";
+        }
+        else if (this.subpage.equals("sports")) {
+            model.addAttribute("sports", service.getSports());
+            return "admin/sports";
+        }
+        else if (this.subpage.equals("champs")) {
+            model.addAttribute("champs", service.getChamps());
+            return "admin/champs";
+        }
+        else if (this.subpage.equals("teams")) {
+            model.addAttribute("teams", service.getTeams());
+            return "admin/teams";
+        }
+        else if (this.subpage.equals("players")) {
+            model.addAttribute("players", service.getPlayers());
+            return "admin/players";
+        }
         return "admin/index";
-    }
-
-    @GetMapping("/admin/users")
-    public String adminUsers(@AuthenticationPrincipal User user, Model model) {
-        if (user == null || !user.isAdmin()) return "redirect:/login";
-        app.updateModel(user, model, page, "", "Champink - Администратор");
-        model.addAttribute("users", service.getUsers());
-        return "admin/users";
-    }
-
-    @GetMapping("/admin/champs")
-    public String adminChamps(@AuthenticationPrincipal User user, Model model) {
-        if (user == null || !user.isAdmin()) return "redirect:/login";
-        app.updateModel(user, model, page, "", "Champink - Администратор");
-        model.addAttribute("champs", service.getChamps());
-        return "admin/champs";
-    }
-
-    @GetMapping("/admin/teams")
-    public String adminTeams(@AuthenticationPrincipal User user, Model model) {
-        if (user == null || !user.isAdmin()) return "redirect:/login";
-        app.updateModel(user, model, page, "", "Champink - Администратор");
-        model.addAttribute("teams", service.getTeams());
-        return "admin/teams";
-    }
-
-    @GetMapping("/admin/players")
-    public String adminPlayers(@AuthenticationPrincipal User user, Model model) {
-        if (user == null || !user.isAdmin()) return "redirect:/login";
-        app.updateModel(user, model, page, "", "Champink - Администратор");
-        model.addAttribute("players", service.getPlayers());
-        return "admin/players";
     }
 }

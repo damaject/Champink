@@ -4,12 +4,38 @@
 <body>
     <div th:replace="blocks/menu"></div>
 
-    <div class="page-content">
+    <div class="page-content" th:with="role = ${champ.getUserRole(user)}">
         <div class="pc-header">
             <div class="pc-header-title" th:text="${'Чемпионат ' + champ.getName()}"></div>
         </div>
         <div>
-            <div th:text="${'Чемпионат ' + champ.getName() + ' (' + champ.getId() + ')'}"></div>
+            <form class="pc-form" th:if="${role == 0}">
+                <label><i class="fas fa-user"></i> Вы являетесь гостем чемпионата</label>
+                <a th:href="${'/champ/' + champ.getId() + '/roles/set?role=1'}">Стать зрителем</a>
+            </form>
+            <form class="pc-form" th:if="${role == 1}">
+                <label><i class="fas fa-user-tag"></i> Вы являетесь зрителем чемпионата</label>
+                <a th:href="${'/champ/' + champ.getId() + '/roles/set?role=0'}">Стать гостем</a>
+            </form>
+            <form class="pc-form" th:if="${role == 4}">
+                <label><i class="fas fa-user-tie"></i> Вы являетесь владельцем чемпионата</label>
+            </form>
+
+            <label th:text="${'Команды чемпионата (' + champ.getTeamsCount() + '): '}"></label>
+            <a class="list-block" th:each="ct : ${champ.getTeams()}" th:href="${'/team/' + ct.getTeam().getId()}">
+                <div class="lb-title" th:text="${ct.getTeam().getName()}"></div>
+                <div class="lb-icon"><i class="fas fa-users"></i></div>
+            </a>
+
+            <form class="pc-form" th:action="${'/post/champ/' + champ.getId() + '/teams/add'}" method="post">
+
+                <label>Команда
+                    <select name="team">
+                        <option th:each="team : ${user_teams}" th:value="${team.getId()}" th:text="${team.getName()}"></option>
+                    </select>
+                </label>
+                <button class="btn pc-form-submit" type="submit">Добавить команду в чемпионат</button>
+            </form>
         </div>
     </div>
 

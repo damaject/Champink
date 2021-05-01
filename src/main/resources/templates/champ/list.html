@@ -9,13 +9,15 @@
             <div class="pc-header-title"><i class="fas fa-trophy"></i> Чемпионаты</div>
             <a class="btn-link pc-header-btn" href="/champ/new">Создать новый</a>
         </div>
-        <a class="champ-block" th:each="champ : ${champs}" th:href="${'champ/' + champ.getId()}">
+        <a class="champ-block" th:each="champ : ${champs}" th:href="${'/champ/' + champ.getId()}" th:with="role = ${champ.getUserRole(user)}">
             <div class="cb-title" th:text="${champ.getName()}"></div>
             <div class="cb-format">Плей-офф</div>
-            <div class="cb-teams">Команд: 10</div>
+            <div class="cb-teams" th:text="${'Команд: ' + champ.getTeamsCount()}"></div>
             <div class="cb-icon"><i class="fas fa-trophy"></i></div>
-            <div class="cb-icon"><i class="fas fa-trophy"></i></div>
-            <div class="cb-icon-role"><i class="fas fa-user-tie"></i></div>
+            <div class="cb-icon-role" th:if="${role > 0}">
+                <i class="fas fa-user-tag" th:if="${role == 1}"></i>
+                <i class="fas fa-user-tie" th:if="${role == 4}"></i>
+            </div>
         </a>
     </div>
 

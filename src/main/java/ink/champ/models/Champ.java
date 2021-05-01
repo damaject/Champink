@@ -1,6 +1,9 @@
 package ink.champ.models;
 
+import ink.champ.service.AppService;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name="champs")
 public class Champ {
@@ -22,6 +25,12 @@ public class Champ {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(targetEntity = ChampTeam.class, mappedBy = "champ", orphanRemoval = false, fetch = FetchType.LAZY)
+    private Set<ChampTeam> teams;
+
+    @OneToMany(targetEntity = ChampRole.class, mappedBy = "champ", orphanRemoval = false, fetch = FetchType.LAZY)
+    private Set<ChampRole> roles;
+
     public Champ() { }
     public Champ(String name, boolean privat, Sport sport, User user) {
         this.name = name;
@@ -35,10 +44,28 @@ public class Champ {
     public void setPrivate(boolean privat) { this.privat = privat; }
     public void setSport(Sport sport) { this.sport = sport; }
     public void setUser(User user) { this.user = user; }
+    public void setTeams(Set<ChampTeam> teams) { this.teams = teams; }
+    public void setRoles(Set<ChampRole> roles) { this.roles = roles; }
 
     public Long getId() { return id; }
     public String getName() { return name; }
     public boolean isPrivate() { return privat; }
     public Sport getSport() { return sport; }
     public User getUser() { return user; }
+    public Set<ChampTeam> getTeams() { return teams; }
+    public Set<ChampRole> getRoles() { return roles; }
+
+    public int getTeamsCount() { return teams.size(); }
+    public ChampRole getChampRole(User user) {
+        if (user != null) {
+            for (ChampRole role : roles) {
+                if (role.getUser().getId().equals(user.getId())) return role;
+            }
+        }
+        return null;
+    }
+    public int getUserRole(User user) {
+        ChampRole role = getChampRole(user);
+        return role == null ? AppService.Role.NONE : role.getRole();
+    }
 }

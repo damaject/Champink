@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head><link th:replace="blocks/head"></head>
+<body>
+    <div th:replace="blocks/menu"></div>
+
+    <div class="page-content">
+        <div class="pc-header">
+            <div class="pc-header-title"><i class="fas fa-user-tie"></i> Администратор - Все виды спорта</div>
+        </div>
+        <table>
+            <thead><tr><th>ID</th><th>Название</th></tr></thead>
+            <tbody>
+            <tr th:each="sport : ${sports}">
+                <td th:text="${sport.getId()}"></td>
+                <td th:text="${sport.getName()}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <link rel="stylesheet" type="text/css" href="/css/style-onload.css">
+</body>
+</html>

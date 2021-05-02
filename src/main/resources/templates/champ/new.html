@@ -9,8 +9,8 @@
             <div class="pc-header-title"><i class="fas fa-plus"></i> Создание нового чемпионата</div>
         </div>
 
-        <form class="pc-form" action="/post/champ/new" method="post">
-            <label>Название<input type="text" name="name" placeholder="Введите название..." maxlength="25" required></label>
+        <form class="pc-form" action="/post/champ/add" method="post">
+            <label>Название<input type="text" name="name" placeholder="Введите название..." maxlength="25" required autofocus></label>
             <label>Вид спорта
                 <select name="sport">
                     <option th:each="sport : ${sports}" th:value="${sport.getId()}" th:text="${sport.getName()}"></option>
@@ -23,7 +23,7 @@
                     <option value="3">Плей-офф</option>
                 </select>
             </label>
-            <label><input type="checkbox" name="privat" checked>Приватный чемпионат</label>
+            <input type="checkbox" class="pc-form-checkbox" name="privat" id="privat" checked><label for="privat">Приватный чемпионат</label>
             <button class="btn pc-form-submit" type="submit">Создать чемпионат</button>
             <a href="/champs">Отмена</a>
         </form>

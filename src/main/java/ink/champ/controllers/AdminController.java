@@ -26,7 +26,7 @@ public class AdminController {
             this.subpage = subpage;
             return "redirect:/admin";
         }
-        if (this.subpage == null) this.subpage = "";
+        if (this.subpage == null || this.subpage.equals("")) this.subpage = "users";
 
         app.updateModel(user, model, page, this.subpage, "Champink - Администратор");
         if (this.subpage.equals("users")) {

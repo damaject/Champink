@@ -9,24 +9,33 @@
             <div class="pc-header-title" th:text="${'Игрок ' + player.getName()}"></div>
         </div>
         <div>
-            <form class="pc-form" th:if="${role == 0}">
-                <label><i class="fas fa-user"></i> Вы являетесь гостем игрока</label>
-                <a th:href="${'/player/' + player.getId() + '/roles/set?role=1'}">Стать зрителем</a>
-            </form>
-            <form class="pc-form" th:if="${role == 1}">
-                <label><i class="fas fa-user-tag"></i> Вы являетесь зрителем игрока</label>
-                <a th:href="${'/player/' + player.getId() + '/roles/set?role=0'}">Стать гостем</a>
-            </form>
-            <form class="pc-form" th:if="${role == 4}">
-                <label><i class="fas fa-user-tie"></i> Вы являетесь владельцем игрока</label>
-            </form>
+            <div class="list-block">
+                <div class="lb-title" th:text="${'Состоит в командах (' + player.getTeamsCount() + ')'}"></div>
+<!--                <a class="list-item-block" th:each="tp : ${player.getTeams()}" th:href="${'/team/' + tp.getTeam().getId()}">-->
+                <div class="list-item-block" th:each="tp : ${player.getTeams()}">
+                    <div class="lib-title" th:text="${tp.getTeam().getName()}"></div>
+                    <div class="lib-position" th:text="${tp.getPosition()}"></div>
+                    <div class="lib-icon"><i class="fas fa-users"></i></div>
+                    <div class="lib-action">
+                        <a class="lib-but" th:href="${'/team/' + tp.getTeam().getId()}">Перейти</a>
+                    </div>
+                </div>
+            </div>
 
-            <label th:text="${'Состоит в командах (' + player.getTeamsCount() + '): '}"></label>
-            <a class="list-block" th:each="tp : ${player.getTeams()}" th:href="${'/team/' + tp.getTeam().getId()}">
-                <div class="lb-title" th:text="${tp.getTeam().getName()}"></div>
-                <div class="lb-position" th:text="${tp.getPosition()}"></div>
-                <div class="lb-icon"><i class="fas fa-users"></i></div>
-            </a>
+            <div class="list-block">
+                <div class="lb-title">Ваш статус</div>
+                <div th:if="${role == 0}">
+                    <div><i class="fas fa-user"></i> Вы являетесь гостем игрока</div>
+                    <a class="lb-link" th:href="${'/player/' + player.getId() + '/roles/set?role=1'}">Стать зрителем</a>
+                </div>
+                <div th:if="${role == 1}">
+                    <div><i class="fas fa-user-tag"></i> Вы являетесь зрителем игрока</div>
+                    <a class="lb-link" th:href="${'/player/' + player.getId() + '/roles/set?role=0'}">Стать гостем</a>
+                </div>
+                <div th:if="${role == 4}">
+                    <div><i class="fas fa-user-tie"></i> Вы являетесь владельцем игрока</div>
+                </div>
+            </div>
         </div>
     </div>
 

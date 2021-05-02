@@ -29,9 +29,10 @@ public class TeamController {
         }
         if (this.subpage == null) this.subpage = AppService.Subpage.GLOBAL;
 
-        if (this.subpage.equals(AppService.Subpage.GLOBAL)) model.addAttribute("teams", service.getTeams());
-        else if (this.subpage.equals(AppService.Subpage.USER_ALL)) model.addAttribute("teams", service.getUserTeams(user));
-        else if (this.subpage.equals(AppService.Subpage.USER_OWNER)) model.addAttribute("teams", service.getUserTeams(user));
+        if (this.subpage.equals(AppService.Subpage.GLOBAL)) model.addAttribute("teams", service.getGlobalTeams());
+        else if (this.subpage.equals(AppService.Subpage.USER_ALL)) model.addAttribute("teams", service.getUserTeamsAll(user));
+        else if (this.subpage.equals(AppService.Subpage.USER_OWNER)) model.addAttribute("teams", service.getUserTeamsRole(user, AppService.Role.OWNER));
+        else if (this.subpage.equals(AppService.Subpage.USER_VIEWER)) model.addAttribute("teams", service.getUserTeamsRole(user, AppService.Role.VIEWER));
 
         app.updateModel(user, model, page, this.subpage, "Champink - Команды");
         return "team/list";
@@ -40,6 +41,7 @@ public class TeamController {
     @GetMapping("/team/{id}")
     public String teamById(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, Model model) {
         Team team = service.getTeamById(id);
+        if (team == null) return "redirect:/teams";
         model.addAttribute("team", team);
         model.addAttribute("user_players", service.getUserPlayers(user));
         app.updateModel(user, model, page, subpage, "Champink - Команда " + team.getName());
@@ -70,8 +72,18 @@ public class TeamController {
         return "redirect:/team/" + id;
     }
 
-    @PostMapping("/post/team/new")
-    public String postTeamNew(@AuthenticationPrincipal User user, @RequestParam String name,
+    @GetMapping("/team/{id}/delete/{admin}")
+    public String teamDelete(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
+                               @PathVariable(value = "admin", required = false) Boolean admin) {
+        if (user == null) return "redirect:/teams";
+        Team team = service.getTeamById(id);
+        if ((admin && user.isAdmin()) || (!admin && team.getUserRole(user) == AppService.Role.OWNER)) service.deleteTeam(team);
+        if (admin) return "redirect:/admin?subpage=teams";
+        else return "redirect:/teams";
+    }
+
+    @PostMapping("/post/team/add")
+    public String postTeamAdd(@AuthenticationPrincipal User user, @RequestParam String name,
                                @RequestParam(defaultValue = "false") boolean privat) {
         if (user != null) {
             Team newTeam = new Team(name, privat, user);

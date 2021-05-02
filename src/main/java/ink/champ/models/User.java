@@ -2,6 +2,7 @@ package ink.champ.models;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -26,6 +27,15 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true) private String email;
     private boolean active;
 
+    @OneToMany(targetEntity = Champ.class, mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<Champ> champs;
+
+    @OneToMany(targetEntity = Team.class, mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<Team> teams;
+
+    @OneToMany(targetEntity = Player.class, mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<Player> players;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -34,7 +44,7 @@ public class User implements UserDetails {
     public User() { }
     public User(String username, String password, String name, String email) {
         this.username = username;
-        this.password = password;
+        this.password = new BCryptPasswordEncoder().encode(password);
         this.name = name;
         this.email = email;
         this.active = true;
@@ -47,6 +57,9 @@ public class User implements UserDetails {
     public void setActive(boolean active) { this.active = active; }
     public void setEmail(String email) { this.email = email; }
     public void setRoles(Set<Role> roles) { this.roles = roles; }
+    public void setChamps(Set<Champ> champs) { this.champs = champs; }
+    public void setTeams(Set<Team> teams) { this.teams = teams; }
+    public void setPlayers(Set<Player> players) { this.players = players; }
 
     public Long getId() { return id; }
     public String getUsername() { return username; }
@@ -55,6 +68,9 @@ public class User implements UserDetails {
     public String getEmail() { return email; }
     public boolean isActive() { return active; }
     public Set<Role> getRoles() { return roles; }
+    public Set<Champ> getChamps() { return champs; }
+    public Set<Team> getTeams() { return teams; }
+    public Set<Player> getPlayers() { return players; }
 
     public boolean isAdmin() { return getRoles().contains(Role.ADMIN); }
 

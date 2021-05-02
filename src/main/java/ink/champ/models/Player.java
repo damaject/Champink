@@ -21,10 +21,10 @@ public class Player {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(targetEntity = TeamPlayer.class, mappedBy = "player", orphanRemoval = false, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = TeamPlayer.class, mappedBy = "player", orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<TeamPlayer> teams;
 
-    @OneToMany(targetEntity = PlayerRole.class, mappedBy = "player", orphanRemoval = false, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = PlayerRole.class, mappedBy = "player", orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<PlayerRole> roles;
 
     public Player() { }

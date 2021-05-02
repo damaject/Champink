@@ -1,5 +1,6 @@
 package ink.champ.controllers;
 
+import ink.champ.models.Player;
 import ink.champ.models.Role;
 import ink.champ.models.User;
 import ink.champ.service.AppService;
@@ -9,9 +10,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 
 @Controller
@@ -21,10 +24,12 @@ public class AuthController {
     @Autowired private RepositoryService service;
 
     private final String page = "auth";
+    private String preLoginUrl;
 
     @GetMapping("/login")
-    public String login(@AuthenticationPrincipal User user, Model model) {
+    public String login(@AuthenticationPrincipal User user, Model model, HttpServletRequest request) {
         app.updateModel(user, model, page, "", "Champink - Авторизация");
+        preLoginUrl = request.getHeader("Referer");
         return "auth/login";
     }
 
@@ -38,6 +43,33 @@ public class AuthController {
     public String restore(@AuthenticationPrincipal User user, Model model) {
         app.updateModel(user, model, page, "", "Champink - Восстановление");
         return "auth/restore";
+    }
+
+    @GetMapping("/login/success")
+    public String loginSuccess() {
+        if (preLoginUrl == null || preLoginUrl.equals("") || preLoginUrl.contains("/login") ||
+                preLoginUrl.contains("/registration") || preLoginUrl.contains("/restore") || preLoginUrl.contains("/profile")) preLoginUrl = "/";
+        return "redirect:" + preLoginUrl;
+    }
+
+    @GetMapping("/user/{id}/delete")
+    public String userDelete(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id) {
+        if (user == null) return "redirect:/";
+        User deleteUser = service.getUserById(id);
+        if (user.isAdmin() && !deleteUser.isAdmin()) service.deleteUser(deleteUser);
+        return "redirect:/admin?subpage=users";
+    }
+
+    @GetMapping("/user/{id}/active/{active}")
+    public String userActive(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
+                             @PathVariable(value = "active") Long active) {
+        if (user == null) return "redirect:/";
+        User editUser = service.getUserById(id);
+        if (user.isAdmin() && !editUser.isAdmin()) {
+            editUser.setActive(active == 1);
+            service.saveUser(editUser);
+        }
+        return "redirect:/admin?subpage=users";
     }
 
     @PostMapping("/post/auth/registration")

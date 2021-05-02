@@ -9,13 +9,15 @@
             <div class="pc-header-title"><i class="fas fa-user-tie"></i> Администратор - Все чемпионаты</div>
         </div>
         <table>
-            <thead><tr><th>ID</th><th>Название</th><th>Вид спорта</th><th>Создатель</th></tr></thead>
+            <thead><tr><th>ID</th><th>Название</th><th>Вид спорта</th><th>Доступность</th><th>Создатель</th><th>Действия</th></tr></thead>
             <tbody>
             <tr th:each="champ : ${champs}">
                 <td th:text="${champ.getId()}"></td>
                 <td th:text="${champ.getName()}"></td>
                 <td th:text="${champ.getSport().getName()}"></td>
+                <td th:text="${champ.isPrivate() ? 'Приватный' : 'Публичный'}"></td>
                 <td th:text="${champ.getUser().getName() + ' (' + champ.getUser().getId() + ')'}"></td>
+                <td><a class="btn-link-y" th:href="${'/champ/' + champ.getId() + '/delete/true'}">Удалить</a></td>
             </tr>
             </tbody>
         </table>

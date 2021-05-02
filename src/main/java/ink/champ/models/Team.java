@@ -21,13 +21,19 @@ public class Team {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(targetEntity = TeamPlayer.class, mappedBy = "team", orphanRemoval = false, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = TeamPlayer.class, mappedBy = "team", orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<TeamPlayer> players;
 
-    @OneToMany(targetEntity = ChampTeam.class, mappedBy = "team", orphanRemoval = false, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = ChampTeam.class, mappedBy = "team", orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<ChampTeam> champs;
 
-    @OneToMany(targetEntity = TeamRole.class, mappedBy = "team", orphanRemoval = false, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = ChampEvent.class, mappedBy = "team1", orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<ChampEvent> champEventsH;
+
+    @OneToMany(targetEntity = ChampEvent.class, mappedBy = "team2", orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<ChampEvent> champEventsA;
+
+    @OneToMany(targetEntity = TeamRole.class, mappedBy = "team", orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<TeamRole> roles;
 
     public Team() { }
@@ -43,6 +49,8 @@ public class Team {
     public void setUser(User user) { this.user = user; }
     public void setPlayers(Set<TeamPlayer> players) { this.players = players; }
     public void setChamps(Set<ChampTeam> champs) { this.champs = champs; }
+    public void setChampEventsH(Set<ChampEvent> champEvents) { this.champEventsH = champEvents; }
+    public void setChampEventsA(Set<ChampEvent> champEvents) { this.champEventsA = champEvents; }
     public void setRoles(Set<TeamRole> roles) { this.roles = roles; }
 
     public Long getId() { return id; }
@@ -51,6 +59,8 @@ public class Team {
     public User getUser() { return user; }
     public Set<TeamPlayer> getPlayers() { return players; }
     public Set<ChampTeam> getChamps() { return champs; }
+    public Set<ChampEvent> getChampEventsH() { return champEventsH; }
+    public Set<ChampEvent> getChampEventsA() { return champEventsA; }
     public Set<TeamRole> getRoles() { return roles; }
 
     public int getPlayersCount() { return players.size(); }

@@ -29,9 +29,10 @@ public class PlayerController {
         }
         if (this.subpage == null) this.subpage = AppService.Subpage.GLOBAL;
 
-        if (this.subpage.equals(AppService.Subpage.GLOBAL)) model.addAttribute("players", service.getPlayers());
+        if (this.subpage.equals(AppService.Subpage.GLOBAL)) model.addAttribute("players", service.getGlobalPlayers());
         else if (this.subpage.equals(AppService.Subpage.USER_ALL)) model.addAttribute("players", service.getUserPlayers(user));
-        else if (this.subpage.equals(AppService.Subpage.USER_OWNER)) model.addAttribute("players", service.getUserPlayers(user));
+        else if (this.subpage.equals(AppService.Subpage.USER_OWNER)) model.addAttribute("players", service.getUserPlayersRole(user, AppService.Role.OWNER));
+        else if (this.subpage.equals(AppService.Subpage.USER_VIEWER)) model.addAttribute("players", service.getUserPlayersRole(user, AppService.Role.VIEWER));
 
         app.updateModel(user, model, page, this.subpage, "Champink - Игроки");
         return "player/list";
@@ -40,6 +41,7 @@ public class PlayerController {
     @GetMapping("/player/{id}")
     public String champById(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, Model model) {
         Player player = service.getPlayerById(id);
+        if (player == null) return "redirect:/players";
         model.addAttribute("player", player);
         app.updateModel(user, model, page, subpage, "Champink - Игрок " + player.getName());
         return "player/view";
@@ -69,8 +71,18 @@ public class PlayerController {
         return "redirect:/player/" + id;
     }
 
-    @PostMapping("/post/player/new")
-    public String postChampNew(@AuthenticationPrincipal User user, @RequestParam String name,
+    @GetMapping("/player/{id}/delete/{admin}")
+    public String playerDelete(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
+                               @PathVariable(value = "admin", required = false) Boolean admin) {
+        if (user == null) return "redirect:/players";
+        Player player = service.getPlayerById(id);
+        if ((admin && user.isAdmin()) || (!admin && player.getUserRole(user) == AppService.Role.OWNER)) service.deletePlayer(player);
+        if (admin) return "redirect:/admin?subpage=players";
+        else return "redirect:/players";
+    }
+
+    @PostMapping("/post/player/add")
+    public String postChampAdd(@AuthenticationPrincipal User user, @RequestParam String name,
                                @RequestParam(defaultValue = "false") boolean privat) {
         if (user != null) {
             Player newPlayer = new Player(name, privat, user);

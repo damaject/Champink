@@ -4,21 +4,26 @@ import ink.champ.models.User;
 import ink.champ.service.AppService;
 import ink.champ.service.RepositoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class MainController {
+public class MainController {// implements ErrorController {
 
     @Autowired private AppService app;
-    @Autowired private RepositoryService service;
 
     @GetMapping("/index")
     public String index(@AuthenticationPrincipal User user, Model model) {
         return "redirect:/";
     }
+
+//    @GetMapping("/error")
+//    public String error(@AuthenticationPrincipal User user, Model model) {
+//        return "redirect:/";
+//    }
 
     @GetMapping("/")
     public String root(@AuthenticationPrincipal User user, Model model) {
@@ -39,12 +44,8 @@ public class MainController {
         return "about";
     }
 
-//    @GetMapping("users/{id}")
-//    public String userById(@PathVariable(value = "id") long id, Model model) {
-//        Optional<Users> users = usersRepository.findById(id);
-//        ArrayList<Users> arrayList = new ArrayList<>();
-//        users.ifPresent(arrayList::add);
-//        model.addAttribute("userCurrent", arrayList);
-//        return "currentuser";
+//    @Override
+//    public String getErrorPath() {
+//        return null;
 //    }
 }

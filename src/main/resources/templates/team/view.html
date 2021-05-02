@@ -9,50 +9,61 @@
             <div class="pc-header-title" th:text="${'Команда ' + team.getName()}"></div>
         </div>
         <div>
-            <form class="pc-form" th:if="${role == 0}">
-                <label><i class="fas fa-user"></i> Вы являетесь гостем команды</label>
-                <a th:href="${'/team/' + team.getId() + '/roles/set?role=1'}">Стать зрителем</a>
-            </form>
-            <form class="pc-form" th:if="${role == 1}">
-                <label><i class="fas fa-user-tag"></i> Вы являетесь зрителем команды</label>
-                <a th:href="${'/team/' + team.getId() + '/roles/set?role=0'}">Стать гостем</a>
-            </form>
-            <form class="pc-form" th:if="${role == 4}">
-                <label><i class="fas fa-user-tie"></i> Вы являетесь владельцем команды</label>
-            </form>
+            <div class="list-block">
+                <div class="lb-title" th:text="${'Состав команды (' + team.getPlayersCount() + ')'}"></div>
+                <a class="list-item-block" th:each="tp : ${team.getPlayers()}" th:href="${'/player/' + tp.getPlayer().getId()}">
+                    <div class="lib-title" th:text="${tp.getPlayer().getName()}"></div>
+                    <div class="lib-position" th:text="${tp.getPosition()}"></div>
+                    <div class="lib-icon"><i class="fas fa-user"></i></div>
+                </a>
+            </div>
 
-            <label th:text="${'Состоит в чемпионатах (' + team.getChampsCount() + '): '}"></label>
-            <a class="list-block" th:each="ct : ${team.getChamps()}" th:href="${'/champ/' + ct.getChamp().getId()}">
-                <div class="lb-title" th:text="${ct.getChamp().getName()}"></div>
-                <div class="lb-position">Плей-офф</div>
-                <div class="lb-icon"><i class="fas fa-trophy"></i></div>
-            </a>
+            <div class="list-block">
+                <div class="lb-title" th:text="${'Состоит в чемпионатах (' + team.getChampsCount() + ')'}"></div>
+                <a class="list-item-block" th:each="ct : ${team.getChamps()}" th:href="${'/champ/' + ct.getChamp().getId()}">
+                    <div class="lib-title" th:text="${ct.getChamp().getName()}"></div>
+                    <div class="lib-position">Плей-офф</div>
+                    <div class="lib-icon"><i class="fas fa-trophy"></i></div>
+                </a>
+            </div>
 
-            <label th:text="${'Состав команды (' + team.getPlayersCount() + '): '}"></label>
-            <a class="list-block" th:each="tp : ${team.getPlayers()}" th:href="${'/player/' + tp.getPlayer().getId()}">
-                <div class="lb-title" th:text="${tp.getPlayer().getName()}"></div>
-                <div class="lb-position" th:text="${tp.getPosition()}"></div>
-                <div class="lb-icon"><i class="fas fa-user"></i></div>
-            </a>
+            <div class="list-block">
+                <div class="lb-title">Ваш статус</div>
+                <div th:if="${role == 0}">
+                    <div><i class="fas fa-user"></i> Вы являетесь гостем команды</div>
+                    <a class="lb-link" th:href="${'/team/' + team.getId() + '/roles/set?role=1'}">Стать зрителем</a>
+                </div>
+                <div th:if="${role == 1}">
+                    <div><i class="fas fa-user-tag"></i> Вы являетесь зрителем команды</div>
+                    <a class="lb-link" th:href="${'/team/' + team.getId() + '/roles/set?role=0'}">Стать гостем</a>
+                </div>
+                <div th:if="${role == 4}">
+                    <div><i class="fas fa-user-tie"></i> Вы являетесь владельцем команды</div>
+                </div>
+            </div>
 
-            <form class="pc-form" th:action="${'/post/team/' + team.getId() + '/players/add'}" method="post">
-                <label>Игрок
-                    <select name="player">
-                        <option th:each="player : ${user_players}" th:value="${player.getId()}" th:text="${player.getName()}"></option>
-                    </select>
-                </label>
-                <label>Позиция в команде
-                    <select name="position">
-                        <option>Не выбрана</option>
-                        <option>Нападающий</option>
-                        <option>Полузащитник</option>
-                        <option>Защитник</option>
-                        <option>Вратарь</option>
-                        <option>Тренер</option>
-                    </select>
-                </label>
-                <button class="btn pc-form-submit" type="submit">Добавить игрока в команду</button>
-            </form>
+            <div class="list-block" th:if="${role >= 3}">
+                <div class="lb-title">Добавление игроков</div>
+                <form class="pc-form" th:action="${'/post/team/' + team.getId() + '/players/add'}" method="post">
+                    <label class="lb-label">Игрок
+                        <select name="player" required>
+                            <option value="">Не выбран</option>
+                            <option th:each="player : ${user_players}" th:value="${player.getId()}" th:text="${player.getName()}"></option>
+                        </select>
+                    </label>
+                    <label class="lb-label">Позиция в команде
+                        <select name="position">
+                            <option>Не выбрана</option>
+                            <option>Нападающий</option>
+                            <option>Полузащитник</option>
+                            <option>Защитник</option>
+                            <option>Вратарь</option>
+                            <option>Тренер</option>
+                        </select>
+                    </label>
+                    <button class="btn pc-form-submit" type="submit">Добавить игрока в команду</button>
+                </form>
+            </div>
         </div>
     </div>
 

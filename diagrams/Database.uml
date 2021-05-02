@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>Persistence</ID>
+  <OriginalElement>JavaeeElement:/2e81735a/entityManagerFactory/Champink/jpa/JPA/PersistenceModel</OriginalElement>
+  <nodes>
+    <node x="599.0716666666667" y="646.0">Champ#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Champ.java</node>
+    <node x="860.0" y="170.0">DepEntity#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/testjoin/DepEntity.java</node>
+    <node x="405.6666666666667" y="372.0">Team#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Team.java</node>
+    <node x="0.0" y="246.0">ChampRole#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/ChampRole.java</node>
+    <node x="265.0716666666668" y="0.0">User#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/User.java</node>
+    <node x="438.0" y="246.0">TeamRole#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/TeamRole.java</node>
+    <node x="51.5" y="789.0">AbstractPersistable#jar://C:/Users/Maxim/.m2/repository/org/springframework/data/spring-data-jpa/2.4.6/spring-data-jpa-2.4.6.jar!/org/springframework/data/jpa/domain/AbstractPersistable.class</node>
+    <node x="289.28476014812315" y="246.28670452028703">TeamPlayer#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/TeamPlayer.java</node>
+    <node x="710.0402583039718" y="523.1790218324613">Sport#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Sport.java</node>
+    <node x="399.6666666666667" y="520.0">ChampEvent#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/ChampEvent.java</node>
+    <node x="154.35166666666674" y="372.0">Player#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Player.java</node>
+    <node x="570.0" y="257.0">ChampTeam#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/ChampTeam.java</node>
+    <node x="869.5" y="0.0">EmpEntity#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/testjoin/EmpEntity.java</node>
+    <node x="141.0" y="246.0">PlayerRole#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/PlayerRole.java</node>
+    <node x="17.5" y="801.0">null#null</node>
+    <node x="0.0" y="893.0">AbstractAuditable#jar://C:/Users/Maxim/.m2/repository/org/springframework/data/spring-data-jpa/2.4.6/spring-data-jpa-2.4.6.jar!/org/springframework/data/jpa/domain/AbstractAuditable.class</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="EmpEntity#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/testjoin/EmpEntity.java" target="DepEntity#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/testjoin/DepEntity.java">
+      <point x="29.0" y="60.0" />
+      <point x="956.5" y="145.0" />
+      <point x="961.25" y="145.0" />
+      <point x="33.75" y="-49.0" />
+    </edge>
+    <edge source="DepEntity#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/testjoin/DepEntity.java" target="EmpEntity#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/testjoin/EmpEntity.java">
+      <point x="-33.75" y="-49.0" />
+      <point x="893.75" y="145.0" />
+      <point x="898.5" y="145.0" />
+      <point x="-29.0" y="60.0" />
+    </edge>
+    <edge source="Player#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Player.java" target="TeamPlayer#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/TeamPlayer.java">
+      <point x="39.0" y="-49.0" />
+      <point x="251.85166666666674" y="347.0" />
+      <point x="321.0" y="347.0" />
+      <point x="-32.0" y="38.0" />
+    </edge>
+    <edge source="ChampEvent#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/ChampEvent.java" target="Team#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Team.java">
+      <point x="0.0" y="-38.0" />
+      <point x="0.0" y="49.0" />
+    </edge>
+    <edge source="AbstractAuditable#jar://C:/Users/Maxim/.m2/repository/org/springframework/data/spring-data-jpa/2.4.6/spring-data-jpa-2.4.6.jar!/org/springframework/data/jpa/domain/AbstractAuditable.class" target="AbstractPersistable#jar://C:/Users/Maxim/.m2/repository/org/springframework/data/spring-data-jpa/2.4.6/spring-data-jpa-2.4.6.jar!/org/springframework/data/jpa/domain/AbstractPersistable.class">
+      <point x="42.0" y="-38.0" />
+      <point x="126.0" y="868.0" />
+      <point x="143.5" y="868.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="Team#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Team.java" target="ChampTeam#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/ChampTeam.java">
+      <point x="43.875" y="-49.0" />
+      <point x="508.0416666666667" y="347.0" />
+      <point x="600.0" y="347.0" />
+      <point x="-30.0" y="27.0" />
+    </edge>
+    <edge source="Champ#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Champ.java" target="ChampEvent#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/ChampEvent.java">
+      <point x="-23.399999999999977" y="-49.0" />
+      <point x="634.1716666666667" y="616.0" />
+      <point x="464.1666666666667" y="616.0" />
+      <point x="0.0" y="38.0" />
+    </edge>
+    <edge source="Champ#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Champ.java" target="User#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/User.java">
+      <point x="23.399999999999977" y="-49.0" />
+      <point x="680.9716666666667" y="616.0" />
+      <point x="700.5" y="616.0" />
+      <point x="700.5" y="206.0" />
+      <point x="382.4050000000001" y="206.0" />
+      <point x="53.333333333333314" y="93.0" />
+    </edge>
+    <edge source="ChampRole#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/ChampRole.java" target="User#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/User.java">
+      <point x="0.0" y="-38.0" />
+      <point x="60.0" y="206.0" />
+      <point x="275.73833333333346" y="206.0" />
+      <point x="-53.333333333333314" y="93.0" />
+    </edge>
+    <edge source="TeamRole#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/TeamRole.java" target="User#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/User.java">
+      <point x="0.0" y="-38.0" />
+      <point x="494.0" y="216.0" />
+      <point x="361.0716666666668" y="216.0" />
+      <point x="32.0" y="93.0" />
+    </edge>
+    <edge source="Champ#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Champ.java" target="ChampRole#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/ChampRole.java">
+      <point x="-46.80000000000001" y="-49.0" />
+      <point x="610.7716666666668" y="626.0" />
+      <point x="60.0" y="626.0" />
+      <point x="0.0" y="38.0" />
+    </edge>
+    <edge source="AbstractAuditable#jar://C:/Users/Maxim/.m2/repository/org/springframework/data/spring-data-jpa/2.4.6/spring-data-jpa-2.4.6.jar!/org/springframework/data/jpa/domain/AbstractAuditable.class" target="null#null">
+      <point x="-42.0" y="-38.0" />
+      <point x="42.0" y="868.0" />
+      <point x="24.5" y="868.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="Player#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Player.java" target="User#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/User.java">
+      <point x="-39.0" y="-49.0" />
+      <point x="173.85166666666674" y="347.0" />
+      <point x="130.5" y="347.0" />
+      <point x="130.5" y="216.0" />
+      <point x="297.0716666666668" y="216.0" />
+      <point x="-32.0" y="93.0" />
+    </edge>
+    <edge source="Player#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Player.java" target="PlayerRole#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/PlayerRole.java">
+      <point x="0.0" y="-49.0" />
+      <point x="212.85166666666674" y="347.0" />
+      <point x="205.0" y="347.0" />
+      <point x="0.0" y="38.0" />
+    </edge>
+    <edge source="Champ#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Champ.java" target="Sport#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Sport.java">
+      <point x="46.799999999999955" y="-49.0" />
+      <point x="704.3716666666667" y="626.0" />
+      <point x="763.0" y="626.0" />
+      <point x="0.0" y="38.0" />
+    </edge>
+    <edge source="Team#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Team.java" target="TeamPlayer#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/TeamPlayer.java">
+      <point x="-43.875" y="-49.0" />
+      <point x="420.2916666666667" y="347.0" />
+      <point x="385.0" y="347.0" />
+      <point x="32.00000000000003" y="38.0" />
+    </edge>
+    <edge source="Champ#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Champ.java" target="ChampTeam#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/ChampTeam.java">
+      <point x="0.0" y="-49.0" />
+      <point x="657.5716666666667" y="626.0" />
+      <point x="660.0" y="626.0" />
+      <point x="30.0" y="27.0" />
+    </edge>
+    <edge source="PlayerRole#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/PlayerRole.java" target="User#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/User.java">
+      <point x="0.0" y="-38.0" />
+      <point x="205.0" y="226.0" />
+      <point x="318.4050000000001" y="226.0" />
+      <point x="-10.666666666666686" y="93.0" />
+    </edge>
+    <edge source="Team#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Team.java" target="TeamRole#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/TeamRole.java">
+      <point x="14.625" y="-49.0" />
+      <point x="478.7916666666667" y="347.0" />
+      <point x="494.0" y="347.0" />
+      <point x="0.0" y="38.0" />
+    </edge>
+    <edge source="Team#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Team.java" target="User#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/User.java">
+      <point x="-14.625" y="-49.0" />
+      <point x="449.5416666666667" y="347.0" />
+      <point x="427.5" y="347.0" />
+      <point x="427.5" y="226.0" />
+      <point x="339.7383333333334" y="226.0" />
+      <point x="10.666666666666629" y="93.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.152982810920121" x="458.5415241603089" y="185.55073226343956" />
+  <SelectedNodes>
+    <node>Sport#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Sport.java</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Properties</Category>
+    <Category>Embeddables</Category>
+    <Category>Superclasses</Category>
+  </Categories>
+</Diagram>
+

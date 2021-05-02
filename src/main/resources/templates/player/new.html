@@ -9,9 +9,9 @@
             <div class="pc-header-title"><i class="fas fa-plus"></i> Создание нового игрока</div>
         </div>
 
-        <form class="pc-form" action="/post/player/new" method="post">
-            <label>Имя<input type="text" name="name" placeholder="Введите имя..." maxlength="25" required></label>
-            <label><input type="checkbox" name="privat" checked>Приватный игрок</label>
+        <form class="pc-form" action="/post/player/add" method="post">
+            <label>Имя<input type="text" name="name" placeholder="Введите имя..." maxlength="25" required autofocus></label>
+            <input type="checkbox" class="pc-form-checkbox" name="privat" id="privat" checked><label for="privat">Приватный игрок</label>
             <button class="btn pc-form-submit" type="submit">Создать игрока</button>
             <a href="/players">Отмена</a>
         </form>

@@ -25,11 +25,14 @@ public class Champ {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(targetEntity = ChampTeam.class, mappedBy = "champ", orphanRemoval = false, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = ChampTeam.class, mappedBy = "champ", orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<ChampTeam> teams;
 
-    @OneToMany(targetEntity = ChampRole.class, mappedBy = "champ", orphanRemoval = false, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = ChampRole.class, mappedBy = "champ", orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<ChampRole> roles;
+
+    @OneToMany(targetEntity = ChampEvent.class, mappedBy = "champ", orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<ChampEvent> events;
 
     public Champ() { }
     public Champ(String name, boolean privat, Sport sport, User user) {
@@ -46,6 +49,7 @@ public class Champ {
     public void setUser(User user) { this.user = user; }
     public void setTeams(Set<ChampTeam> teams) { this.teams = teams; }
     public void setRoles(Set<ChampRole> roles) { this.roles = roles; }
+    public void setEvents(Set<ChampEvent> events) { this.events = events; }
 
     public Long getId() { return id; }
     public String getName() { return name; }
@@ -54,8 +58,10 @@ public class Champ {
     public User getUser() { return user; }
     public Set<ChampTeam> getTeams() { return teams; }
     public Set<ChampRole> getRoles() { return roles; }
+    public Set<ChampEvent> getEvents() { return events; }
 
     public int getTeamsCount() { return teams.size(); }
+    public int getEventsCount() { return events.size(); }
     public ChampRole getChampRole(User user) {
         if (user != null) {
             for (ChampRole role : roles) {

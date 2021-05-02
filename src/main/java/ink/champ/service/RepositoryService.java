@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RepositoryService {
@@ -14,6 +15,7 @@ public class RepositoryService {
     @Autowired private SportRepository sports;
     @Autowired private ChampRepository champs;
     @Autowired private ChampTeamRepository champTeams;
+    @Autowired private ChampEventRepository champEvents;
     @Autowired private ChampRoleRepository champRoles;
     @Autowired private TeamRepository teams;
     @Autowired private TeamPlayerRepository teamPlayers;
@@ -36,32 +38,44 @@ public class RepositoryService {
     public List<ChampTeam> getChampTeams(Champ champ) { return champTeams.findChampTeamsByChamp(champ, sortDescId); }
     public List<TeamPlayer> getTeamPlayers(Team team) { return teamPlayers.findTeamPlayersByTeam(team, sortDescId); }
 
-    public Sport getSportById(Long id) { return sports.findById(id).get(); }
-    public Champ getChampById(Long id) { return champs.findById(id).get(); }
-    public Team getTeamById(Long id) { return teams.findById(id).get(); }
-    public Player getPlayerById(Long id) { return players.findById(id).get(); }
+    public List<Champ> getGlobalChamps() { return champs.findChampsByPrivatIsFalse(sortDescId); }
+    public List<Champ> getUserChampsAll(User user) { return champs.findChampsByUserAll(user); }
+    public List<Champ> getUserChampsRole(User user, int role) { return champs.findChampsByUserRole(user, role); }
+
+    public List<Team> getGlobalTeams() { return teams.findTeamsByPrivatIsFalse(sortDescId); }
+    public List<Team> getUserTeamsAll(User user) { return teams.findTeamsByUserAll(user); }
+    public List<Team> getUserTeamsRole(User user, int role) { return teams.findTeamsByUserRole(user, role); }
+
+    public List<Player> getGlobalPlayers() { return players.findPlayersByPrivatIsFalse(sortDescId); }
+    public List<Player> getUserPlayersAll(User user) { return players.findPlayersByUserAll(user); }
+    public List<Player> getUserPlayersRole(User user, int role) { return players.findPlayersByUserRole(user, role); }
+
+    public User getUserById(Long id) { return users.findById(id).orElse(null); }
+    public Sport getSportById(Long id) { return sports.findById(id).orElse(null); }
+    public Champ getChampById(Long id) { return champs.findById(id).orElse(null); }
+    public Team getTeamById(Long id) { return teams.findById(id).orElse(null); }
+    public Player getPlayerById(Long id) { return players.findById(id).orElse(null); }
 
     public User getUserByUsername(String username) { return users.findByUsername(username); }
 
-    public void addNewUser(User user) { users.save(user); }
+    public void addNewUser(User user) { saveUser(user); }
     public void addNewChamp(Champ champ) { champs.save(champ); }
-    public void addNewTeam(Team team) { teams.save(team); }
-    public void addNewPlayer(Player player) { players.save(player); }
-    public void addNewTeamPlayer(TeamPlayer teamPlayer) { teamPlayers.save(teamPlayer); }
     public void addNewChampTeam(ChampTeam champTeam) { champTeams.save(champTeam); }
-    public void addNewChampRole(ChampRole role) { champRoles.save(role); }
-    public void addNewTeamRole(TeamRole role) { teamRoles.save(role); }
-    public void addNewPlayerRole(PlayerRole role) { playerRoles.save(role); }
+    public void addNewChampRole(ChampRole role) { saveChampRole(role);}
+    public void addNewChampEvent(ChampEvent event) { champEvents.save(event); }
+    public void addNewTeam(Team team) { teams.save(team); }
+    public void addNewTeamPlayer(TeamPlayer teamPlayer) { teamPlayers.save(teamPlayer); }
+    public void addNewTeamRole(TeamRole role) { saveTeamRole(role); }
+    public void addNewPlayer(Player player) { players.save(player); }
+    public void addNewPlayerRole(PlayerRole role) { savePlayerRole(role); }
 
+    public void saveUser(User user) { users.save(user); }
     public void saveChampRole(ChampRole role) { champRoles.save(role); }
     public void saveTeamRole(TeamRole role) { teamRoles.save(role); }
     public void savePlayerRole(PlayerRole role) { playerRoles.save(role); }
 
-//    public Champ getChampByIdOld(Long id) {
-//        Optional<Users> users = usersRepository.findById(id);
-//        ArrayList<Users> arrayList = new ArrayList<>();
-//        users.ifPresent(arrayList::add);
-//        model.addAttribute("champ", arrayList);
-//        return repChamps.findById(id).get();
-//    }
+    public void deleteUser(User user) { users.delete(user); }
+    public void deleteChamp(Champ champ) { champs.delete(champ); }
+    public void deleteTeam(Team team) { teams.delete(team); }
+    public void deletePlayer(Player player) { players.delete(player); }
 }

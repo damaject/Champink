@@ -9,14 +9,21 @@
             <div class="pc-header-title"><i class="fas fa-user-tie"></i> Администратор - Все пользователи</div>
         </div>
         <table>
-            <thead><tr><th>ID</th><th>Логин</th><th>Имя</th><th>Почта</th><th>Пароль</th></tr></thead>
+            <thead><tr><th>ID</th><th>Логин</th><th>Имя</th><th>Почта</th><th>Пароль</th><th>Состояние</th><th>Действия</th></tr></thead>
             <tbody>
-                <tr th:each="user : ${users}">
-                    <td th:text="${user.getId()}"></td>
-                    <td th:text="${user.getUsername()}"></td>
-                    <td th:text="${user.getName()}"></td>
-                    <td th:text="${user.getEmail()}"></td>
-                    <td th:text="${user.getPassword()}"></td>
+                <tr th:each="u : ${users}">
+                    <td th:text="${u.getId()}"></td>
+                    <td th:text="${u.getUsername()}"></td>
+                    <td th:text="${u.getName()}"></td>
+                    <td th:text="${u.getEmail()}"></td>
+                    <td th:text="${u.getPassword()}"></td>
+                    <td th:text="${u.isActive() ? 'Активный' : 'Деактивный'}"></td>
+                    <td>
+                        <a class="btn-link-y" th:if="${user.getId() != u.getId() && u.isActive()}" th:href="${'/user/' + u.getId() + '/active/0'}">Деактивировать</a>
+                        <a class="btn-link-y" th:if="${user.getId() != u.getId() && !u.isActive()}" th:href="${'/user/' + u.getId() + '/active/1'}">Активировать</a>
+                        <br>
+                        <a class="btn-link-y" th:if="${user.getId() != u.getId()}" th:href="${'/user/' + u.getId() + '/delete'}">Удалить</a>
+                    </td>
                 </tr>
             </tbody>
         </table>

@@ -9,12 +9,14 @@
             <div class="pc-header-title"><i class="fas fa-user-tie"></i> Администратор - Все команды</div>
         </div>
         <table>
-            <thead><tr><th>ID</th><th>Название</th><th>Создатель</th></tr></thead>
+            <thead><tr><th>ID</th><th>Название</th><th>Доступность</th><th>Создатель</th><th>Действия</th></tr></thead>
             <tbody>
             <tr th:each="team : ${teams}">
                 <td th:text="${team.getId()}"></td>
                 <td th:text="${team.getName()}"></td>
+                <td th:text="${team.isPrivate() ? 'Приватная' : 'Публичная'}"></td>
                 <td th:text="${team.getUser().getName() + ' (' + team.getUser().getId() + ')'}"></td>
+                <td><a class="btn-link-y" th:href="${'/team/' + team.getId() + '/delete/true'}">Удалить</a></td>
             </tr>
             </tbody>
         </table>

@@ -48,7 +48,6 @@ public class ChampController {
         Champ champ = service.getChampById(id);
         if (champ == null) return "redirect:/champs";
         model.addAttribute("champ", champ);
-        model.addAttribute("user_teams", service.getUserTeams(user));
         app.updateModel(user, model, page, subpage, "Champink - Чемпионат " + champ.getName());
         return "champ/view";
     }
@@ -75,6 +74,49 @@ public class ChampController {
                 }
             }
         }
+        return "redirect:/champ/" + id;
+    }
+
+    @GetMapping("/champ/{id}/teams/add")
+    public String champTeamsAdd(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, Model model) {
+        if (user == null) return "redirect:/champs";
+        Champ champ = service.getChampById(id);
+        if (champ.getUserRole(user) >= AppService.Role.MANAGER) {
+            model.addAttribute("champ", champ);
+            model.addAttribute("teams", service.getUserTeamsNotInChamp(user, champ));
+            app.updateModel(user, model, page, subpage, "Champink - Чемпионат " + champ.getName() + " - Добавление команды");
+            return "champ/add-team";
+        }
+        return "redirect:/champ/" + id;
+    }
+
+    @GetMapping("/champ/{id}/events/add")
+    public String champEventsAdd(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, Model model) {
+        if (user == null) return "redirect:/champs";
+        Champ champ = service.getChampById(id);
+        if (champ.getUserRole(user) >= AppService.Role.MANAGER) {
+            model.addAttribute("champ", champ);
+            app.updateModel(user, model, page, subpage, "Champink - Чемпионат " + champ.getName() + " - Добавление события");
+            return "champ/add-event";
+        }
+        return "redirect:/champ/" + id;
+    }
+
+    @GetMapping("/champ/{id}/teams/{ct}/delete")
+    public String champTeamsDelete(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
+                                    @PathVariable(value = "ct") Long ctId) {
+        if (user == null) return "redirect:/champs";
+        ChampTeam champTeam = service.getChampTeamById(ctId);
+        if (champTeam.getChamp().getUserRole(user) >= AppService.Role.MANAGER) service.deleteChampTeam(champTeam);
+        return "redirect:/champ/" + id;
+    }
+
+    @GetMapping("/champ/{id}/events/{ce}/delete")
+    public String champEventsDelete(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
+                                   @PathVariable(value = "ce") Long ceId) {
+        if (user == null) return "redirect:/champs";
+        ChampEvent champEvent = service.getChampEventById(ceId);
+        if (champEvent.getChamp().getUserRole(user) >= AppService.Role.MANAGER) service.deleteChampEvent(champEvent);
         return "redirect:/champ/" + id;
     }
 
@@ -110,7 +152,7 @@ public class ChampController {
     public String postTeamEventAdd(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                                    @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timestamp,
                                    @RequestParam Team team1, @RequestParam Team team2) {
-        if (user != null) service.addNewChampEvent(new ChampEvent(service.getChampById(id), team1, team2, Date.from(timestamp.toInstant(ZoneOffset.ofHours(3)))));
+        if (user != null && !team1.getId().equals(team2.getId())) service.addNewChampEvent(new ChampEvent(service.getChampById(id), team1, team2, Date.from(timestamp.toInstant(ZoneOffset.ofHours(3)))));
         return "redirect:/champ/" + id;
     }
 }

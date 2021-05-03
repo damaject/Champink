@@ -1,5 +1,6 @@
 package ink.champ.repository;
 
+import ink.champ.models.Champ;
 import ink.champ.models.Team;
 import ink.champ.models.User;
 import org.springframework.data.domain.Sort;
@@ -19,4 +20,7 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
 
     @Query("SELECT t FROM teams t INNER JOIN t.roles tr WHERE tr.user = ?1 AND tr.role = ?2 ORDER BY t.id DESC")
     List<Team> findTeamsByUserRole(User user, int role);
+
+    @Query("SELECT t FROM teams t INNER JOIN t.roles tr WHERE (SELECT COUNT(tc.id) FROM t.champs tc WHERE tc.champ = ?1) = 0 AND tr.user = ?2 AND tr.role >= 3 ORDER BY t.id DESC")
+    List<Team> findTeamsByUserRoleAndNotInChamp(Champ champ, User user);
 }

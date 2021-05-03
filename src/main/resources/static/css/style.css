@@ -68,6 +68,34 @@ table td {
 .btn-link:hover, .btn-link-y:hover {
     color: #FF0000;
 }
+.btn-form {
+    width: 100%;
+    height: 40px;
+    border: #FFBF00 solid 2px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    box-sizing: border-box;
+}
+.btn-block {
+    width: 100%;
+    height: 40px;
+    border: #FFBF00 solid 2px;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 36px;
+    box-sizing: border-box;
+    text-align: center;
+}
+.btnb-red {
+    border: #FF0000 solid 2px;
+    background-color: #FF0000;
+}
+.btnb-red:hover { color: #FF0000; }
 
 /*** MENU LEFT ***/
 .menu-left {
@@ -252,7 +280,7 @@ table td {
     margin: 5px auto 0;
     display: block;
     line-height: 25px;
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 400;
     text-decoration-line: underline;
 }
@@ -292,16 +320,6 @@ table td {
     width: 20px;
     height: 20px;
     margin: 0 10px 0 0;
-}
-.pc-form button {
-    width: 100%;
-    height: 40px;
-    border: #FFBF00 solid 2px;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    box-sizing: border-box;
 }
 
 
@@ -518,24 +536,21 @@ table td {
     text-transform: uppercase;
 }
 .list-block .lb-label {
-    display: block;
-    font-size: 14px;
-    margin-top: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 .list-block .lb-link {
     color: #FFBF00;
     width: fit-content;
     height: 25px;
-    /*margin: 5px auto 0;*/
+    margin: 5px 0 0;
     display: block;
-    line-height: 25px;
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 400;
     text-decoration-line: underline;
 }
-.list-block .lb-link:hover {
-    color: #FF0000;
-}
+.list-block .lbl-center { margin: 10px auto 0; }
+.list-block .lb-link:hover { color: #FF0000; }
 
 
 /*** LIST ITEM BLOCK ***/
@@ -552,10 +567,6 @@ table td {
 .list-item-block:hover {
     height: 68px;
     color: #000000;
-    background-color: #FFBF00;
-}
-.list-item-block:hover .lib-action {
-    height: 25px;
     background-color: #FFBF00;
 }
 .list-item-block .lib-title {
@@ -585,28 +596,6 @@ table td {
     font-weight: 700;
     line-height: 24px;
 }
-.list-item-block .lib-action {
-    left: -2px;
-    bottom: -2px;
-    width: 400px;
-    height: 0;
-    position: absolute;
-    background-color: #000000;
-    box-sizing: border-box;
-    border-left: #FFBF00 solid 2px;
-    border-right: #FFBF00 solid 2px;
-    border-bottom: #FFBF00 solid 2px;
-}
-.list-item-block .lib-but {
-    width: 100px;
-    height: 25px;
-    background-color: #FFBF00;
-    display: inline-block;
-    font-size: 12px;
-    text-align: center;
-    font-weight: 700;
-    line-height: 25px;
-}
 
 
 /*** LIST ITEM BIG BLOCK ***/
@@ -624,6 +613,7 @@ table td {
     line-height: 24px;
 }
 .list-item-big-block:hover {
+    height: 118px;
     color: #000000;
     background-color: #FFBF00;
 }
@@ -711,6 +701,55 @@ table td {
 .list-item-big-block:hover .libb-linev, .list-item-big-block:hover .libb-lineh {
     background-color: #000000;
 }
+
+.list-item-block:hover .lib-action, .list-item-big-block:hover .lib-action {
+    height: 25px;
+    background-color: #FFBF00;
+}
+.list-item-block:hover .lib-but, .list-item-big-block:hover .lib-but {
+    visibility: visible;
+    color: #000000;
+    height: 22px;
+    background-color: #FFBF00;
+}
+
+.lib-action {
+    left: -2px;
+    bottom: -2px;
+    width: 400px;
+    height: 0;
+    position: absolute;
+    background-color: #000000;
+    box-sizing: border-box;
+    border-left: #FFBF00 solid 2px;
+    border-right: #FFBF00 solid 2px;
+    border-bottom: #FFBF00 solid 2px;
+}
+.lib-but {
+    bottom: 0;
+    color: transparent;
+    width: 99px;
+    cursor: pointer;
+    height: 0;
+    position: absolute;
+    font-size: 12px;
+    text-align: center;
+    font-weight: 700;
+    line-height: 23px;
+    text-transform: uppercase;
+    background-color: #000000;
+    box-sizing: border-box;
+    visibility: hidden;
+}
+.lib-but:hover {
+    color: #FFBF00 !important;
+    background-color: #000000 !important;
+}
+.libbhr:hover { color: #FF0000 !important; }
+.lib-but:nth-of-type(1) { right: 0; }
+.lib-but:nth-of-type(2) { right: 99px; }
+.lib-but:nth-of-type(3) { right: 198px; }
+.lib-but:nth-of-type(4) { right: 297px; }
 
 
 /*** OTHER ***/

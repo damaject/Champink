@@ -38,6 +38,9 @@ public class RepositoryService {
     public List<ChampTeam> getChampTeams(Champ champ) { return champTeams.findChampTeamsByChamp(champ, sortDescId); }
     public List<TeamPlayer> getTeamPlayers(Team team) { return teamPlayers.findTeamPlayersByTeam(team, sortDescId); }
 
+    public List<Player> getUserPlayersNotInTeam(User user, Team team) { return players.findPlayersByUserRoleAndNotInTeam(team, user); }
+    public List<Team> getUserTeamsNotInChamp(User user, Champ champ) { return teams.findTeamsByUserRoleAndNotInChamp(champ, user); }
+
     public List<Champ> getGlobalChamps() { return champs.findChampsByPrivatIsFalse(sortDescId); }
     public List<Champ> getUserChampsAll(User user) { return champs.findChampsByUserAll(user); }
     public List<Champ> getUserChampsRole(User user, int role) { return champs.findChampsByUserRole(user, role); }
@@ -55,6 +58,9 @@ public class RepositoryService {
     public Champ getChampById(Long id) { return champs.findById(id).orElse(null); }
     public Team getTeamById(Long id) { return teams.findById(id).orElse(null); }
     public Player getPlayerById(Long id) { return players.findById(id).orElse(null); }
+    public TeamPlayer getTeamPlayerById(Long id) { return teamPlayers.findById(id).orElse(null); }
+    public ChampTeam getChampTeamById(Long id) { return champTeams.findById(id).orElse(null); }
+    public ChampEvent getChampEventById(Long id) { return champEvents.findById(id).orElse(null); }
 
     public User getUserByUsername(String username) { return users.findByUsername(username); }
 
@@ -78,4 +84,7 @@ public class RepositoryService {
     public void deleteChamp(Champ champ) { champs.delete(champ); }
     public void deleteTeam(Team team) { teams.delete(team); }
     public void deletePlayer(Player player) { players.delete(player); }
+    public void deleteTeamPlayer(TeamPlayer teamPlayer) { teamPlayers.delete(teamPlayer); }
+    public void deleteChampTeam(ChampTeam champTeam) { champTeams.delete(champTeam); }
+    public void deleteChampEvent(ChampEvent champEvent) { champEvents.delete(champEvent); }
 }

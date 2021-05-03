@@ -4,7 +4,12 @@
         <a class="menu-left-title-user btn-link" href="/profile" th:text="${name}"></a>
     </div>
 
+    <div class="menu-left-section-top">
+        <a class="btn menu-left-button" th:classappend="${page == 'index' ? 'active':''}" href="/"><i class="fas fa-home"></i> Главная</a>
+    </div>
+
     <div class="menu-left-section-top" th:if="${page == 'champ'}">
+        <div class="menu-left-section-title">Чемпионаты</div>
         <a class="btn menu-left-button" th:classappend="${subpage == 'global' ? 'active':''}" href="/champs?subpage=global"><i class="fas fa-globe-americas"></i> Глобальные</a>
     </div>
 
@@ -20,6 +25,7 @@
     </div>
 
     <div class="menu-left-section-top" th:if="${page == 'team'}">
+        <div class="menu-left-section-title">Команды</div>
         <a class="btn menu-left-button" th:classappend="${subpage == 'global' ? 'active':''}" href="/teams?subpage=global"><i class="fas fa-globe-americas"></i> Глобальные</a>
     </div>
 
@@ -34,6 +40,7 @@
     </div>
 
     <div class="menu-left-section-top" th:if="${page == 'player'}">
+        <div class="menu-left-section-title">Игроки</div>
         <a class="btn menu-left-button" th:classappend="${subpage == 'global' ? 'active':''}" href="/players?subpage=global"><i class="fas fa-globe-americas"></i> Глобальные</a>
     </div>
 
@@ -64,7 +71,7 @@
     <div class="menu-left-section-bottom">
         <div class="menu-left-section-title"></div>
         <a class="btn menu-left-button" href="/admin?subpage=users" sec:authorize="hasAuthority('ADMIN')"><i class="fas fa-user-tie"></i> Администратор</a>
-        <a class="btn menu-left-button" href="/about"><i class="fas fa-info-circle"></i> О сервисе</a>
+        <a class="btn menu-left-button" th:classappend="${page == 'about' ? 'active':''}" href="/about"><i class="fas fa-info-circle"></i> О сервисе</a>
     </div>
 
     <div class="menu-left-footer">Champink © 2021<br>All rights reserved</div>

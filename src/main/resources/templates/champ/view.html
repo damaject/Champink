@@ -6,19 +6,35 @@
 
     <div class="page-content" th:with="role = ${champ.getUserRole(user)}">
         <div class="pc-header">
-            <div class="pc-header-title" th:text="${'Чемпионат ' + champ.getName()}"></div>
+            <div class="pc-header-title" th:text="${'Чемпионат «' + champ.getName() + '»'}"></div>
         </div>
         <div>
             <div class="list-block">
-                <div class="lb-title" th:text="${'Команды чемпионата (' + champ.getTeamsCount() + ')'}"></div>
-                <a class="list-item-block" th:each="ct : ${champ.getTeams()}" th:href="${'/team/' + ct.getTeam().getId()}">
-                    <div class="lib-title" th:text="${ct.getTeam().getName()}"></div>
-                    <div class="lib-icon"><i class="fas fa-users"></i></div>
-                </a>
+                <div class="lb-title">Информация</div>
+                <div class="lb-label" th:text="${'Название: ' + champ.getName()}"></div>
+                <div class="lb-label" th:text="${'Доступность: ' + (champ.isPrivate() ? 'Приватный' : 'Публичный')}"></div>
+                <div class="lb-label" th:text="${'Кол-во команд: ' + champ.getTeamsCount()}"></div>
+                <div class="lb-label" th:text="${'Кол-во событий: ' + champ.getEventsCount()}"></div>
+                <a class="btn btn-block usn" th:if="${role >= 3}" th:href="${'/champ/' + champ.getId() + '/edit/'}">Редактировать чемпионат <i class="fas fa-pen"></i></a>
+                <a class="btn btn-block btnb-red usn" th:if="${role == 4}" th:href="${'/champ/' + champ.getId() + '/delete/false'}">Удалить чемпионат <i class="fas fa-trash"></i></a>
+                <br>
+                <div class="lb-title">Ваш статус</div>
+                <div th:if="${role == 0}">
+                    <div class="lb-label"><i class="fas fa-user"></i> Вы являетесь гостем чемпионата</div>
+                    <a class="btn btn-block usn" th:href="${'/champ/' + champ.getId() + '/roles/set?role=1'}">Стать зрителем <i class="fas fa-user-tag"></i></a>
+                </div>
+                <div th:if="${role == 1}">
+                    <div class="lb-label"><i class="fas fa-user-tag"></i> Вы являетесь зрителем чемпионата</div>
+                    <a class="btn btn-block usn" th:href="${'/champ/' + champ.getId() + '/roles/set?role=0'}">Стать гостем <i class="fas fa-user"></i></a>
+                </div>
+                <div th:if="${role == 4}">
+                    <div class="lb-label"><i class="fas fa-user-tie"></i> Вы являетесь владельцем чемпионата</div>
+                </div>
             </div>
 
             <div class="list-block">
                 <div class="lb-title" th:text="${'События чемпионата (' + champ.getEventsCount() + ')'}"></div>
+                <a class="btn btn-block usn" th:if="${role >= 3}" th:href="${'/champ/' + champ.getId() + '/events/add'}">Добавить событие <i class="fas fa-calendar-plus"></i></a>
                 <div class="list-item-big-block" th:each="ce : ${champ.getEvents()}">
                     <div class="libb-title1" th:text="${ce.getTeam1().getName()}"></div>
                     <div class="libb-title2" th:text="${ce.getTeam2().getName()}"></div>
@@ -35,57 +51,24 @@
                         <div class="libb-linev"></div>
                         <div class="libb-lineh"></div>
                     </div>
+                    <div class="lib-action">
+                        <a class="lib-but usn" th:if="${role >= 2}">Счет <i class="fas fa-table"></i></a>
+                        <a class="lib-but libbhr usn" th:if="${role >= 3}" th:href="${'/champ/' + champ.getId() + '/events/' + ce.getId() + '/delete'}">Удалить <i class="fas fa-trash"></i></a>
+                    </div>
                 </div>
             </div>
 
             <div class="list-block">
-                <div class="lb-title">Ваш статус</div>
-                <div th:if="${role == 0}">
-                    <div><i class="fas fa-user"></i> Вы являетесь гостем чемпионата</div>
-                    <a class="lb-link" th:href="${'/champ/' + champ.getId() + '/roles/set?role=1'}">Стать зрителем</a>
+                <div class="lb-title" th:text="${'Команды чемпионата (' + champ.getTeamsCount() + ')'}"></div>
+                <a class="btn btn-block usn" th:if="${role >= 3}" th:href="${'/champ/' + champ.getId() + '/teams/add'}">Добавить команду <i class="fas fa-user-plus"></i></a>
+                <div class="list-item-block" th:each="ct : ${champ.getTeams()}">
+                    <div class="lib-title" th:text="${ct.getTeam().getName()}"></div>
+                    <div class="lib-icon"><i class="fas fa-users"></i></div>
+                    <div class="lib-action">
+                        <a class="lib-but usn" th:href="${'/team/' + ct.getTeam().getId()}">Перейти <i class="fas fa-arrow-right"></i></a>
+                        <a class="lib-but libbhr usn" th:if="${role >= 3}" th:href="${'/champ/' + champ.getId() + '/teams/' + ct.getId() + '/delete'}">Удалить <i class="fas fa-trash"></i></a>
+                    </div>
                 </div>
-                <div th:if="${role == 1}">
-                    <div><i class="fas fa-user-tag"></i> Вы являетесь зрителем чемпионата</div>
-                    <a class="lb-link" th:href="${'/champ/' + champ.getId() + '/roles/set?role=0'}">Стать гостем</a>
-                </div>
-                <div th:if="${role == 4}">
-                    <div><i class="fas fa-user-tie"></i> Вы являетесь владельцем чемпионата</div>
-                </div>
-            </div>
-
-            <div class="list-block" th:if="${role >= 3}">
-                <div class="lb-title">Добавление команд</div>
-                <form class="pc-form" th:action="${'/post/champ/' + champ.getId() + '/teams/add'}" method="post">
-                    <label class="lb-label">Команда
-                        <select name="team" required>
-                            <option value="">Не выбрана</option>
-                            <option th:each="team : ${user_teams}" th:value="${team.getId()}" th:text="${team.getName()}"></option>
-                        </select>
-                    </label>
-                    <button class="btn pc-form-submit" type="submit">Добавить команду в чемпионат</button>
-                </form>
-            </div>
-
-            <div class="list-block" th:if="${role >= 3}">
-                <div class="lb-title">Добавление событий</div>
-                <form class="pc-form" th:action="${'/post/champ/' + champ.getId() + '/events/add'}" method="post">
-                    <label class="lb-label">Начало матча
-                        <input type="datetime-local" name="timestamp" required>
-                    </label>
-                    <label class="lb-label">Команда 1
-                        <select name="team1" required>
-                            <option value="">Не выбрана</option>
-                            <option th:each="ct : ${champ.getTeams()}" th:value="${ct.getTeam().getId()}" th:text="${ct.getTeam().getName()}"></option>
-                        </select>
-                    </label>
-                    <label class="lb-label">Команда 2
-                        <select name="team2" required>
-                            <option value="">Не выбрана</option>
-                            <option th:each="ct : ${champ.getTeams()}" th:value="${ct.getTeam().getId()}" th:text="${ct.getTeam().getName()}"></option>
-                        </select>
-                    </label>
-                    <button class="btn pc-form-submit" type="submit">Добавить событие в чемпионат</button>
-                </form>
             </div>
         </div>
     </div>

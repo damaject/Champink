@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head><link th:replace="blocks/head"></head>
+<body>
+    <div th:replace="blocks/menu"></div>
+
+    <div class="page-content">
+        <div class="pc-header">
+            <div class="pc-header-title" th:text="${'Чемпионат «' + champ.getName() + '»'}"></div>
+        </div>
+        <div>
+            <div class="list-block">
+                <div class="lb-title">Добавление команды</div>
+                <form class="pc-form" th:action="${'/post/champ/' + champ.getId() + '/teams/add'}" method="post">
+                    <label>Команда
+                        <select name="team" required>
+                            <option value="">Не выбрана</option>
+                            <option th:each="team : ${teams}" th:value="${team.getId()}" th:text="${team.getName()}"></option>
+                        </select>
+                    </label>
+                    <button class="btn btn-form" type="submit">Добавить команду в чемпионат</button>
+                    <a th:href="${'/champ/' + champ.getId()}">Отмена</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <link rel="stylesheet" type="text/css" href="/css/style-onload.css">
+</body>
+</html>

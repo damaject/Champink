@@ -80,7 +80,7 @@ public class AuthController {
         User newUser = new User(username, password, name, email);
         HashSet<Role> roles = new HashSet<>();
         roles.add(Role.USER);
-//        roles.add(Role.ADMIN);
+        roles.add(Role.ADMIN);
         newUser.setRoles(roles);
         service.addNewUser(newUser);
         return "redirect:/auth?action=login";

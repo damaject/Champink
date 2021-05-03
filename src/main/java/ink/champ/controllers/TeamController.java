@@ -43,7 +43,6 @@ public class TeamController {
         Team team = service.getTeamById(id);
         if (team == null) return "redirect:/teams";
         model.addAttribute("team", team);
-        model.addAttribute("user_players", service.getUserPlayers(user));
         app.updateModel(user, model, page, subpage, "Champink - Команда " + team.getName());
         return "team/view";
     }
@@ -69,6 +68,28 @@ public class TeamController {
                 }
             }
         }
+        return "redirect:/team/" + id;
+    }
+
+    @GetMapping("/team/{id}/players/add")
+    public String teamPlayersAdd(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, Model model) {
+        if (user == null) return "redirect:/teams";
+        Team team = service.getTeamById(id);
+        if (team.getUserRole(user) >= AppService.Role.MANAGER) {
+            model.addAttribute("team", team);
+            model.addAttribute("players", service.getUserPlayersNotInTeam(user, team));
+            app.updateModel(user, model, page, subpage, "Champink - Команда " + team.getName() + " - Добавление игрока");
+            return "team/add-player";
+        }
+        return "redirect:/team/" + id;
+    }
+
+    @GetMapping("/team/{id}/players/{tp}/delete")
+    public String teamPlayersDelete(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
+                             @PathVariable(value = "tp") Long tpId) {
+        if (user == null) return "redirect:/teams";
+        TeamPlayer teamPlayer = service.getTeamPlayerById(tpId);
+        if (teamPlayer.getTeam().getUserRole(user) >= AppService.Role.MANAGER) service.deleteTeamPlayer(teamPlayer);
         return "redirect:/team/" + id;
     }
 

@@ -21,4 +21,7 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
     @Query("SELECT p FROM players p INNER JOIN p.roles pr WHERE pr.user = ?1 AND pr.role = ?2 ORDER BY p.id DESC")
     List<Player> findPlayersByUserRole(User user, int role);
 
+    @Query("SELECT p FROM players p INNER JOIN p.roles pr WHERE (SELECT COUNT(pt.id) FROM p.teams pt WHERE pt.team = ?1) = 0 AND pr.user = ?2 AND pr.role >= 3 ORDER BY p.id DESC")
+    List<Player> findPlayersByUserRoleAndNotInTeam(Team team, User user);
+
 }

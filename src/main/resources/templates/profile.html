@@ -9,13 +9,15 @@
             <div class="pc-header-title">Профиль</div>
         </div>
 <!--        <h6 th:inline="text">Hello test: [[${#httpServletRequest.remoteUser}]]!</h6>-->
-        <div th:text="${'Имя: ' + user.getName()}"></div>
-        <div th:text="${'Логин: ' + user.getUsername()}"></div>
-        <div th:text="${'Почта: ' + user.getEmail()}"></div>
-        <div th:text="${'ID: ' + user.getId()}"></div>
-        <form class="pc-form" method="post" th:action="@{/logout}">
-            <button class="btn pc-form-submit" type="submit">Выйти из аккаунта</button>
-        </form>
+        <div class="list-block">
+            <div class="lb-title">Информация</div>
+            <div class="lb-label" th:text="${'ID: ' + user.getId()}"></div>
+            <div class="lb-label" th:text="${'Имя: ' + user.getName()}"></div>
+            <div class="lb-label" th:text="${'Логин: ' + user.getUsername()}"></div>
+            <div class="lb-label" th:text="${'Почта: ' + user.getEmail()}"></div>
+            <a class="btn btn-block usn" th:href="${'/'}">Редактировать информацию <i class="fas fa-pen"></i></a>
+            <a class="btn btn-block btnb-red usn" th:href="@{/logout}">Выйти из аккаунта <i class="fas fa-sign-out-alt"></i></a>
+        </div>
     </div>
 
     <link rel="stylesheet" type="text/css" href="/css/style-onload.css">

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head><link th:replace="blocks/head"></head>
+<body>
+    <div th:replace="blocks/menu"></div>
+
+    <div class="page-content">
+        <div class="pc-header">
+            <div class="pc-header-title" th:text="${'Чемпионат «' + champ.getName() + '»'}"></div>
+        </div>
+        <div class="list-block">
+            <div class="lb-title">Добавление события</div>
+            <form class="pc-form" th:action="${'/post/champ/' + champ.getId() + '/events/add'}" method="post">
+                <label>Начало матча
+                    <input type="datetime-local" name="timestamp" required>
+                </label>
+                <label>Команда 1
+                    <select name="team1" required>
+                        <option value="">Не выбрана</option>
+                        <option th:each="ct : ${champ.getTeams()}" th:value="${ct.getTeam().getId()}" th:text="${ct.getTeam().getName()}"></option>
+                    </select>
+                </label>
+                <label>Команда 2
+                    <select name="team2" required>
+                        <option value="">Не выбрана</option>
+                        <option th:each="ct : ${champ.getTeams()}" th:value="${ct.getTeam().getId()}" th:text="${ct.getTeam().getName()}"></option>
+                    </select>
+                </label>
+                <button class="btn btn-form" type="submit">Добавить событие в чемпионат</button>
+                <a th:href="${'/champ/' + champ.getId()}">Отмена</a>
+            </form>
+        </div>
+    </div>
+
+    <link rel="stylesheet" type="text/css" href="/css/style-onload.css">
+</body>
+</html>

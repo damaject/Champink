@@ -19,22 +19,23 @@ public class PlayerController {
     @Autowired private RepositoryService service;
 
     private final String page = "player";
-    private String subpage;
 
     @GetMapping("/players")
     public String players(@RequestParam(required = false) String subpage, @AuthenticationPrincipal User user, Model model) {
         if (subpage != null) {
-            this.subpage = subpage;
+            app.subpage = subpage;
             return "redirect:/players";
         }
-        if (this.subpage == null) this.subpage = AppService.Subpage.GLOBAL;
+        if (app.subpage == null) app.subpage = AppService.Subpage.GLOBAL;
 
-        if (this.subpage.equals(AppService.Subpage.GLOBAL)) model.addAttribute("players", service.getGlobalPlayers());
-        else if (this.subpage.equals(AppService.Subpage.USER_ALL)) model.addAttribute("players", service.getUserPlayers(user));
-        else if (this.subpage.equals(AppService.Subpage.USER_OWNER)) model.addAttribute("players", service.getUserPlayersRole(user, AppService.Role.OWNER));
-        else if (this.subpage.equals(AppService.Subpage.USER_VIEWER)) model.addAttribute("players", service.getUserPlayersRole(user, AppService.Role.VIEWER));
+        if (app.subpage.equals(AppService.Subpage.GLOBAL)) model.addAttribute("players", service.getGlobalPlayers());
+        else if (app.subpage.equals(AppService.Subpage.USER_ALL)) model.addAttribute("players", service.getUserPlayersAll(user));
+        else if (app.subpage.equals(AppService.Subpage.USER_OWNER)) model.addAttribute("players", service.getUserPlayersRole(user, AppService.Role.OWNER));
+        else if (app.subpage.equals(AppService.Subpage.USER_MANAGER)) model.addAttribute("players", service.getUserPlayersRole(user, AppService.Role.MANAGER));
+        else if (app.subpage.equals(AppService.Subpage.USER_VIEWER)) model.addAttribute("players", service.getUserPlayersRole(user, AppService.Role.VIEWER));
+        else return "redirect:/players?subpage=" + AppService.Subpage.GLOBAL;
 
-        app.updateModel(user, model, page, this.subpage, "Champink - Игроки");
+        app.updateModel(user, model, page, "Champink - Игроки");
         return "player/list";
     }
 
@@ -43,29 +44,66 @@ public class PlayerController {
         Player player = service.getPlayerById(id);
         if (player == null) return "redirect:/players";
         model.addAttribute("player", player);
-        app.updateModel(user, model, page, subpage, "Champink - Игрок " + player.getName());
+        app.updateModel(user, model, page, "Champink - Игрок " + player.getName());
         return "player/view";
     }
 
     @GetMapping("/player/new")
     public String champNew(@AuthenticationPrincipal User user, Model model) {
-        subpage = AppService.Subpage.USER_OWNER;
-        app.updateModel(user, model, page, subpage, "Champink - Новый игрок");
+        app.subpage = AppService.Subpage.USER_OWNER;
+        app.updateModel(user, model, page, "Champink - Новый игрок");
         return "player/new";
     }
 
+    @GetMapping("/player/{id}/edit")
+    public String playerEdit(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, Model model) {
+        if (user != null) {
+            Player player = service.getPlayerById(id);
+            if (player != null && player.getUserRole(user) >= AppService.Role.MANAGER) {
+                model.addAttribute("player", player);
+                app.updateModel(user, model, page, "Champink - Игрок " + player.getName() + " - Редактирование");
+                return "player/edit";
+            }
+        }
+        return "redirect:/players";
+    }
+
     @GetMapping("/player/{id}/roles/set")
-    public String playerRoleSet(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
-                                    @RequestParam Integer role) {
-        if (user != null && (role == 0 || role == 1)) {
+    public String playerRoleSet(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, @RequestParam Integer role) {
+        if (user != null) {
             Player player = service.getPlayerById(id);
             PlayerRole playerRole = player.getPlayerRole(user);
-            if (playerRole == null || playerRole.getRole() <= AppService.Role.VIEWER) {
-                if (playerRole == null) service.addNewPlayerRole(new PlayerRole(player, user, role));
-                else {
-                    playerRole.setRole(role);
-                    service.savePlayerRole(playerRole);
+            if (playerRole == null) {
+                playerRole = new PlayerRole(player, user, AppService.Role.NONE);
+                service.addNewPlayerRole(playerRole);
+            }
+            if ((role == 0 || role == 1) && playerRole.getRole() < AppService.Role.OWNER) {
+                playerRole.setRole(role);
+                playerRole.setRequest(AppService.Role.NONE);
+                service.savePlayerRole(playerRole);
+            }
+            else if (role == AppService.Role.MANAGER && playerRole.getRole() < AppService.Role.MANAGER) {
+                playerRole.setRequest(role);
+                service.savePlayerRole(playerRole);
+            }
+        }
+        return "redirect:/player/" + id;
+    }
+
+    @GetMapping("/player/{id}/roles/{pr}/{action}")
+    public String teamRoleAction(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
+                                 @PathVariable(value = "pr") Long prId, @PathVariable(value = "action") String action) {
+        if (user != null) {
+            Player player = service.getPlayerById(id);
+            if (player != null && player.getUserRole(user) == AppService.Role.OWNER) {
+                PlayerRole playerRole = service.getPlayerRoleById(prId);
+                if (action.equals("accept")) {
+                    playerRole.setRole(playerRole.getRequest());
+                    playerRole.setRequest(AppService.Role.NONE);
                 }
+                else if (action.equals("reject")) playerRole.setRequest(AppService.Role.NONE);
+                else if (action.equals("delete")) playerRole.setRole(AppService.Role.VIEWER);
+                service.savePlayerRole(playerRole);
             }
         }
         return "redirect:/player/" + id;
@@ -90,5 +128,19 @@ public class PlayerController {
             service.addNewPlayerRole(new PlayerRole(newPlayer, user, AppService.Role.OWNER));
         }
         return "redirect:/players?subpage=" + AppService.Subpage.USER_OWNER;
+    }
+
+    @PostMapping("/post/player/{id}/edit")
+    public String postPlayerEdit(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
+                                 @RequestParam String name, @RequestParam(defaultValue = "false") boolean privat) {
+        if (user != null) {
+            Player player = service.getPlayerById(id);
+            if (player != null && player.getUserRole(user) >= AppService.Role.MANAGER) {
+                player.setName(name);
+                player.setPrivate(privat);
+                service.savePlayer(player);
+            }
+        }
+        return "redirect:/player/" + id;
     }
 }

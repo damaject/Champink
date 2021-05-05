@@ -8,14 +8,20 @@
         <div class="pc-header">
             <div class="pc-header-title"><i class="fas fa-trophy"></i> Чемпионаты</div>
             <a class="btn-link pc-header-btn" href="/champ/new">Создать новый</a>
+            <form class="search-form" action="/post/champ/search" method="post">
+                <input type="text" name="text" placeholder="Поиск..." maxlength="25" required>
+                <button class="btn btn-form" type="submit"><i class="fas fa-search"></i></button>
+            </form>
         </div>
         <a class="champ-block" th:each="champ : ${champs}" th:href="${'/champ/' + champ.getId()}" th:with="role = ${champ.getUserRole(user)}">
             <div class="cb-title" th:text="${champ.getName()}"></div>
-            <div class="cb-format">Плей-офф</div>
+            <div class="cb-format" th:text="${champ.getFormat()}"></div>
             <div class="cb-teams" th:text="${'Команд: ' + champ.getTeamsCount()}"></div>
             <div class="cb-icon"><i class="fas fa-trophy"></i></div>
             <div class="cb-icon-role" th:if="${role > 0}">
                 <i class="fas fa-user-tag" th:if="${role == 1}"></i>
+                <i class="fas fa-user-clock" th:if="${role == 2}"></i>
+                <i class="fas fa-user-cog" th:if="${role == 3}"></i>
                 <i class="fas fa-user-tie" th:if="${role == 4}"></i>
             </div>
         </a>

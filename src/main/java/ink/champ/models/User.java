@@ -30,7 +30,7 @@ public class User implements UserDetails {
     @OneToMany(targetEntity = Champ.class, mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Champ> champs;
 
-    @OneToMany(targetEntity = Team.class, mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user")
     private Set<Team> teams;
 
     @OneToMany(targetEntity = Player.class, mappedBy = "user", orphanRemoval = true, fetch = FetchType.LAZY)

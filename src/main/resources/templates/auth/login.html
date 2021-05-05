@@ -9,8 +9,8 @@
             <div class="pc-header-title">Авторизация</div>
         </div>
         <form class="pc-form" method="post" th:action="@{/login}">
-            <label>Логин<input type="text" name="username" placeholder="Введите логин..." required autofocus/></label>
-            <label>Пароль<input type="password" name="password" placeholder="Введите пароль..." required/></label>
+            <label>Логин<input type="text" name="username" placeholder="Введите логин..." maxlength="25" required autofocus/></label>
+            <label>Пароль<input type="password" name="password" placeholder="Введите пароль..." maxlength="50" required/></label>
             <label class="pc-form-info" th:text="${param.logout} ? 'Вы вышли из аккаунта' : (${param.error} ? 'Ошибка авторизации' : ' ')"></label>
             <button class="btn btn-form" type="submit">Войти</button>
             <a href="/registration">Регистрация</a>

@@ -15,6 +15,9 @@ public class Champ {
     @Column(length = 25)
     private String name;
 
+    @Column(length = 25)
+    private String format;
+
     private boolean privat;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -25,18 +28,21 @@ public class Champ {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OrderBy("id DESC")
     @OneToMany(targetEntity = ChampTeam.class, mappedBy = "champ", orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<ChampTeam> teams;
 
     @OneToMany(targetEntity = ChampRole.class, mappedBy = "champ", orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<ChampRole> roles;
 
+    @OrderBy("timestamp ASC")
     @OneToMany(targetEntity = ChampEvent.class, mappedBy = "champ", orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<ChampEvent> events;
 
     public Champ() { }
-    public Champ(String name, boolean privat, Sport sport, User user) {
+    public Champ(String name, String format, boolean privat, Sport sport, User user) {
         this.name = name;
+        this.format = format;
         this.privat = privat;
         this.sport = sport;
         this.user = user;
@@ -44,6 +50,7 @@ public class Champ {
 
     public void setId(Long id) { this.id = id; }
     public void setName(String name) { this.name = name; }
+    public void setFormat(String format) { this.format = format; }
     public void setPrivate(boolean privat) { this.privat = privat; }
     public void setSport(Sport sport) { this.sport = sport; }
     public void setUser(User user) { this.user = user; }
@@ -53,6 +60,7 @@ public class Champ {
 
     public Long getId() { return id; }
     public String getName() { return name; }
+    public String getFormat() { return format; }
     public boolean isPrivate() { return privat; }
     public Sport getSport() { return sport; }
     public User getUser() { return user; }
@@ -73,5 +81,9 @@ public class Champ {
     public int getUserRole(User user) {
         ChampRole role = getChampRole(user);
         return role == null ? AppService.Role.NONE : role.getRole();
+    }
+    public int getUserRequest(User user) {
+        ChampRole role = getChampRole(user);
+        return role == null ? AppService.Role.NONE : role.getRequest();
     }
 }

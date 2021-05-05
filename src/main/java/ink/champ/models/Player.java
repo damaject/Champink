@@ -21,6 +21,7 @@ public class Player {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OrderBy("id ASC")
     @OneToMany(targetEntity = TeamPlayer.class, mappedBy = "player", orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<TeamPlayer> teams;
 
@@ -60,5 +61,9 @@ public class Player {
     public int getUserRole(User user) {
         PlayerRole role = getPlayerRole(user);
         return role == null ? AppService.Role.NONE : role.getRole();
+    }
+    public int getUserRequest(User user) {
+        PlayerRole role = getPlayerRole(user);
+        return role == null ? AppService.Role.NONE : role.getRequest();
     }
 }

@@ -1,12 +1,12 @@
 package ink.champ.controllers;
 
-import ink.champ.models.Player;
 import ink.champ.models.Role;
 import ink.champ.models.User;
 import ink.champ.service.AppService;
 import ink.champ.service.RepositoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,31 +18,51 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 
 @Controller
-public class AuthController {
+public class UserController {
 
     @Autowired private AppService app;
     @Autowired private RepositoryService service;
 
-    private final String page = "auth";
     private String preLoginUrl;
 
     @GetMapping("/login")
     public String login(@AuthenticationPrincipal User user, Model model, HttpServletRequest request) {
-        app.updateModel(user, model, page, "", "Champink - Авторизация");
+        app.updateModel(user, model, "auth", "Champink - Авторизация");
         preLoginUrl = request.getHeader("Referer");
         return "auth/login";
     }
 
     @GetMapping("/registration")
     public String registration(@AuthenticationPrincipal User user, Model model) {
-        app.updateModel(user, model, page, "", "Champink - Регистрация");
+        app.updateModel(user, model, "auth", "Champink - Регистрация");
         return "auth/registration";
     }
 
     @GetMapping("/restore")
     public String restore(@AuthenticationPrincipal User user, Model model) {
-        app.updateModel(user, model, page, "", "Champink - Восстановление");
+        app.updateModel(user, model, "auth", "Champink - Восстановление");
         return "auth/restore";
+    }
+
+    @GetMapping("/profile")
+    public String profile(@AuthenticationPrincipal User user, Model model) {
+        app.updateModel(user, model, "profile", "Champink - Профиль");
+        model.addAttribute("user", user);
+        return "user/view";
+    }
+
+    @GetMapping("/profile/edit")
+    public String profileEdit(@AuthenticationPrincipal User user, Model model) {
+        app.updateModel(user, model, "profile", "Champink - Профиль - Редактирование");
+        model.addAttribute("user", user);
+        return "user/edit";
+    }
+
+    @GetMapping("/profile/password")
+    public String profilePassword(@AuthenticationPrincipal User user, Model model) {
+        app.updateModel(user, model, "profile", "Champink - Профиль - Изменение пароля");
+        model.addAttribute("user", user);
+        return "user/password";
     }
 
     @GetMapping("/login/success")
@@ -72,6 +92,27 @@ public class AuthController {
         return "redirect:/admin?subpage=users";
     }
 
+    @PostMapping("/post/user/{id}/edit")
+    public String postUserEdit(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
+                               @RequestParam String name, @RequestParam String email) {
+        if (user == null || !user.getId().equals(id)) return "redirect:/";
+        user.setName(name);
+        user.setEmail(email);
+        service.saveUser(user);
+        return "redirect:/profile";
+    }
+
+    @PostMapping("/post/user/{id}/password")
+    public String postUserPassword(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
+                               @RequestParam String password1, @RequestParam String password2, @RequestParam String password3) {
+        if (user == null || !user.getId().equals(id)) return "redirect:/";
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (!password2.equals(password3) || !encoder.matches(password1, user.getPassword())) return "redirect:/profile/password?error";
+        user.setPassword(encoder.encode(password2));
+        service.saveUser(user);
+        return "redirect:/profile";
+    }
+
     @PostMapping("/post/auth/registration")
     public String postAuthRegistration(@AuthenticationPrincipal User user, @RequestParam String username,
                                        @RequestParam String password, @RequestParam String password2,
@@ -80,7 +121,7 @@ public class AuthController {
         User newUser = new User(username, password, name, email);
         HashSet<Role> roles = new HashSet<>();
         roles.add(Role.USER);
-        roles.add(Role.ADMIN);
+//        roles.add(Role.ADMIN);
         newUser.setRoles(roles);
         service.addNewUser(newUser);
         return "redirect:/auth?action=login";

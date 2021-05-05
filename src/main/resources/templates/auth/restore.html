@@ -9,7 +9,7 @@
             <div class="pc-header-title">Восстановление</div>
         </div>
         <form class="pc-form" action="/post/auth/restore" method="post">
-            <label>Email<input type="email" name="email" placeholder="Введите email..." required autofocus/></label>
+            <label>Email<input type="email" name="email" placeholder="Введите email..." maxlength="25" required autofocus/></label>
             <label class="pc-form-info"></label>
             <button class="btn btn-form" type="submit">Восстановить</button>
             <a href="/login">Авторизация</a>

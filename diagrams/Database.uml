@@ -4,7 +4,6 @@
   <OriginalElement>JavaeeElement:/2e81735a/entityManagerFactory/Champink/jpa/JPA/PersistenceModel</OriginalElement>
   <nodes>
     <node x="599.0716666666667" y="646.0">Champ#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Champ.java</node>
-    <node x="860.0" y="170.0">DepEntity#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/testjoin/DepEntity.java</node>
     <node x="405.6666666666667" y="372.0">Team#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Team.java</node>
     <node x="0.0" y="246.0">ChampRole#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/ChampRole.java</node>
     <node x="265.0716666666668" y="0.0">User#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/User.java</node>
@@ -15,25 +14,12 @@
     <node x="399.6666666666667" y="520.0">ChampEvent#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/ChampEvent.java</node>
     <node x="154.35166666666674" y="372.0">Player#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Player.java</node>
     <node x="570.0" y="257.0">ChampTeam#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/ChampTeam.java</node>
-    <node x="869.5" y="0.0">EmpEntity#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/testjoin/EmpEntity.java</node>
     <node x="141.0" y="246.0">PlayerRole#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/PlayerRole.java</node>
     <node x="17.5" y="801.0">null#null</node>
     <node x="0.0" y="893.0">AbstractAuditable#jar://C:/Users/Maxim/.m2/repository/org/springframework/data/spring-data-jpa/2.4.6/spring-data-jpa-2.4.6.jar!/org/springframework/data/jpa/domain/AbstractAuditable.class</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="EmpEntity#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/testjoin/EmpEntity.java" target="DepEntity#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/testjoin/DepEntity.java">
-      <point x="29.0" y="60.0" />
-      <point x="956.5" y="145.0" />
-      <point x="961.25" y="145.0" />
-      <point x="33.75" y="-49.0" />
-    </edge>
-    <edge source="DepEntity#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/testjoin/DepEntity.java" target="EmpEntity#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/testjoin/EmpEntity.java">
-      <point x="-33.75" y="-49.0" />
-      <point x="893.75" y="145.0" />
-      <point x="898.5" y="145.0" />
-      <point x="-29.0" y="60.0" />
-    </edge>
     <edge source="Player#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Player.java" target="TeamPlayer#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/TeamPlayer.java">
       <point x="39.0" y="-49.0" />
       <point x="251.85166666666674" y="347.0" />
@@ -62,14 +48,6 @@
       <point x="464.1666666666667" y="616.0" />
       <point x="0.0" y="38.0" />
     </edge>
-    <edge source="Champ#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Champ.java" target="User#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/User.java">
-      <point x="23.399999999999977" y="-49.0" />
-      <point x="680.9716666666667" y="616.0" />
-      <point x="700.5" y="616.0" />
-      <point x="700.5" y="206.0" />
-      <point x="382.4050000000001" y="206.0" />
-      <point x="53.333333333333314" y="93.0" />
-    </edge>
     <edge source="ChampRole#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/ChampRole.java" target="User#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/User.java">
       <point x="0.0" y="-38.0" />
       <point x="60.0" y="206.0" />
@@ -87,6 +65,14 @@
       <point x="610.7716666666668" y="626.0" />
       <point x="60.0" y="626.0" />
       <point x="0.0" y="38.0" />
+    </edge>
+    <edge source="User#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/User.java" target="Team#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Team.java">
+      <point x="16.0" y="-93.0" />
+      <point x="406.48" y="655.0" />
+      <point x="433.00000000000006" y="655.0" />
+      <point x="433.00000000000006" y="271.0" />
+      <point x="311.7850000000001" y="271.0" />
+      <point x="29.25" y="49.0" />
     </edge>
     <edge source="AbstractAuditable#jar://C:/Users/Maxim/.m2/repository/org/springframework/data/spring-data-jpa/2.4.6/spring-data-jpa-2.4.6.jar!/org/springframework/data/jpa/domain/AbstractAuditable.class" target="null#null">
       <point x="-42.0" y="-38.0" />
@@ -138,18 +124,16 @@
       <point x="494.0" y="347.0" />
       <point x="0.0" y="38.0" />
     </edge>
-    <edge source="Team#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Team.java" target="User#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/User.java">
-      <point x="-14.625" y="-49.0" />
-      <point x="449.5416666666667" y="347.0" />
-      <point x="427.5" y="347.0" />
-      <point x="427.5" y="226.0" />
-      <point x="339.7383333333334" y="226.0" />
-      <point x="10.666666666666629" y="93.0" />
+    <edge source="User#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/User.java" target="Champ#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Champ.java">
+      <point x="-48.0" y="-93.0" />
+      <point x="342.48" y="655.0" />
+      <point x="143.26" y="655.0" />
+      <point x="0.0" y="60.0" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.152982810920121" x="458.5415241603089" y="185.55073226343956" />
+  <settings layout="Hierarchic Group" zoom="0.6774519716885743" x="407.5" y="484.5" />
   <SelectedNodes>
-    <node>Sport#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Sport.java</node>
+    <node>Champ#file://D:/Projects/Java Projects/Champink/src/main/java/ink/champ/models/Champ.java</node>
   </SelectedNodes>
   <Categories>
     <Category>Properties</Category>

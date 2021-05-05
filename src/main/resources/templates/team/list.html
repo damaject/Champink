@@ -8,6 +8,10 @@
         <div class="pc-header">
             <div class="pc-header-title"><i class="fas fa-users"></i> Команды</div>
             <a class="btn-link pc-header-btn" href="/team/new">Создать новую</a>
+            <form class="search-form" action="/post/team/search" method="post">
+                <input type="text" name="text" placeholder="Поиск..." maxlength="25" required>
+                <button class="btn btn-form" type="submit"><i class="fas fa-search"></i></button>
+            </form>
         </div>
         <a class="team-block" th:each="team : ${teams}" th:href="${'/team/' + team.getId()}" th:with="role = ${team.getUserRole(user)}">
             <div class="tb-title" th:text="${team.getName()}"></div>
@@ -16,6 +20,7 @@
             <div class="tb-icon"><i class="fas fa-users"></i></div>
             <div class="tb-icon-role" th:if="${role > 0}">
                 <i class="fas fa-user-tag" th:if="${role == 1}"></i>
+                <i class="fas fa-user-cog" th:if="${role == 3}"></i>
                 <i class="fas fa-user-tie" th:if="${role == 4}"></i>
             </div>
         </a>

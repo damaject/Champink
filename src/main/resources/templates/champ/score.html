@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head><link th:replace="blocks/head"></head>
+<body>
+    <div th:replace="blocks/menu"></div>
+
+    <div class="page-content">
+        <div class="pc-header">
+            <div class="pc-header-title"><i class="fas fa-trophy"></i> Чемпионат «[(${champ.getName()})]» [(${event.getTeam1().getName()})] - [(${event.getTeam2().getName()})]</div>
+        </div>
+        <div class="list-block">
+            <div class="lb-title">Изменение счета</div>
+            <form class="pc-form" th:action="${'/post/champ/' + champ.getId() + '/events/' + event.getId() + '/score'}" method="post">
+                <label>Голов [(${event.getTeam1().getName()})]<input type="number" name="gol1" placeholder="Введите кол-во голов..." min="0" max="30" th:value="${event.getGol1()}" required autofocus/></label>
+                <label>Голов [(${event.getTeam2().getName()})]<input type="number" name="gol2" placeholder="Введите кол-во голов..." min="0" max="30" th:value="${event.getGol2()}" required/></label>
+                <label>Пенальти [(${event.getTeam1().getName()})]<input type="number" name="pen1" placeholder="Введите кол-во пенальти..." min="0" max="10" th:value="${event.getPen1()}" required/></label>
+                <label>Пенальти [(${event.getTeam2().getName()})]<input type="number" name="pen2" placeholder="Введите кол-во пенальти..." min="0" max="10" th:value="${event.getPen2()}" required/></label>
+                <button class="btn btn-form" type="submit">Сохранить счет события</button>
+                <a th:href="${'/champ/' + champ.getId()}">Отмена</a>
+            </form>
+        </div>
+    </div>
+
+    <link rel="stylesheet" type="text/css" href="/css/style-onload.css">
+</body>
+</html>

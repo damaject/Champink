@@ -4,19 +4,17 @@
 <body>
     <div th:replace="blocks/menu"></div>
 
-    <div class="page-content">
+    <div class="page-content pc-center">
         <div class="pc-header">
-            <div class="pc-header-title">Champink</div>
+            <div class="pc-header-title"></div>
         </div>
-        Сервис Champink!<br>
-        Создавайте свои команды, добавляйте игроков и проводите чемпионаты!
-        <i class="fas fa-dragon"></i>
-        <i class="fas fa-tshirt"></i>
-        <i class="fas fa-gem"></i>
-        <i class="fas fa-crown"></i>
-        <i class="fas fa-bomb"></i>
-        <i class="fas fa-shield-alt"></i>
-        <i class="fas fa-skull"></i>
+
+        <div class="pcm-logo"><i class="fas fa-trophy"></i></div>
+        <div class="pcm-title">Champink</div>
+        <div class="pcm-subtitle">Создавай свои команды, добавляй игроков и организуй чемпионаты!</div>
+        <div class="list-block"><a class="btn btn-block usn" href="/player/new">Создать игрока <i class="fas fa-tshirt"></i></a></div>
+        <div class="list-block"><a class="btn btn-block usn" href="/team/new">Создать команду <i class="fas fa-users"></i></a></div>
+        <div class="list-block"><a class="btn btn-block usn" href="/champ/new">Создать чемпионат <i class="fas fa-trophy"></i></a></div>
     </div>
 
     <link rel="stylesheet" type="text/css" href="/css/style-onload.css">

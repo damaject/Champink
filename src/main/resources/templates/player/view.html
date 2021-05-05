@@ -4,9 +4,9 @@
 <body>
     <div th:replace="blocks/menu"></div>
 
-    <div class="page-content" th:with="role = ${player.getUserRole(user)}">
+    <div class="page-content" th:with="role = ${player.getUserRole(user)}, request = ${player.getUserRequest(user)}">
         <div class="pc-header">
-            <div class="pc-header-title" th:text="${'Игрок «' + player.getName() + '»'}"></div>
+            <div class="pc-header-title"><i class="fas fa-tshirt"></i> Игрок «[(${player.getName()})]»</div>
         </div>
         <div>
             <div class="list-block">
@@ -17,28 +17,59 @@
                 <a class="btn btn-block usn" th:if="${role >= 3}" th:href="${'/player/' + player.getId() + '/edit/'}">Редактировать игрока <i class="fas fa-pen"></i></a>
                 <a class="btn btn-block btnb-red usn" th:if="${role == 4}" th:href="${'/player/' + player.getId() + '/delete/false'}">Удалить игрока <i class="fas fa-trash"></i></a>
                 <br>
-                <div class="lb-title">Ваш статус</div>
+                <div class="lb-title">Пользователи</div>
                 <div th:if="${role == 0}">
                     <div class="lb-label"><i class="fas fa-user"></i> Вы являетесь гостем игрока</div>
+                    <div class="lb-label" th:if="${request == 3}"><i class="fas fa-user-cog"></i> Вы отправили запрос на менеджера игрока</div>
                     <a class="btn btn-block usn" th:href="${'/player/' + player.getId() + '/roles/set?role=1'}">Стать зрителем <i class="fas fa-user-tag"></i></a>
+                    <a class="btn btn-block usn" th:if="${request != 3}" th:href="${'/player/' + player.getId() + '/roles/set?role=3'}">Стать менеджером <i class="fas fa-user-cog"></i></a>
                 </div>
                 <div th:if="${role == 1}">
                     <div class="lb-label"><i class="fas fa-user-tag"></i> Вы являетесь зрителем игрока</div>
+                    <div class="lb-label" th:if="${request == 3}"><i class="fas fa-user-cog"></i> Вы отправили запрос на менеджера игрока</div>
                     <a class="btn btn-block usn" th:href="${'/player/' + player.getId() + '/roles/set?role=0'}">Стать гостем <i class="fas fa-user"></i></a>
+                    <a class="btn btn-block usn" th:if="${request != 3}" th:href="${'/player/' + player.getId() + '/roles/set?role=3'}">Стать менеджером <i class="fas fa-user-cog"></i></a>
+                </div>
+                <div th:if="${role == 3}">
+                    <div class="lb-label"><i class="fas fa-user-cog"></i> Вы являетесь менеджером игрока</div>
+                    <a class="btn btn-block usn" th:href="${'/player/' + player.getId() + '/roles/set?role=0'}">Стать гостем <i class="fas fa-user"></i></a>
+                    <a class="btn btn-block usn" th:href="${'/player/' + player.getId() + '/roles/set?role=1'}">Стать зрителем <i class="fas fa-user-tag"></i></a>
                 </div>
                 <div th:if="${role == 4}">
                     <div class="lb-label"><i class="fas fa-user-tie"></i> Вы являетесь владельцем игрока</div>
+                    <br>
+                    <div class="lb-label"><i class="fas fa-users-cog"></i> Пользователи:</div>
+                    <div class="list-item-block" th:each="pr : ${player.getRoles()}" th:if="${pr.getRole() == 3}">
+                        <div class="lib-title" th:text="${pr.getUser().getName()}"></div>
+                        <div class="lib-position">Менеджер</div>
+                        <div class="lib-icon"><i class="fas fa-user-cog"></i></div>
+                        <div class="lib-action">
+                            <a class="lib-but libbhr usn" th:href="${'/player/' + player.getId() + '/roles/' + pr.getId() + '/delete'}">Удалить <i class="fas fa-user-minus"></i></a>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="lb-label"><i class="fas fa-user-secret"></i> Запросы:</div>
+                    <div class="list-item-block" th:each="pr : ${player.getRoles()}" th:if="${pr.getRequest() == 3}">
+                        <div class="lib-title" th:text="${pr.getUser().getName()}"></div>
+                        <div class="lib-position">Менеджер</div>
+                        <div class="lib-icon"><i class="fas fa-user-cog"></i></div>
+                        <div class="lib-action">
+                            <a class="lib-but usn" th:href="${'/player/' + player.getId() + '/roles/' + pr.getId() + '/accept'}">Принять <i class="fas fa-user-check"></i></a>
+                            <a class="lib-but libbhr usn" th:href="${'/player/' + player.getId() + '/roles/' + pr.getId() + '/reject'}">Отказать <i class="fas fa-user-times"></i></a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="list-block">
                 <div class="lb-title" th:text="${'Состоит в командах (' + player.getTeamsCount() + ')'}"></div>
+                <a class="btn btn-block usn" th:if="${role >= 3}" href="">Добавить в команду <i class="fas fa-plus"></i></a>
                 <div class="list-item-block" th:each="tp : ${player.getTeams()}">
                     <div class="lib-title" th:text="${tp.getTeam().getName()}"></div>
                     <div class="lib-position" th:text="${tp.getPosition()}"></div>
                     <div class="lib-icon"><i class="fas fa-users"></i></div>
                     <div class="lib-action">
-                        <a class="lib-but usn" th:href="${'/team/' + tp.getTeam().getId()}">Перейти <i class="fas fa-arrow-right"></i></a>
+                        <a class="lib-but usn" th:href="${'/team/' + tp.getTeam().getId()}">Перейти <i class="fas fa-angle-double-right"></i></a>
                     </div>
                 </div>
             </div>

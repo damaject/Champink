@@ -9,7 +9,8 @@ public class PlayerRole {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Integer role;
+    private int role;
+    private int request;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "player_id")
@@ -20,19 +21,21 @@ public class PlayerRole {
     private User user;
 
     public PlayerRole() { }
-    public PlayerRole(Player player, User user, Integer role) {
+    public PlayerRole(Player player, User user, int role) {
         this.player = player;
         this.user = user;
         this.role = role;
     }
 
     public void setId(Long id) { this.id = id; }
-    public void setRole(Integer role) { this.role = role; }
+    public void setRole(int role) { this.role = role; }
+    public void setRequest(int request) { this.request = request; }
     public void setPlayer(Player player) { this.player = player; }
     public void setUser(User user) { this.user = user; }
 
     public Long getId() { return id; }
-    public Integer getRole() { return role; }
+    public int getRole() { return role; }
+    public int getRequest() { return request; }
     public Player getPlayer() { return player; }
     public User getUser() { return user; }
 }

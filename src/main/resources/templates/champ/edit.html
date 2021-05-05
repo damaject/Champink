@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head><link th:replace="blocks/head"></head>
+<body>
+    <div th:replace="blocks/menu"></div>
+
+    <div class="page-content">
+        <div class="pc-header">
+            <div class="pc-header-title"><i class="fas fa-trophy"></i> Чемпионат «[(${champ.getName()})]»</div>
+        </div>
+        <div>
+            <div class="list-block">
+                <div class="lb-title">Редактирование информации</div>
+                <form class="pc-form" th:action="${'/post/champ/' + champ.getId() + '/edit'}" method="post">
+                    <label>Название<input type="text" name="name" placeholder="Введите название..." th:value="${champ.getName()}" maxlength="25" required autofocus></label>
+                    <label>Вид спорта
+                        <select name="sport" required>
+                            <option value="">Не выбран</option>
+                            <option th:each="sport : ${sports}" th:selected="${champ.getSport().getId() == sport.getId()}" th:value="${sport.getId()}" th:text="${sport.getName()}"></option>
+                        </select>
+                    </label>
+                    <label>Формат игры
+                        <select name="format" required>
+                            <option value="">Не выбран</option>
+                            <option th:selected="${champ.getFormat() == 'Лига'}">Лига</option>
+                            <option th:selected="${champ.getFormat() == 'Группы'}">Группы</option>
+                            <option th:selected="${champ.getFormat() == 'Плей-офф'}">Плей-офф</option>
+                        </select>
+                    </label>
+                    <input type="checkbox" class="pc-form-checkbox" name="privat" id="privat" th:checked="${champ.isPrivate()}"><label for="privat">Приватный чемпионат</label>
+                    <button class="btn btn-form" type="submit">Сохранить <i class="fas fa-save"></i></button>
+                    <a th:href="${'/champ/' + champ.getId()}">Отмена</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <link rel="stylesheet" type="text/css" href="/css/style-onload.css">
+</body>
+</html>

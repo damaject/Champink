@@ -16,39 +16,37 @@ public class AdminController {
     @Autowired private AppService app;
     @Autowired private RepositoryService service;
 
-    private final String page = "admin";
-    private String subpage;
-
     @GetMapping("/admin")
     public String admin(@RequestParam(required = false) String subpage, @AuthenticationPrincipal User user, Model model) {
         if (user == null || !user.isAdmin()) return "redirect:/login";
         if (subpage != null) {
-            this.subpage = subpage;
+            app.subpage = subpage;
             return "redirect:/admin";
         }
-        if (this.subpage == null || this.subpage.equals("")) this.subpage = "users";
+        if (app.subpage == null || app.subpage.equals("")) app.subpage = "users";
 
-        app.updateModel(user, model, page, this.subpage, "Champink - Администратор");
-        if (this.subpage.equals("users")) {
+        app.updateModel(user, model, "admin", "Champink - Администратор");
+        if (app.subpage.equals("users")) {
             model.addAttribute("users", service.getUsers());
             return "admin/users";
         }
-        else if (this.subpage.equals("sports")) {
+        else if (app.subpage.equals("sports")) {
             model.addAttribute("sports", service.getSports());
             return "admin/sports";
         }
-        else if (this.subpage.equals("champs")) {
+        else if (app.subpage.equals("champs")) {
             model.addAttribute("champs", service.getChamps());
             return "admin/champs";
         }
-        else if (this.subpage.equals("teams")) {
+        else if (app.subpage.equals("teams")) {
             model.addAttribute("teams", service.getTeams());
             return "admin/teams";
         }
-        else if (this.subpage.equals("players")) {
+        else if (app.subpage.equals("players")) {
             model.addAttribute("players", service.getPlayers());
             return "admin/players";
         }
-        return "admin/index";
+
+        return "redirect:/admin?subpage=users";
     }
 }

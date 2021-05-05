@@ -56,11 +56,14 @@ public class RepositoryService {
     public User getUserById(Long id) { return users.findById(id).orElse(null); }
     public Sport getSportById(Long id) { return sports.findById(id).orElse(null); }
     public Champ getChampById(Long id) { return champs.findById(id).orElse(null); }
-    public Team getTeamById(Long id) { return teams.findById(id).orElse(null); }
-    public Player getPlayerById(Long id) { return players.findById(id).orElse(null); }
-    public TeamPlayer getTeamPlayerById(Long id) { return teamPlayers.findById(id).orElse(null); }
+    public ChampRole getChampRoleById(Long id) { return champRoles.findById(id).orElse(null); }
     public ChampTeam getChampTeamById(Long id) { return champTeams.findById(id).orElse(null); }
     public ChampEvent getChampEventById(Long id) { return champEvents.findById(id).orElse(null); }
+    public Team getTeamById(Long id) { return teams.findById(id).orElse(null); }
+    public TeamRole getTeamRoleById(Long id) { return teamRoles.findById(id).orElse(null); }
+    public TeamPlayer getTeamPlayerById(Long id) { return teamPlayers.findById(id).orElse(null); }
+    public Player getPlayerById(Long id) { return players.findById(id).orElse(null); }
+    public PlayerRole getPlayerRoleById(Long id) { return playerRoles.findById(id).orElse(null); }
 
     public User getUserByUsername(String username) { return users.findByUsername(username); }
 
@@ -76,9 +79,13 @@ public class RepositoryService {
     public void addNewPlayerRole(PlayerRole role) { savePlayerRole(role); }
 
     public void saveUser(User user) { users.save(user); }
+    public void saveChamp(Champ champ) { champs.save(champ); }
+    public void saveTeam(Team team) { teams.save(team); }
+    public void savePlayer(Player player) { players.save(player); }
     public void saveChampRole(ChampRole role) { champRoles.save(role); }
     public void saveTeamRole(TeamRole role) { teamRoles.save(role); }
     public void savePlayerRole(PlayerRole role) { playerRoles.save(role); }
+    public void saveChampEvent(ChampEvent champEvent) { champEvents.save(champEvent); }
 
     public void deleteUser(User user) { users.delete(user); }
     public void deleteChamp(Champ champ) { champs.delete(champ); }

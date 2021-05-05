@@ -17,14 +17,16 @@ public class Team {
 
     private boolean privat;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OrderBy("position ASC")
     @OneToMany(targetEntity = TeamPlayer.class, mappedBy = "team", orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<TeamPlayer> players;
 
     @OneToMany(targetEntity = ChampTeam.class, mappedBy = "team", orphanRemoval = true, fetch = FetchType.LAZY)
+    @OrderBy("id ASC")
     private Set<ChampTeam> champs;
 
     @OneToMany(targetEntity = ChampEvent.class, mappedBy = "team1", orphanRemoval = true, fetch = FetchType.LAZY)
@@ -76,5 +78,9 @@ public class Team {
     public int getUserRole(User user) {
         TeamRole role = getTeamRole(user);
         return role == null ? AppService.Role.NONE : role.getRole();
+    }
+    public int getUserRequest(User user) {
+        TeamRole role = getTeamRole(user);
+        return role == null ? AppService.Role.NONE : role.getRequest();
     }
 }

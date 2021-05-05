@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head><link th:replace="blocks/head"></head>
+<body>
+    <div th:replace="blocks/menu"></div>
+
+    <div class="page-content">
+        <div class="pc-header">
+            <div class="pc-header-title"><i class="fas fa-users"></i> Команда «[(${team.getName()})]»</div>
+        </div>
+        <div>
+            <div class="list-block">
+                <div class="lb-title">Редактирование информации</div>
+                <form class="pc-form" th:action="${'/post/team/' + team.getId() + '/edit'}" method="post">
+                    <label>Название<input type="text" name="name" placeholder="Введите название..." th:value="${team.getName()}" maxlength="25" required autofocus></label>
+                    <input type="checkbox" class="pc-form-checkbox" name="privat" id="privat" th:checked="${team.isPrivate()}"><label for="privat">Приватная команда</label>
+                    <button class="btn btn-form" type="submit">Сохранить <i class="fas fa-save"></i></button>
+                    <a th:href="${'/team/' + team.getId()}">Отмена</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <link rel="stylesheet" type="text/css" href="/css/style-onload.css">
+</body>
+</html>

@@ -15,6 +15,7 @@ public interface ChampRepository extends JpaRepository<Champ, Long> {
     List<Champ> findChampsByUser(User user, Sort sort);
     List<Champ> findChampsByPrivatIsFalse(Sort sort);
 
+
     @Query("SELECT c FROM champs c INNER JOIN c.roles cr WHERE cr.user = ?1 AND cr.role > 0 ORDER BY cr.role DESC, c.id DESC")
     List<Champ> findChampsByUserAll(User user);
 

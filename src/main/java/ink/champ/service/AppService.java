@@ -15,6 +15,8 @@ public class AppService implements UserDetailsService {
         public static final String GLOBAL = "global";
         public static final String USER_ALL = "u-all";
         public static final String USER_OWNER = "u-owner";
+        public static final String USER_JUDGE = "u-judge";
+        public static final String USER_MANAGER = "u-manager";
         public static final String USER_VIEWER = "u-viewer";
     }
 
@@ -30,11 +32,13 @@ public class AppService implements UserDetailsService {
 
     @Autowired private RepositoryService service;
 
+    public String subpage;
+
     @Override public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return service.getUserByUsername(username);
     }
 
-    public void updateModel(User user, Model model, String page, String subpage, String title) {
+    public void updateModel(User user, Model model, String page, String title) {
         String name = user != null ? user.getName() : "Гость";
 
         model.addAttribute("page", page);

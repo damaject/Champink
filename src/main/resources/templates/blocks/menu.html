@@ -1,14 +1,15 @@
 <div class="menu-left usn">
     <div class="menu-left-title">
-        <a class="menu-left-title-logo" href="/" title="Champink!"><i class="fas fa-trophy"></i> Champink</a>
+        <a class="menu-left-title-logo" href="/"><i class="fas fa-trophy"></i> Champink</a>
         <a class="menu-left-title-user btn-link" href="/profile" th:text="${name}"></a>
     </div>
 
     <div class="menu-left-section-top">
         <a class="btn menu-left-button" th:classappend="${page == 'index' ? 'active':''}" href="/"><i class="fas fa-home"></i> Главная</a>
+        <a class="btn menu-left-button" href="/login" sec:authorize="!isAuthenticated()" th:if="${page == 'index' || page == 'about'}"><i class="fas fa-sign-in-alt"></i> Войти</a>
     </div>
 
-    <div class="menu-left-section-top" th:if="${page == 'champ'}">
+    <div class="menu-left-section" th:if="${page == 'champ'}">
         <div class="menu-left-section-title">Чемпионаты</div>
         <a class="btn menu-left-button" th:classappend="${subpage == 'global' ? 'active':''}" href="/champs?subpage=global"><i class="fas fa-globe-americas"></i> Глобальные</a>
     </div>
@@ -17,14 +18,12 @@
         <div class="menu-left-section-title">Пользовательские</div>
         <a class="btn menu-left-button" th:classappend="${subpage == 'u-all' ? 'active':''}" href="/champs?subpage=u-all"><i class="fas fa-user"></i> Все</a>
         <a class="btn menu-left-button" th:classappend="${subpage == 'u-owner' ? 'active':''}" href="/champs?subpage=u-owner"><i class="fas fa-user-tie"></i> Владелец</a>
-<!--        <a class="btn menu-left-button" th:classappend="${subpage == 'u-manager' ? 'active':''}" href="/champs?subpage=u-manager"><i class="fas fa-user-cog"></i> Менеджер</a>-->
-<!--        <a class="btn menu-left-button" th:classappend="${subpage == 'u-judge' ? 'active':''}" href="/champs?subpage=u-judge"><i class="fas fa-user-edit"></i> Судья</a>-->
+        <a class="btn menu-left-button" th:classappend="${subpage == 'u-manager' ? 'active':''}" href="/champs?subpage=u-manager"><i class="fas fa-user-cog"></i> Менеджер</a>
+        <a class="btn menu-left-button" th:classappend="${subpage == 'u-judge' ? 'active':''}" href="/champs?subpage=u-judge"><i class="fas fa-user-clock"></i> Судья</a>
         <a class="btn menu-left-button" th:classappend="${subpage == 'u-viewer' ? 'active':''}" href="/champs?subpage=u-viewer"><i class="fas fa-user-tag"></i> Зритель</a>
-<!--        <a class="btn menu-left-button" th:classappend="${subpage == 'u-request' ? 'active':''}" href="/champs?subpage=u-request"><i class="fas fa-user-clock"></i> Запросы</a>-->
-<!--        <a class="btn menu-left-button" th:classappend="${subpage == 'u-invite' ? 'active':''}" href="/champs?subpage=u-invite"><i class="fas fa-user-plus"></i> Приглашения</a>-->
     </div>
 
-    <div class="menu-left-section-top" th:if="${page == 'team'}">
+    <div class="menu-left-section" th:if="${page == 'team'}">
         <div class="menu-left-section-title">Команды</div>
         <a class="btn menu-left-button" th:classappend="${subpage == 'global' ? 'active':''}" href="/teams?subpage=global"><i class="fas fa-globe-americas"></i> Глобальные</a>
     </div>
@@ -33,13 +32,11 @@
         <div class="menu-left-section-title">Пользовательские</div>
         <a class="btn menu-left-button" th:classappend="${subpage == 'u-all' ? 'active':''}" href="/teams?subpage=u-all"><i class="fas fa-user"></i> Все</a>
         <a class="btn menu-left-button" th:classappend="${subpage == 'u-owner' ? 'active':''}" href="/teams?subpage=u-owner"><i class="fas fa-user-tie"></i> Владелец</a>
-<!--        <a class="btn menu-left-button" th:classappend="${subpage == 'u-manager' ? 'active':''}" href="/teams?subpage=u-manager"><i class="fas fa-user-cog"></i> Менеджер</a>-->
+        <a class="btn menu-left-button" th:classappend="${subpage == 'u-manager' ? 'active':''}" href="/teams?subpage=u-manager"><i class="fas fa-user-cog"></i> Менеджер</a>
         <a class="btn menu-left-button" th:classappend="${subpage == 'u-viewer' ? 'active':''}" href="/teams?subpage=u-viewer"><i class="fas fa-user-tag"></i> Зритель</a>
-<!--        <a class="btn menu-left-button" th:classappend="${subpage == 'u-request' ? 'active':''}" href="/teams?subpage=u-request"><i class="fas fa-user-clock"></i> Запросы</a>-->
-<!--        <a class="btn menu-left-button" th:classappend="${subpage == 'u-invite' ? 'active':''}" href="/teams?subpage=u-invite"><i class="fas fa-user-plus"></i> Приглашения</a>-->
     </div>
 
-    <div class="menu-left-section-top" th:if="${page == 'player'}">
+    <div class="menu-left-section" th:if="${page == 'player'}">
         <div class="menu-left-section-title">Игроки</div>
         <a class="btn menu-left-button" th:classappend="${subpage == 'global' ? 'active':''}" href="/players?subpage=global"><i class="fas fa-globe-americas"></i> Глобальные</a>
     </div>
@@ -48,10 +45,8 @@
         <div class="menu-left-section-title">Пользовательские</div>
         <a class="btn menu-left-button" th:classappend="${subpage == 'u-all' ? 'active':''}" href="/players?subpage=u-all"><i class="fas fa-user"></i> Все</a>
         <a class="btn menu-left-button" th:classappend="${subpage == 'u-owner' ? 'active':''}" href="/players?subpage=u-owner"><i class="fas fa-user-tie"></i> Владелец</a>
-<!--        <a class="btn menu-left-button" th:classappend="${subpage == 'u-manager' ? 'active':''}" href="/players?subpage=u-manager"><i class="fas fa-user-cog"></i> Менеджер</a>-->
+        <a class="btn menu-left-button" th:classappend="${subpage == 'u-manager' ? 'active':''}" href="/players?subpage=u-manager"><i class="fas fa-user-cog"></i> Менеджер</a>
         <a class="btn menu-left-button" th:classappend="${subpage == 'u-viewer' ? 'active':''}" href="/players?subpage=u-viewer"><i class="fas fa-user-tag"></i> Зритель</a>
-<!--        <a class="btn menu-left-button" th:classappend="${subpage == 'u-request' ? 'active':''}" href="/players?subpage=u-request"><i class="fas fa-user-clock"></i> Запросы</a>-->
-<!--        <a class="btn menu-left-button" th:classappend="${subpage == 'u-invite' ? 'active':''}" href="/players?subpage=u-invite"><i class="fas fa-user-plus"></i> Приглашения</a>-->
     </div>
 
     <div class="menu-left-section" sec:authorize="hasAuthority('ADMIN')" th:if="${page == 'admin'}">
@@ -60,7 +55,7 @@
         <a class="btn menu-left-button" th:classappend="${subpage == 'sports' ? 'active':''}" href="/admin?subpage=sports"><i class="fas fa-futbol"></i> Виды спорта</a>
         <a class="btn menu-left-button" th:classappend="${subpage == 'champs' ? 'active':''}" href="/admin?subpage=champs"><i class="fas fa-trophy"></i> Чемпионаты</a>
         <a class="btn menu-left-button" th:classappend="${subpage == 'teams' ? 'active':''}" href="/admin?subpage=teams"><i class="fas fa-users"></i> Команды</a>
-        <a class="btn menu-left-button" th:classappend="${subpage == 'players' ? 'active':''}" href="/admin?subpage=players"><i class="fas fa-user"></i> Игроки</a>
+        <a class="btn menu-left-button" th:classappend="${subpage == 'players' ? 'active':''}" href="/admin?subpage=players"><i class="fas fa-tshirt"></i> Игроки</a>
     </div>
 
     <div class="menu-left-section" sec:authorize="!isAuthenticated()" th:if="${page == 'champ' || page == 'team' || page == 'player'}">
@@ -70,7 +65,7 @@
 
     <div class="menu-left-section-bottom">
         <div class="menu-left-section-title"></div>
-        <a class="btn menu-left-button" href="/admin?subpage=users" sec:authorize="hasAuthority('ADMIN')"><i class="fas fa-user-tie"></i> Администратор</a>
+        <a class="btn menu-left-button" href="/admin" sec:authorize="hasAuthority('ADMIN')" th:if="${page != 'admin'}"><i class="fas fa-user-tie"></i> Администратор</a>
         <a class="btn menu-left-button" th:classappend="${page == 'about' ? 'active':''}" href="/about"><i class="fas fa-info-circle"></i> О сервисе</a>
     </div>
 
@@ -78,7 +73,7 @@
 </div>
 
 <div class="menu-top usn">
-    <a class="btn menu-top-button" th:classappend="${page == 'champ' ? 'active':''}" href="/champs?subpage=global">Чемпионаты</a>
-    <a class="btn menu-top-button" th:classappend="${page == 'team' ? 'active':''}" href="/teams?subpage=global">Команды</a>
-    <a class="btn menu-top-button" th:classappend="${page == 'player' ? 'active':''}" href="/players?subpage=global">Игроки</a>
+    <a class="btn menu-top-button" th:classappend="${page == 'champ' ? 'active':''}" href="/champs">Чемпионаты</a>
+    <a class="btn menu-top-button" th:classappend="${page == 'team' ? 'active':''}" href="/teams">Команды</a>
+    <a class="btn menu-top-button" th:classappend="${page == 'player' ? 'active':''}" href="/players">Игроки</a>
 </div>

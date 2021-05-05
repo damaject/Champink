@@ -4,21 +4,39 @@
 <body>
     <div th:replace="blocks/menu"></div>
 
-    <div class="page-content">
+    <div class="page-content pc-center">
         <div class="pc-header">
             <div class="pc-header-title"><i class="fas fa-info-circle"></i> О сервисе</div>
         </div>
-        <h4>Как пользоваться</h4>
-        Ну тут текст...
-        <h4>Сторонние сервисы</h4>
-        Иконки Font Awesome <a class="btn-link-y" href="https://fontawesome.com/license" target="_blank">https://fontawesome.com/license</a>
-        <h4>Технология</h4>
-        <i class="fab fa-java"></i> Java<br>
-        <i class="fas fa-leaf"></i> Spring Web<br>
-        <i class="fas fa-cat"></i> Apache Tomcat<br>
-        <i class="fas fa-database"></i> PostgreSQL
-        <h4>Разработчик</h4>
-        Lion's DaMajectim
+        <div class="pcm-block">
+            <div class="pcm-subtitle">Основные функции</div>
+            <div class="pcm-text">- Создание чемпионатов, команд, игроков</div>
+            <div class="pcm-text">- Редактирование чемпионатов, команд, игроков</div>
+            <div class="pcm-text">- Удаление чемпионатов, команд, игроков</div>
+            <div class="pcm-text">- Приватная и публичная доступность чемпионатов, команд, игроков</div>
+            <div class="pcm-text">- Создание матчей в чемпионатах</div>
+            <div class="pcm-text">- Добавление команд в чемпионаты</div>
+            <div class="pcm-text">- Добавление игроков в команды</div>
+            <div class="pcm-text">- Роли управления в чемпионатах владелец, менеджер, судья и зритель</div>
+            <div class="pcm-text">- Роли управления в командах и игроках владелец, менеджер и зритель</div>
+            <div class="pcm-text">- Регистрация, авторизация и редактирование пользователя</div>
+            <div class="pcm-text">- Администрирование пользователей, чемпионатов, команд и игроков</div>
+        </div>
+        <div class="pcm-block">
+            <div class="pcm-subtitle">Разработчик</div>
+            <div class="pcm-label">Давыдов М. С.</div>
+            <div class="pcm-label"><a class="btn-link-y" href="https://lionsdamajectim.com" target="_blank">Lion's DaMajectim</a></div>
+            <div class="pcm-label"><a class="btn-link-y" href="mailto:support@lionsdamajectim.com" target="_blank">support@lionsdamajectim.com</a></div>
+
+            <div class="pcm-subtitle">Технология</div>
+            <div class="pcm-label"><i class="fab fa-java"></i> Java</div>
+            <div class="pcm-label"><i class="fas fa-leaf"></i> Spring Web</div>
+            <div class="pcm-label"><i class="fas fa-cat"></i> Apache Tomcat</div>
+            <div class="pcm-label"><i class="fas fa-database"></i> PostgreSQL</div>
+
+            <div class="pcm-subtitle">Сторонние сервисы</div>
+            <div class="pcm-label"><a class="btn-link-y" href="https://fontawesome.com/license" target="_blank">Иконки Font Awesome</a></div>
+        </div>
     </div>
 
     <link rel="stylesheet" type="text/css" href="/css/style-onload.css">

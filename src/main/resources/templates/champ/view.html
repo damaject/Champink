@@ -122,14 +122,14 @@
                 </div>
             </div>
 
-            <div class="list-block lb-len">
+            <div class="list-block lb-len" th:if="${tableType == 'T'}">
                 <div class="lb-title">Турнирная таблица</div>
                 <div class="lb-table">
                     <table>
                         <thead class="usn"><tr><th>#</th><th>Команда</th><th title="Всего игр">И</th><th title="Выиграно">В</th><th title="Ничьи">Н</th><th title="Проиграно">П</th><th title="Забито мячей">ЗМ</th><th title="Пропущено мячей">ПМ</th><th title="Разница мячей">РМ</th><th title="Очки">О</th></tr></thead>
                         <tbody>
-                        <tr th:each="row, i : ${tableStats}">
-                            <td th:text="${i.index + 1}"></td>
+                        <tr th:each="row, iter : ${tableStats}">
+                            <td th:text="${iter.index + 1}"></td>
                             <td th:text="${tableNames[row[1]]}"></td>
                             <td th:text="${row[2]}"></td>
                             <td th:text="${row[3]}"></td>
@@ -142,6 +142,24 @@
                         </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <div class="list-block lb-auto" th:if="${tableType == 'P'}">
+                <div class="lb-title">Турнирная сетка</div>
+                <div class="lb-pof">
+                    <div class="lb-pof-col" th:each="col, iter : ${tableStats}">
+                        <div class="lb-pof-block" th:each="row : ${col}" th:style="'margin-top: ' + ${row[7]} + 'px'">
+                            <div class="lb-pb-team pbt1" th:classappend="${row[6] == 1 ? 'win':''}" th:text="${tableNames[row[0]]}"></div>
+                            <div class="lb-pb-team pbt2" th:classappend="${row[6] == 2 ? 'win':''}" th:text="${tableNames[row[1]]}"></div>
+                            <div class="lb-pb-score1" th:text="${row[2] + (row[4] + row[5] == 0 ? '' : (' (' + row[4] + ')'))}"></div>
+                            <div class="lb-pb-score2" th:text="${row[3] + (row[4] + row[5] == 0 ? '' : (' (' + row[5] + ')'))}"></div>
+                            <div class="lb-pb-line"></div>
+                            <div class="lb-pb-line-in" th:if="${iter.index > 0}"></div>
+                            <div class="lb-pb-line-out" th:if="${iter.index + 1 < #lists.size(tableStats)}"></div>
+                            <div class="lb-pb-line-vert" th:if="${row[8] > 0}" th:style="'height: ' + ${row[8] + 2} + 'px; top: ' + ${22 - row[8] / 2} + 'px'"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

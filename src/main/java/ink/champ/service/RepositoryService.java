@@ -7,8 +7,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * Класс-сервис для работы со всеми репозиториями
+ * @author Maxim
+ */
 @Service
 public class RepositoryService {
 
@@ -26,32 +29,57 @@ public class RepositoryService {
 
     private Sort sortDescId = Sort.by(Sort.Direction.DESC, "id");
 
-    public List<User> getUsers() { return users.findAll(sortDescId); }
-    public List<Sport> getSports() { return sports.findAll(sortDescId); }
-    public List<Champ> getChamps() { return champs.findAll(sortDescId); }
-    public List<Team> getTeams() { return teams.findAll(sortDescId); }
-    public List<Player> getPlayers() { return players.findAll(sortDescId); }
-
-    public List<Champ> getUserChamps(User user) { return champs.findChampsByUser(user, sortDescId); }
-    public List<Team> getUserTeams(User user) { return teams.findTeamsByUser(user, sortDescId); }
-    public List<Player> getUserPlayers(User user) { return players.findPlayersByUser(user, sortDescId); }
-    public List<ChampTeam> getChampTeams(Champ champ) { return champTeams.findChampTeamsByChamp(champ, sortDescId); }
-    public List<TeamPlayer> getTeamPlayers(Team team) { return teamPlayers.findTeamPlayersByTeam(team, sortDescId); }
+    public List<User> getUsers(String search) {
+        return users.findUserByNameContainingIgnoreCaseOrUsernameContainingIgnoreCaseOrEmailContainingIgnoreCase(search, search, search, sortDescId);
+    }
+    public List<Sport> getSports(String search) {
+        return sports.findSportByNameContainingIgnoreCase(search, sortDescId);
+    }
+    public List<Champ> getChamps(String search) {
+        return champs.findChampsByNameContainingIgnoreCase(search, sortDescId);
+    }
+    public List<Team> getTeams(String search) {
+        return teams.findTeamsByNameContainingIgnoreCase(search, sortDescId);
+    }
+    public List<Player> getPlayers(String search) {
+        return players.findPlayersByNameContainingIgnoreCase(search, sortDescId);
+    }
 
     public List<Player> getUserPlayersNotInTeam(User user, Team team) { return players.findPlayersByUserRoleAndNotInTeam(team, user); }
     public List<Team> getUserTeamsNotInChamp(User user, Champ champ) { return teams.findTeamsByUserRoleAndNotInChamp(champ, user); }
 
-    public List<Champ> getGlobalChamps() { return champs.findChampsByPrivatIsFalse(sortDescId); }
-    public List<Champ> getUserChampsAll(User user) { return champs.findChampsByUserAll(user); }
-    public List<Champ> getUserChampsRole(User user, int role) { return champs.findChampsByUserRole(user, role); }
+    public List<Team> getUserTeamsPlayerNotIn(User user, Player player) { return teams.findTeamsByUserRoleAndPlayerNotIn(player, user); }
+    public List<Champ> getUserChampsTeamNotIn(User user, Team team) { return champs.findChampsByUserRoleAndTeamNotIn(team, user); }
 
-    public List<Team> getGlobalTeams() { return teams.findTeamsByPrivatIsFalse(sortDescId); }
-    public List<Team> getUserTeamsAll(User user) { return teams.findTeamsByUserAll(user); }
-    public List<Team> getUserTeamsRole(User user, int role) { return teams.findTeamsByUserRole(user, role); }
+    public List<Champ> getGlobalChamps(String search) {
+        return champs.findChampsByPrivatIsFalseAndNameContainingIgnoreCase(search, sortDescId);
+    }
+    public List<Champ> getUserChampsAll(User user, String search) {
+        return champs.findChampsByUserAll(user, search);
+    }
+    public List<Champ> getUserChampsRole(User user, int role, String search) {
+        return champs.findChampsByUserRole(user, role, search);
+    }
 
-    public List<Player> getGlobalPlayers() { return players.findPlayersByPrivatIsFalse(sortDescId); }
-    public List<Player> getUserPlayersAll(User user) { return players.findPlayersByUserAll(user); }
-    public List<Player> getUserPlayersRole(User user, int role) { return players.findPlayersByUserRole(user, role); }
+    public List<Team> getGlobalTeams(String search) {
+        return teams.findTeamsByPrivatIsFalseAndNameContainingIgnoreCase(search, sortDescId);
+    }
+    public List<Team> getUserTeamsAll(User user, String search) {
+        return teams.findTeamsByUserAll(user, search);
+    }
+    public List<Team> getUserTeamsRole(User user, int role, String search) {
+        return teams.findTeamsByUserRole(user, role, search);
+    }
+
+    public List<Player> getGlobalPlayers(String search) {
+        return players.findPlayersByPrivatIsFalseAndNameContainingIgnoreCase(search, sortDescId);
+    }
+    public List<Player> getUserPlayersAll(User user, String search) {
+        return players.findPlayersByUserAll(user, search);
+    }
+    public List<Player> getUserPlayersRole(User user, int role, String search) {
+        return players.findPlayersByUserRole(user, role, search);
+    }
 
     public User getUserById(Long id) { return users.findById(id).orElse(null); }
     public Sport getSportById(Long id) { return sports.findById(id).orElse(null); }

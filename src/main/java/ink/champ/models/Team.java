@@ -5,6 +5,10 @@ import ink.champ.service.AppService;
 import javax.persistence.*;
 import java.util.Set;
 
+/**
+ * Класс-модель для представления сущности команды
+ * @author Maxim
+ */
 @Entity(name="teams")
 public class Team {
 

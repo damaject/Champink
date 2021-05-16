@@ -9,16 +9,21 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * Интерфейс-репозиторий для работы с базой данных в таблице чемпионатов
+ * @author Maxim
+ */
 public interface ChampRepository extends JpaRepository<Champ, Long> {
 
-    List<Champ> findChampsByUser(User user);
-    List<Champ> findChampsByUser(User user, Sort sort);
-    List<Champ> findChampsByPrivatIsFalse(Sort sort);
+    List<Champ> findChampsByNameContainingIgnoreCase(String search, Sort sort);
+    List<Champ> findChampsByPrivatIsFalseAndNameContainingIgnoreCase(String search, Sort sort);
 
+    @Query("SELECT c FROM champs c INNER JOIN c.roles cr WHERE cr.user = ?1 AND cr.role > 0 AND lower(c.name) LIKE lower(concat('%', ?2, '%')) ORDER BY cr.role DESC, c.id DESC")
+    List<Champ> findChampsByUserAll(User user, String search);
 
-    @Query("SELECT c FROM champs c INNER JOIN c.roles cr WHERE cr.user = ?1 AND cr.role > 0 ORDER BY cr.role DESC, c.id DESC")
-    List<Champ> findChampsByUserAll(User user);
+    @Query("SELECT c FROM champs c INNER JOIN c.roles cr WHERE cr.user = ?1 AND cr.role = ?2 AND lower(c.name) LIKE lower(concat('%', ?3, '%')) ORDER BY c.id DESC")
+    List<Champ> findChampsByUserRole(User user, int role, String search);
 
-    @Query("SELECT c FROM champs c INNER JOIN c.roles cr WHERE cr.user = ?1 AND cr.role = ?2 ORDER BY c.id DESC")
-    List<Champ> findChampsByUserRole(User user, int role);
+    @Query("SELECT c FROM champs c INNER JOIN c.roles cr WHERE (SELECT COUNT(ct.id) FROM c.teams ct WHERE ct.team = ?1) = 0 AND cr.user = ?2 AND cr.role >= 3 ORDER BY c.id DESC")
+    List<Champ> findChampsByUserRoleAndTeamNotIn(Team team, User user);
 }

@@ -78,7 +78,7 @@
 
             <div class="list-block">
                 <div class="lb-title" th:text="${'Участвует в чемпионатах (' + team.getChampsCount() + ')'}"></div>
-                <a class="btn btn-block usn" th:if="${role >= 3}" href="">Добавить в чемпионат <i class="fas fa-plus"></i></a>
+                <a class="btn btn-block usn" th:if="${role >= 3}" th:href="${'/team/' + team.getId() + '/champs/add'}">Добавить в чемпионат <i class="fas fa-plus"></i></a>
                 <div class="list-item-block" th:each="ct : ${team.getChamps()}">
                     <div class="lib-title" th:text="${ct.getChamp().getName()}"></div>
                     <div class="lib-position" th:text="${ct.getChamp().getFormat()}"></div>

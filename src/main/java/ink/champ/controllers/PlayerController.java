@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Класс-контроллер для обработки запросов раздела игроков
+ * @author Maxim
+ */
 @Controller
 public class PlayerController {
 
@@ -21,21 +25,30 @@ public class PlayerController {
     private final String page = "player";
 
     @GetMapping("/players")
-    public String players(@RequestParam(required = false) String subpage, @AuthenticationPrincipal User user, Model model) {
+    public String players(@RequestParam(required = false) String subpage, @RequestParam(required = false) String search,
+                          @AuthenticationPrincipal User user, Model model) {
         if (subpage != null) {
             app.subpage = subpage;
             return "redirect:/players";
         }
         if (app.subpage == null) app.subpage = AppService.Subpage.GLOBAL;
 
-        if (app.subpage.equals(AppService.Subpage.GLOBAL)) model.addAttribute("players", service.getGlobalPlayers());
-        else if (app.subpage.equals(AppService.Subpage.USER_ALL)) model.addAttribute("players", service.getUserPlayersAll(user));
-        else if (app.subpage.equals(AppService.Subpage.USER_OWNER)) model.addAttribute("players", service.getUserPlayersRole(user, AppService.Role.OWNER));
-        else if (app.subpage.equals(AppService.Subpage.USER_MANAGER)) model.addAttribute("players", service.getUserPlayersRole(user, AppService.Role.MANAGER));
-        else if (app.subpage.equals(AppService.Subpage.USER_VIEWER)) model.addAttribute("players", service.getUserPlayersRole(user, AppService.Role.VIEWER));
+        String s = "";
+        String title = "Игроки";
+        if (search != null && !search.isEmpty()) {
+            s = search;
+            title += " - поиск «" + search + "»";
+        }
+
+        if (app.subpage.equals(AppService.Subpage.GLOBAL)) model.addAttribute("players", service.getGlobalPlayers(s));
+        else if (app.subpage.equals(AppService.Subpage.USER_ALL)) model.addAttribute("players", service.getUserPlayersAll(user, s));
+        else if (app.subpage.equals(AppService.Subpage.USER_OWNER)) model.addAttribute("players", service.getUserPlayersRole(user, AppService.Role.OWNER, s));
+        else if (app.subpage.equals(AppService.Subpage.USER_MANAGER)) model.addAttribute("players", service.getUserPlayersRole(user, AppService.Role.MANAGER, s));
+        else if (app.subpage.equals(AppService.Subpage.USER_VIEWER)) model.addAttribute("players", service.getUserPlayersRole(user, AppService.Role.VIEWER, s));
         else return "redirect:/players?subpage=" + AppService.Subpage.GLOBAL;
 
-        app.updateModel(user, model, page, "Champink - Игроки");
+        model.addAttribute("headerTitle", title);
+        app.updateModel(user, model, page, title);
         return "player/list";
     }
 
@@ -44,14 +57,14 @@ public class PlayerController {
         Player player = service.getPlayerById(id);
         if (player == null) return "redirect:/players";
         model.addAttribute("player", player);
-        app.updateModel(user, model, page, "Champink - Игрок " + player.getName());
+        app.updateModel(user, model, page, "Игрок " + player.getName());
         return "player/view";
     }
 
     @GetMapping("/player/new")
     public String champNew(@AuthenticationPrincipal User user, Model model) {
         app.subpage = AppService.Subpage.USER_OWNER;
-        app.updateModel(user, model, page, "Champink - Новый игрок");
+        app.updateModel(user, model, page, "Новый игрок");
         return "player/new";
     }
 
@@ -61,7 +74,7 @@ public class PlayerController {
             Player player = service.getPlayerById(id);
             if (player != null && player.getUserRole(user) >= AppService.Role.MANAGER) {
                 model.addAttribute("player", player);
-                app.updateModel(user, model, page, "Champink - Игрок " + player.getName() + " - Редактирование");
+                app.updateModel(user, model, page, "Игрок " + player.getName() + " - редактирование");
                 return "player/edit";
             }
         }
@@ -109,6 +122,19 @@ public class PlayerController {
         return "redirect:/player/" + id;
     }
 
+    @GetMapping("/player/{id}/teams/add")
+    public String playerTeamsAdd(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, Model model) {
+        if (user == null) return "redirect:/players";
+        Player player = service.getPlayerById(id);
+        if (player.getUserRole(user) >= AppService.Role.MANAGER) {
+            model.addAttribute("player", player);
+            model.addAttribute("teams", service.getUserTeamsPlayerNotIn(user, player));
+            app.updateModel(user, model, page, "Игрок " + player.getName() + " - добавление в команду");
+            return "player/add-team";
+        }
+        return "redirect:/player/" + id;
+    }
+
     @GetMapping("/player/{id}/delete/{admin}")
     public String playerDelete(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                                @PathVariable(value = "admin", required = false) Boolean admin) {
@@ -128,6 +154,18 @@ public class PlayerController {
             service.addNewPlayerRole(new PlayerRole(newPlayer, user, AppService.Role.OWNER));
         }
         return "redirect:/players?subpage=" + AppService.Subpage.USER_OWNER;
+    }
+
+    @PostMapping("/post/player/{id}/teams/add")
+    public String postPlayerTeamAdd(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
+                                    @RequestParam Team team, @RequestParam String position) {
+        if (user != null) {
+            Player player = service.getPlayerById(id);
+            if (player.getUserRole(user) >= AppService.Role.MANAGER && team.getUserRole(user) >= AppService.Role.MANAGER) {
+                service.addNewTeamPlayer(new TeamPlayer(team, player, position));
+            }
+        }
+        return "redirect:/player/" + id;
     }
 
     @PostMapping("/post/player/{id}/edit")

@@ -2,6 +2,10 @@ package ink.champ.models;
 
 import javax.persistence.*;
 
+/**
+ * Класс-модель для представления сущности команды чемпионата
+ * @author Maxim
+ */
 @Entity(name="champ_teams")
 public class ChampTeam {
 

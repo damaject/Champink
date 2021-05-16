@@ -5,8 +5,8 @@
   <nodes>
     <node x="149.53787878787878" y="825.0">ink.champ.configs.WebSecurityConfig</node>
     <node x="212.0" y="585.0">org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter.DefaultPasswordEncoderAuthenticationManagerBuilder</node>
-    <node x="148.0" y="1090.0">ink.champ.models.ChampTeam</node>
     <node x="564.0" y="1245.0">ink.champ.controllers.MainController</node>
+    <node x="148.0" y="1090.0">ink.champ.models.ChampTeam</node>
     <node x="1085.0" y="1165.0">org.springframework.security.core.userdetails.UserDetailsService</node>
     <node x="333.0" y="1320.0">org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter.LazyPasswordEncoder</node>
     <node x="288.0" y="1090.0">ink.champ.models.TeamPlayer</node>
@@ -31,8 +31,8 @@
     <node x="988.0" y="430.0">ink.champ.repository.SportRepository</node>
     <node x="1436.0" y="980.0">org.springframework.security.core.GrantedAuthority</node>
     <node x="1441.0727272727272" y="900.0">java.io.Serializable</node>
-    <node x="310.28787878787875" y="505.0">org.springframework.security.config.annotation.SecurityBuilder</node>
     <node x="112.91666666666663" y="665.0">org.springframework.context.annotation.Configuration</node>
+    <node x="310.28787878787875" y="505.0">org.springframework.security.config.annotation.SecurityBuilder</node>
     <node x="1180.0" y="1090.0">ink.champ.models.Champ</node>
     <node x="932.0" y="1090.0">ink.champ.models.TeamRole</node>
     <node x="996.0" y="320.0">org.springframework.data.jpa.repository.JpaRepository</node>
@@ -53,9 +53,8 @@
     <node x="692.0" y="1090.0">ink.champ.models.ChampRole</node>
     <node x="1618.0" y="1165.0">org.springframework.boot.autoconfigure.SpringBootApplication</node>
     <node x="1288.0" y="1090.0">ink.champ.models.User</node>
-    <node x="1907.0" y="1245.0">ink.champ.configs.MvcConfig</node>
-    <node x="188.0" y="430.0">ink.champ.repository.PlayerRoleRepository</node>
     <node x="2048.0" y="430.0">ink.champ.repository.ChampRoleRepository</node>
+    <node x="188.0" y="430.0">ink.champ.repository.PlayerRoleRepository</node>
     <node x="284.91666666666663" y="665.0">org.springframework.security.config.annotation.web.WebSecurityConfigurer</node>
     <node x="1090.5" y="240.0">org.springframework.data.repository.query.QueryByExampleExecutor</node>
     <node x="1764.0" y="900.0">java.lang.constant.Constable</node>
@@ -65,8 +64,8 @@
     <node x="1624.0" y="430.0">ink.champ.repository.TeamPlayerRepository</node>
     <node x="628.0" y="430.0">ink.champ.repository.UserRepository</node>
     <node x="1064.0" y="1090.0">ink.champ.models.Player</node>
-    <node x="1879.0" y="1165.0">org.springframework.web.servlet.config.annotation.WebMvcConfigurer</node>
     <node x="1241.0" y="1245.0">ink.champ.service.AppService</node>
+    <node x="1879.0" y="1165.0">org.springframework.web.servlet.config.annotation.WebMvcConfigurer</node>
     <node x="0.0" y="430.0">ink.champ.repository.ChampRepository</node>
   </nodes>
   <notes />
@@ -85,17 +84,17 @@
       <point x="226.91666666666663" y="720.0" />
       <point x="38.0" y="15.0" />
     </edge>
-    <edge source="org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter.UserDetailsServiceDelegator" target="org.springframework.security.core.userdetails.UserDetailsService">
-      <point x="0.0" y="-15.0" />
-      <point x="1089.0" y="1220.0" />
-      <point x="1133.0" y="1220.0" />
-      <point x="-48.0" y="15.0" />
-    </edge>
     <edge source="ink.champ.service.AppService" target="org.springframework.security.core.userdetails.UserDetailsService">
       <point x="-32.0" y="-15.0" />
       <point x="1273.0" y="1220.0" />
       <point x="1229.0" y="1220.0" />
       <point x="48.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter.UserDetailsServiceDelegator" target="org.springframework.security.core.userdetails.UserDetailsService">
+      <point x="0.0" y="-15.0" />
+      <point x="1089.0" y="1220.0" />
+      <point x="1133.0" y="1220.0" />
+      <point x="-48.0" y="15.0" />
     </edge>
     <edge source="ink.champ.models.ChampRole" target="javax.persistence.Entity">
       <point x="0.0" y="-15.0" />
@@ -143,17 +142,17 @@
       <point x="137.66666666666663" y="800.0" />
       <point x="0.0" y="15.0" />
     </edge>
-    <edge source="ink.champ.controllers.PlayerController" target="org.springframework.stereotype.Controller">
-      <point x="0.0" y="-15.0" />
-      <point x="88.0" y="1215.0" />
-      <point x="412.8" y="1215.0" />
-      <point x="-51.19999999999999" y="15.0" />
-    </edge>
     <edge source="ink.champ.models.PlayerRole" target="javax.persistence.Entity">
       <point x="0.0" y="-15.0" />
       <point x="64.0" y="1030.0" />
       <point x="708.3636363636363" y="1030.0" />
       <point x="-43.636363636363626" y="15.0" />
+    </edge>
+    <edge source="ink.champ.controllers.PlayerController" target="org.springframework.stereotype.Controller">
+      <point x="0.0" y="-15.0" />
+      <point x="88.0" y="1215.0" />
+      <point x="412.8" y="1215.0" />
+      <point x="-51.19999999999999" y="15.0" />
     </edge>
     <edge source="java.lang.Enum" target="java.lang.constant.Constable">
       <point x="26.666666666666742" y="-15.0" />
@@ -249,14 +248,14 @@
       <point x="743.2727272727273" y="1070.0" />
       <point x="-8.727272727272748" y="15.0" />
     </edge>
+    <edge source="org.springframework.data.repository.CrudRepository" target="org.springframework.data.repository.Repository">
+      <point x="-40.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
     <edge source="org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter.DefaultPasswordEncoderAuthenticationManagerBuilder" target="org.springframework.security.config.annotation.SecurityBuilder">
       <point x="0.0" y="-15.0" />
       <point x="436.0" y="560.0" />
       <point x="394.28787878787875" y="560.0" />
-      <point x="0.0" y="15.0" />
-    </edge>
-    <edge source="org.springframework.data.repository.CrudRepository" target="org.springframework.data.repository.Repository">
-      <point x="-40.0" y="-15.0" />
       <point x="0.0" y="15.0" />
     </edge>
     <edge source="ink.champ.models.TeamRole" target="javax.persistence.Entity">
@@ -291,17 +290,17 @@
       <point x="450.28787878787875" y="560.0" />
       <point x="56.0" y="15.0" />
     </edge>
-    <edge source="java.lang.Enum" target="java.io.Serializable">
-      <point x="-26.666666666666742" y="-15.0" />
-      <point x="1675.3090909090909" y="960.0" />
-      <point x="1561.0727272727272" y="960.0" />
-      <point x="48.0" y="15.0" />
-    </edge>
     <edge source="ink.champ.controllers.ChampController" target="org.springframework.stereotype.Controller">
       <point x="0.0" y="-15.0" />
       <point x="828.0" y="1215.0" />
       <point x="515.2" y="1215.0" />
       <point x="51.19999999999999" y="15.0" />
+    </edge>
+    <edge source="java.lang.Enum" target="java.io.Serializable">
+      <point x="-26.666666666666742" y="-15.0" />
+      <point x="1675.3090909090909" y="960.0" />
+      <point x="1561.0727272727272" y="960.0" />
+      <point x="48.0" y="15.0" />
     </edge>
     <edge source="ink.champ.models.ChampTeam" target="javax.persistence.Entity">
       <point x="0.0" y="-15.0" />
@@ -343,15 +342,15 @@
       <point x="1465.0727272727272" y="960.0" />
       <point x="-48.0" y="15.0" />
     </edge>
-    <edge source="ink.champ.models.Role" target="org.springframework.security.core.GrantedAuthority">
-      <point x="-20.0" y="-15.0" />
-      <point x="0.0" y="15.0" />
-    </edge>
     <edge source="ink.champ.models.Team" target="javax.persistence.Entity">
       <point x="0.0" y="-15.0" />
       <point x="872.0" y="1070.0" />
       <point x="760.7272727272727" y="1070.0" />
       <point x="8.727272727272748" y="15.0" />
+    </edge>
+    <edge source="ink.champ.models.Role" target="org.springframework.security.core.GrantedAuthority">
+      <point x="-20.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
     </edge>
     <edge source="ink.champ.repository.ChampTeamRepository" target="org.springframework.data.jpa.repository.JpaRepository">
       <point x="0.0" y="-15.0" />
@@ -381,10 +380,6 @@
       <point x="-54.0" y="-15.0" />
       <point x="338.91666666666663" y="640.0" />
       <point x="96.0" y="640.0" />
-      <point x="0.0" y="15.0" />
-    </edge>
-    <edge source="ink.champ.configs.MvcConfig" target="org.springframework.web.servlet.config.annotation.WebMvcConfigurer">
-      <point x="0.0" y="-15.0" />
       <point x="0.0" y="15.0" />
     </edge>
     <edge source="ink.champ.repository.PlayerRoleRepository" target="org.springframework.data.jpa.repository.JpaRepository">
@@ -418,7 +413,7 @@
       <point x="-58.66666666666674" y="15.0" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.5219512195121951" x="1169.7663551401868" y="621.8224299065421" />
+  <settings layout="Hierarchic Group" zoom="0.48905109489051096" x="1124.0" y="675.0" />
   <SelectedNodes>
     <node>ink.champ.repository.PlayerRepository</node>
   </SelectedNodes>

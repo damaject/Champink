@@ -6,9 +6,9 @@
 
     <div class="page-content">
         <div class="pc-header">
-            <div class="pc-header-title"><i class="fas fa-user-tie"></i> Администратор - Все чемпионаты</div>
-            <form class="search-form" action="/post/admin/search" method="post">
-                <input type="text" name="text" placeholder="Поиск..." maxlength="25" required>
+            <div class="pc-header-title"><i class="fas fa-user-tie"></i> Администратор - Чемпионаты[(${headerTitle})]</div>
+            <form class="search-form" action="/admin" method="get">
+                <input type="text" name="search" placeholder="Поиск..." maxlength="25">
                 <button class="btn btn-form" type="submit"><i class="fas fa-search"></i></button>
             </form>
         </div>

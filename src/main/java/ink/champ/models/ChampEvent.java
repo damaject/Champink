@@ -3,6 +3,10 @@ package ink.champ.models;
 import javax.persistence.*;
 import java.util.Date;
 
+/**
+ * Класс-модель для представления сущности события чемпионата
+ * @author Maxim
+ */
 @Entity(name="champ_events")
 public class ChampEvent {
 

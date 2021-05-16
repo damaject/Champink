@@ -8,6 +8,10 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
 
+/**
+ * Класс-модель для представления сущности пользователя
+ * @author Maxim
+ */
 @Entity(name="users")
 public class User implements UserDetails {
 

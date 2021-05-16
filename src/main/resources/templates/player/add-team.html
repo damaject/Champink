@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head><link th:replace="blocks/head"></head>
+<body>
+    <div th:replace="blocks/menu"></div>
+
+    <div class="page-content">
+        <div class="pc-header">
+            <div class="pc-header-title"><i class="fas fa-tshirt"></i> Игрок «[(${player.getName()})]»</div>
+        </div>
+        <div>
+            <div class="list-block">
+                <div class="lb-title">Добавление в команду</div>
+                <form class="pc-form" th:action="${'/post/player/' + player.getId() + '/teams/add'}" method="post">
+                    <label>Команда
+                        <select name="team" required>
+                            <option value="">Не выбрана</option>
+                            <option th:each="team : ${teams}" th:value="${team.getId()}" th:text="${team.getName()}"></option>
+                        </select>
+                    </label>
+                    <label>Позиция в команде
+                        <select name="position" required>
+                            <option value="">Не выбрана</option>
+                            <option>Нападающий</option>
+                            <option>Полузащитник</option>
+                            <option>Защитник</option>
+                            <option>Вратарь</option>
+                            <option>Тренер</option>
+                        </select>
+                    </label>
+                    <button class="btn btn-form" type="submit">Добавить игрока в команду</button>
+                    <a th:href="${'/player/' + player.getId()}">Отмена</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <link rel="stylesheet" type="text/css" href="/css/style-onload.css">
+</body>
+</html>

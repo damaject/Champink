@@ -2,6 +2,10 @@ package ink.champ.models;
 
 import javax.persistence.*;
 
+/**
+ * Класс-модель для представления сущности вида спорта
+ * @author Maxim
+ */
 @Entity(name="sports")
 public class Sport {
 

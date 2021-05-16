@@ -2,6 +2,10 @@ package ink.champ.models;
 
 import javax.persistence.*;
 
+/**
+ * Класс-модель для представления сущности пользовательской роли команды
+ * @author Maxim
+ */
 @Entity(name="team_roles")
 public class TeamRole {
 

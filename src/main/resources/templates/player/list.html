@@ -6,10 +6,10 @@
 
     <div class="page-content">
         <div class="pc-header">
-            <div class="pc-header-title"><i class="fas fa-tshirt"></i> Игроки</div>
+            <div class="pc-header-title"><i class="fas fa-tshirt"></i> [(${headerTitle})]</div>
             <a class="btn-link pc-header-btn" href="/player/new">Создать нового</a>
-            <form class="search-form" action="/post/player/search" method="post">
-                <input type="text" name="text" placeholder="Поиск..." maxlength="25" required>
+            <form class="search-form" action="/players" method="get">
+                <input type="text" name="search" placeholder="Поиск..." maxlength="25">
                 <button class="btn btn-form" type="submit"><i class="fas fa-search"></i></button>
             </form>
         </div>

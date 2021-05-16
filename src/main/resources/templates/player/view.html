@@ -63,7 +63,7 @@
 
             <div class="list-block">
                 <div class="lb-title" th:text="${'Состоит в командах (' + player.getTeamsCount() + ')'}"></div>
-                <a class="btn btn-block usn" th:if="${role >= 3}" href="">Добавить в команду <i class="fas fa-plus"></i></a>
+                <a class="btn btn-block usn" th:if="${role >= 3}" th:href="${'/player/' + player.getId() + '/teams/add'}">Добавить в команду <i class="fas fa-plus"></i></a>
                 <div class="list-item-block" th:each="tp : ${player.getTeams()}">
                     <div class="lib-title" th:text="${tp.getTeam().getName()}"></div>
                     <div class="lib-position" th:text="${tp.getPosition()}"></div>

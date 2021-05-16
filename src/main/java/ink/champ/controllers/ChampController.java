@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 
+/**
+ * Класс-контроллер для обработки запросов раздела чемпионатов
+ * @author Maxim
+ */
 @Controller
 public class ChampController {
 
@@ -28,22 +30,31 @@ public class ChampController {
     private final String page = "champ";
 
     @GetMapping("/champs")
-    public String champs(@RequestParam(required = false) String subpage, @AuthenticationPrincipal User user, Model model) {
+    public String champs(@RequestParam(required = false) String subpage, @RequestParam(required = false) String search,
+                         @AuthenticationPrincipal User user, Model model) {
         if (subpage != null) {
             app.subpage = subpage;
             return "redirect:/champs";
         }
         if (app.subpage == null) app.subpage = AppService.Subpage.GLOBAL;
 
-        if (app.subpage.equals(AppService.Subpage.GLOBAL)) model.addAttribute("champs", service.getGlobalChamps());
-        else if (app.subpage.equals(AppService.Subpage.USER_ALL)) model.addAttribute("champs", service.getUserChampsAll(user));
-        else if (app.subpage.equals(AppService.Subpage.USER_OWNER)) model.addAttribute("champs", service.getUserChampsRole(user, AppService.Role.OWNER));
-        else if (app.subpage.equals(AppService.Subpage.USER_JUDGE)) model.addAttribute("champs", service.getUserChampsRole(user, AppService.Role.JUDGE));
-        else if (app.subpage.equals(AppService.Subpage.USER_MANAGER)) model.addAttribute("champs", service.getUserChampsRole(user, AppService.Role.MANAGER));
-        else if (app.subpage.equals(AppService.Subpage.USER_VIEWER)) model.addAttribute("champs", service.getUserChampsRole(user, AppService.Role.VIEWER));
+        String s = "";
+        String title = "Чемпионаты";
+        if (search != null && !search.isEmpty()) {
+            s = search;
+            title += " - поиск «" + search + "»";
+        }
+
+        if (app.subpage.equals(AppService.Subpage.GLOBAL)) model.addAttribute("champs", service.getGlobalChamps(s));
+        else if (app.subpage.equals(AppService.Subpage.USER_ALL)) model.addAttribute("champs", service.getUserChampsAll(user, s));
+        else if (app.subpage.equals(AppService.Subpage.USER_OWNER)) model.addAttribute("champs", service.getUserChampsRole(user, AppService.Role.OWNER, s));
+        else if (app.subpage.equals(AppService.Subpage.USER_JUDGE)) model.addAttribute("champs", service.getUserChampsRole(user, AppService.Role.JUDGE, s));
+        else if (app.subpage.equals(AppService.Subpage.USER_MANAGER)) model.addAttribute("champs", service.getUserChampsRole(user, AppService.Role.MANAGER, s));
+        else if (app.subpage.equals(AppService.Subpage.USER_VIEWER)) model.addAttribute("champs", service.getUserChampsRole(user, AppService.Role.VIEWER, s));
         else return "redirect:/champs?subpage=" + AppService.Subpage.GLOBAL;
 
-        app.updateModel(user, model, page, "Champink - Чемпионаты");
+        model.addAttribute("headerTitle", title);
+        app.updateModel(user, model, page, title);
         return "champ/list";
     }
 
@@ -52,81 +63,16 @@ public class ChampController {
         Champ champ = service.getChampById(id);
         if (champ == null) return "redirect:/champs";
         model.addAttribute("champ", champ);
-        app.updateModel(user, model, page, "Champink - Чемпионат " + champ.getName());
-
-        String[] names = new String[champ.getTeamsCount()];
-        long[][] stats = new long[names.length][10];
-
-        int i = 0;
-        for (ChampTeam team : champ.getTeams()) {
-            names[i] = team.getTeam().getName();
-            stats[i][0] = team.getTeam().getId();
-            stats[i][1] = i;
-            i++;
-        }
-
-        for (ChampEvent event : champ.getEvents()) {
-            long team1Id = event.getTeam1().getId();
-            long team2Id = event.getTeam2().getId();
-            int id1 = -1;
-            int id2 = -1;
-            for (i = 0; i < stats.length; i++) {
-                if (stats[i][0] == team1Id) id1 = i;
-                if (stats[i][0] == team2Id) id2 = i;
-            }
-            int gol1 = event.getGol1();
-            int gol2 = event.getGol2();
-            int pen1 = event.getPen1();
-            int pen2 = event.getPen2();
-
-            stats[id1][2]++;
-            stats[id2][2]++;
-            stats[id1][6] += gol1;
-            stats[id2][6] += gol2;
-            stats[id1][7] += gol2;
-            stats[id2][7] += gol1;
-            if (gol1 == gol2 && pen1 == pen2) { // Ничья
-                stats[id1][4]++;
-                stats[id2][4]++;
-            }
-            else if (gol1 > gol2 || (gol1 == gol2 && pen1 > pen2)) { // Победа 1
-                stats[id1][3]++;
-                stats[id2][5]++;
-            }
-            else if (gol1 < gol2 || (gol1 == gol2 && pen1 < pen2)) { // Победа 2
-                stats[id1][5]++;
-                stats[id2][3]++;
-            }
-        }
-
-        for (i = 0; i < stats.length; i++) {
-            stats[i][8] = stats[i][6] - stats[i][7];
-            stats[i][9] = stats[i][3] * 3 + stats[i][4];
-        }
-
-        for (i = 0; i < stats.length - 1; i++) {
-            for (int j = i + 1; j < stats.length; j++) {
-                if (stats[i][9] < stats[j][9]) {
-                    for (int k = 0; k < stats[i].length; k++) {
-                        long buf = stats[i][k];
-                        stats[i][k] = stats[j][k];
-                        stats[j][k] = buf;
-                    }
-                }
-            }
-        }
-
-        model.addAttribute("tableNames", names);
-        model.addAttribute("tableStats", stats);
-
+        app.makeChampResult(model, champ);
+        app.updateModel(user, model, page, "Чемпионат " + champ.getName());
         return "champ/view";
     }
 
     @GetMapping("/champ/new")
     public String champNew(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("sports", service.getSports());
+        model.addAttribute("sports", service.getSports(""));
         app.subpage = AppService.Subpage.USER_OWNER;
-        app.updateModel(user, model, page, "Champink - Новый чемпионат");
+        app.updateModel(user, model, page, "Новый чемпионат");
         return "champ/new";
     }
 
@@ -136,8 +82,8 @@ public class ChampController {
             Champ champ = service.getChampById(id);
             if (champ != null && champ.getUserRole(user) >= AppService.Role.MANAGER) {
                 model.addAttribute("champ", champ);
-                model.addAttribute("sports", service.getSports());
-                app.updateModel(user, model, page, "Champink - Чемпионат " + champ.getName() + " - Редактирование");
+                model.addAttribute("sports", service.getSports(""));
+                app.updateModel(user, model, page, "Чемпионат " + champ.getName() + " - редактирование");
                 return "champ/edit";
             }
         }
@@ -197,7 +143,7 @@ public class ChampController {
         if (champ.getUserRole(user) >= AppService.Role.MANAGER) {
             model.addAttribute("champ", champ);
             model.addAttribute("teams", service.getUserTeamsNotInChamp(user, champ));
-            app.updateModel(user, model, page, "Champink - Чемпионат " + champ.getName() + " - Добавление команды");
+            app.updateModel(user, model, page, "Чемпионат " + champ.getName() + " - добавление команды");
             return "champ/add-team";
         }
         return "redirect:/champ/" + id;
@@ -209,7 +155,7 @@ public class ChampController {
         Champ champ = service.getChampById(id);
         if (champ.getUserRole(user) >= AppService.Role.MANAGER) {
             model.addAttribute("champ", champ);
-            app.updateModel(user, model, page, "Champink - Чемпионат " + champ.getName() + " - Добавление события");
+            app.updateModel(user, model, page, "Чемпионат " + champ.getName() + " - добавление события");
             return "champ/add-event";
         }
         return "redirect:/champ/" + id;
@@ -225,7 +171,7 @@ public class ChampController {
             if (event != null) {
                 model.addAttribute("champ", champ);
                 model.addAttribute("event", event);
-                app.updateModel(user, model, page, "Champink - Чемпионат " + champ.getName() + " - Изменение счета");
+                app.updateModel(user, model, page, "Чемпионат " + champ.getName() + " - изменение счета");
                 return "champ/score";
             }
         }

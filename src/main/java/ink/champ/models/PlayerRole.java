@@ -2,6 +2,10 @@ package ink.champ.models;
 
 import javax.persistence.*;
 
+/**
+ * Класс-модель для представления сущности пользовательской роли игрока
+ * @author Maxim
+ */
 @Entity(name="player_roles")
 public class PlayerRole {
 

@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 
+/**
+ * Класс-контроллер для обработки запросов раздела пользователей
+ * @author Maxim
+ */
 @Controller
 public class UserController {
 
@@ -27,40 +31,40 @@ public class UserController {
 
     @GetMapping("/login")
     public String login(@AuthenticationPrincipal User user, Model model, HttpServletRequest request) {
-        app.updateModel(user, model, "auth", "Champink - Авторизация");
+        app.updateModel(user, model, "auth", "Авторизация");
         preLoginUrl = request.getHeader("Referer");
         return "auth/login";
     }
 
     @GetMapping("/registration")
     public String registration(@AuthenticationPrincipal User user, Model model) {
-        app.updateModel(user, model, "auth", "Champink - Регистрация");
+        app.updateModel(user, model, "auth", "Регистрация");
         return "auth/registration";
     }
 
     @GetMapping("/restore")
     public String restore(@AuthenticationPrincipal User user, Model model) {
-        app.updateModel(user, model, "auth", "Champink - Восстановление");
+        app.updateModel(user, model, "auth", "Восстановление");
         return "auth/restore";
     }
 
     @GetMapping("/profile")
     public String profile(@AuthenticationPrincipal User user, Model model) {
-        app.updateModel(user, model, "profile", "Champink - Профиль");
+        app.updateModel(user, model, "profile", "Профиль");
         model.addAttribute("user", user);
         return "user/view";
     }
 
     @GetMapping("/profile/edit")
     public String profileEdit(@AuthenticationPrincipal User user, Model model) {
-        app.updateModel(user, model, "profile", "Champink - Профиль - Редактирование");
+        app.updateModel(user, model, "profile", "Профиль - редактирование");
         model.addAttribute("user", user);
         return "user/edit";
     }
 
     @GetMapping("/profile/password")
     public String profilePassword(@AuthenticationPrincipal User user, Model model) {
-        app.updateModel(user, model, "profile", "Champink - Профиль - Изменение пароля");
+        app.updateModel(user, model, "profile", "Профиль - изменение пароля");
         model.addAttribute("user", user);
         return "user/password";
     }

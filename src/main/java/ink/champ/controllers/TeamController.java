@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Класс-контроллер для обработки запросов раздела команд
+ * @author Maxim
+ */
 @Controller
 public class TeamController {
 
@@ -21,21 +25,30 @@ public class TeamController {
     private final String page = "team";
 
     @GetMapping("/teams")
-    public String teams(@RequestParam(required = false) String subpage, @AuthenticationPrincipal User user, Model model) {
+    public String teams(@RequestParam(required = false) String subpage, @RequestParam(required = false) String search,
+                        @AuthenticationPrincipal User user, Model model) {
         if (subpage != null) {
             app.subpage = subpage;
             return "redirect:/teams";
         }
         if (app.subpage == null) app.subpage = AppService.Subpage.GLOBAL;
 
-        if (app.subpage.equals(AppService.Subpage.GLOBAL)) model.addAttribute("teams", service.getGlobalTeams());
-        else if (app.subpage.equals(AppService.Subpage.USER_ALL)) model.addAttribute("teams", service.getUserTeamsAll(user));
-        else if (app.subpage.equals(AppService.Subpage.USER_OWNER)) model.addAttribute("teams", service.getUserTeamsRole(user, AppService.Role.OWNER));
-        else if (app.subpage.equals(AppService.Subpage.USER_MANAGER)) model.addAttribute("teams", service.getUserTeamsRole(user, AppService.Role.MANAGER));
-        else if (app.subpage.equals(AppService.Subpage.USER_VIEWER)) model.addAttribute("teams", service.getUserTeamsRole(user, AppService.Role.VIEWER));
+        String s = "";
+        String title = "Команды";
+        if (search != null && !search.isEmpty()) {
+            s = search;
+            title += " - поиск «" + search + "»";
+        }
+
+        if (app.subpage.equals(AppService.Subpage.GLOBAL)) model.addAttribute("teams", service.getGlobalTeams(s));
+        else if (app.subpage.equals(AppService.Subpage.USER_ALL)) model.addAttribute("teams", service.getUserTeamsAll(user, s));
+        else if (app.subpage.equals(AppService.Subpage.USER_OWNER)) model.addAttribute("teams", service.getUserTeamsRole(user, AppService.Role.OWNER, s));
+        else if (app.subpage.equals(AppService.Subpage.USER_MANAGER)) model.addAttribute("teams", service.getUserTeamsRole(user, AppService.Role.MANAGER, s));
+        else if (app.subpage.equals(AppService.Subpage.USER_VIEWER)) model.addAttribute("teams", service.getUserTeamsRole(user, AppService.Role.VIEWER, s));
         else return "redirect:/teams?subpage=" + AppService.Subpage.GLOBAL;
 
-        app.updateModel(user, model, page, "Champink - Команды");
+        model.addAttribute("headerTitle", title);
+        app.updateModel(user, model, page, title);
         return "team/list";
     }
 
@@ -44,14 +57,14 @@ public class TeamController {
         Team team = service.getTeamById(id);
         if (team == null) return "redirect:/teams";
         model.addAttribute("team", team);
-        app.updateModel(user, model, page, "Champink - Команда " + team.getName());
+        app.updateModel(user, model, page, "Команда " + team.getName());
         return "team/view";
     }
 
     @GetMapping("/team/new")
     public String teamNew(@AuthenticationPrincipal User user, Model model) {
         app.subpage = AppService.Subpage.USER_OWNER;
-        app.updateModel(user, model, page, "Champink - Новая команда");
+        app.updateModel(user, model, page, "Новая команда");
         return "team/new";
     }
 
@@ -61,7 +74,7 @@ public class TeamController {
             Team team = service.getTeamById(id);
             if (team != null && team.getUserRole(user) >= AppService.Role.MANAGER) {
                 model.addAttribute("team", team);
-                app.updateModel(user, model, page, "Champink - Команда " + team.getName() + " - Редактирование");
+                app.updateModel(user, model, page, "Команда " + team.getName() + " - редактирование");
                 return "team/edit";
             }
         }
@@ -117,8 +130,21 @@ public class TeamController {
         if (team.getUserRole(user) >= AppService.Role.MANAGER) {
             model.addAttribute("team", team);
             model.addAttribute("players", service.getUserPlayersNotInTeam(user, team));
-            app.updateModel(user, model, page, "Champink - Команда " + team.getName() + " - Добавление игрока");
+            app.updateModel(user, model, page, "Команда " + team.getName() + " - добавление игрока");
             return "team/add-player";
+        }
+        return "redirect:/team/" + id;
+    }
+
+    @GetMapping("/team/{id}/champs/add")
+    public String teamChampsAdd(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, Model model) {
+        if (user == null) return "redirect:/teams";
+        Team team = service.getTeamById(id);
+        if (team.getUserRole(user) >= AppService.Role.MANAGER) {
+            model.addAttribute("team", team);
+            model.addAttribute("champs", service.getUserChampsTeamNotIn(user, team));
+            app.updateModel(user, model, page, "Команда " + team.getName() + " - добавление в чемпионат");
+            return "team/add-champ";
         }
         return "redirect:/team/" + id;
     }
@@ -160,6 +186,18 @@ public class TeamController {
             Team team = service.getTeamById(id);
             if (team.getUserRole(user) >= AppService.Role.MANAGER && player.getUserRole(user) >= AppService.Role.MANAGER) {
                 service.addNewTeamPlayer(new TeamPlayer(team, player, position));
+            }
+        }
+        return "redirect:/team/" + id;
+    }
+
+    @PostMapping("/post/team/{id}/champs/add")
+    public String postTeamChampAdd(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
+                                    @RequestParam Champ champ) {
+        if (user != null) {
+            Team team = service.getTeamById(id);
+            if (team.getUserRole(user) >= AppService.Role.MANAGER && champ.getUserRole(user) >= AppService.Role.MANAGER) {
+                service.addNewChampTeam(new ChampTeam(champ, team));
             }
         }
         return "redirect:/team/" + id;

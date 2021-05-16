@@ -2,6 +2,10 @@ package ink.champ.models;
 
 import javax.persistence.*;
 
+/**
+ * Класс-модель для представления сущности игрока команды
+ * @author Maxim
+ */
 @Entity(name="team_players")
 public class TeamPlayer {
 

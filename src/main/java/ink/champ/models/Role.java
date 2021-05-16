@@ -7,7 +7,14 @@ import org.springframework.security.core.GrantedAuthority;
  * @author Maxim
  */
 public enum Role implements GrantedAuthority {
+
     GUEST, USER, ADMIN;
 
-    @Override public String getAuthority() { return name(); }
+    /**
+     * Метод для получения названия роли
+     * @return Название роли
+     */
+    @Override
+    public String getAuthority() { return name(); }
+
 }

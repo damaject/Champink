@@ -24,6 +24,14 @@ public class TeamController {
 
     private final String page = "team";
 
+    /**
+     * Метод для отображения страницы команд
+     * @param subpage Раздел страницы
+     * @param search Часть названия для поиска
+     * @param user Пользователь
+     * @param model Модель
+     * @return Шаблон или переадресация
+     */
     @GetMapping("/teams")
     public String teams(@RequestParam(required = false) String subpage, @RequestParam(required = false) String search,
                         @AuthenticationPrincipal User user, Model model) {
@@ -40,18 +48,38 @@ public class TeamController {
             title += " - поиск «" + search + "»";
         }
 
-        if (app.subpage.equals(AppService.Subpage.GLOBAL)) model.addAttribute("teams", service.getGlobalTeams(s));
-        else if (app.subpage.equals(AppService.Subpage.USER_ALL)) model.addAttribute("teams", service.getUserTeamsAll(user, s));
-        else if (app.subpage.equals(AppService.Subpage.USER_OWNER)) model.addAttribute("teams", service.getUserTeamsRole(user, AppService.Role.OWNER, s));
-        else if (app.subpage.equals(AppService.Subpage.USER_MANAGER)) model.addAttribute("teams", service.getUserTeamsRole(user, AppService.Role.MANAGER, s));
-        else if (app.subpage.equals(AppService.Subpage.USER_VIEWER)) model.addAttribute("teams", service.getUserTeamsRole(user, AppService.Role.VIEWER, s));
-        else return "redirect:/teams?subpage=" + AppService.Subpage.GLOBAL;
+        switch (app.subpage) {
+            case AppService.Subpage.GLOBAL:
+                model.addAttribute("teams", service.getGlobalTeams(s));
+                break;
+            case AppService.Subpage.USER_ALL:
+                model.addAttribute("teams", service.getUserTeamsAll(user, s));
+                break;
+            case AppService.Subpage.USER_OWNER:
+                model.addAttribute("teams", service.getUserTeamsRole(user, AppService.Role.OWNER, s));
+                break;
+            case AppService.Subpage.USER_MANAGER:
+                model.addAttribute("teams", service.getUserTeamsRole(user, AppService.Role.MANAGER, s));
+                break;
+            case AppService.Subpage.USER_VIEWER:
+                model.addAttribute("teams", service.getUserTeamsRole(user, AppService.Role.VIEWER, s));
+                break;
+            default:
+                return "redirect:/teams?subpage=" + AppService.Subpage.GLOBAL;
+        }
 
         model.addAttribute("headerTitle", title);
         app.updateModel(user, model, page, title);
         return "team/list";
     }
 
+    /**
+     * Метод для отображения страницы команды по идентификатору
+     * @param user Пользователь
+     * @param id Идентификатор команды
+     * @param model Модель
+     * @return Шаблон или переадресация
+     */
     @GetMapping("/team/{id}")
     public String teamById(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, Model model) {
         Team team = service.getTeamById(id);
@@ -61,6 +89,12 @@ public class TeamController {
         return "team/view";
     }
 
+    /**
+     * Метод для отображения страницы создания новой команды
+     * @param user Пользователь
+     * @param model Модель
+     * @return Шаблон
+     */
     @GetMapping("/team/new")
     public String teamNew(@AuthenticationPrincipal User user, Model model) {
         app.subpage = AppService.Subpage.USER_OWNER;
@@ -68,6 +102,13 @@ public class TeamController {
         return "team/new";
     }
 
+    /**
+     * Метод для отображения страницы редактирования команды по идентификатору
+     * @param user Пользователь
+     * @param id Идентификатор команды
+     * @param model Модель
+     * @return Шаблон или переадресация
+     */
     @GetMapping("/team/{id}/edit")
     public String teamEdit(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, Model model) {
         if (user != null) {
@@ -81,6 +122,13 @@ public class TeamController {
         return "redirect:/teams";
     }
 
+    /**
+     * Метод для установки роли команды
+     * @param user Пользователь
+     * @param id Идентификатор команды
+     * @param role Роль
+     * @return Переадресация
+     */
     @GetMapping("/team/{id}/roles/set")
     public String teamRoleSet(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, @RequestParam Integer role) {
         if (user != null) {
@@ -104,6 +152,14 @@ public class TeamController {
         return "redirect:/team/" + id;
     }
 
+    /**
+     * Метод для принятия, отклонения или удаления роли команды
+     * @param user Пользователь
+     * @param id Идентификатор команды
+     * @param trId Идентификатор роли команды
+     * @param action Действие
+     * @return Переадресация
+     */
     @GetMapping("/team/{id}/roles/{tr}/{action}")
     public String teamRoleAction(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                                     @PathVariable(value = "tr") Long trId, @PathVariable(value = "action") String action) {
@@ -111,18 +167,31 @@ public class TeamController {
             Team team = service.getTeamById(id);
             if (team != null && team.getUserRole(user) == AppService.Role.OWNER) {
                 TeamRole teamRole = service.getTeamRoleById(trId);
-                if (action.equals("accept")) {
-                    teamRole.setRole(teamRole.getRequest());
-                    teamRole.setRequest(AppService.Role.NONE);
+                switch (action) {
+                    case "accept":
+                        teamRole.setRole(teamRole.getRequest());
+                        teamRole.setRequest(AppService.Role.NONE);
+                        break;
+                    case "reject":
+                        teamRole.setRequest(AppService.Role.NONE);
+                        break;
+                    case "delete":
+                        teamRole.setRole(AppService.Role.VIEWER);
+                        break;
                 }
-                else if (action.equals("reject")) teamRole.setRequest(AppService.Role.NONE);
-                else if (action.equals("delete")) teamRole.setRole(AppService.Role.VIEWER);
                 service.saveTeamRole(teamRole);
             }
         }
         return "redirect:/team/" + id;
     }
 
+    /**
+     * Метод для отображения страницы добавления игрока в команду
+     * @param user Пользователь
+     * @param id Идентификатор команды
+     * @param model Модель
+     * @return Шаблон или переадресация
+     */
     @GetMapping("/team/{id}/players/add")
     public String teamPlayersAdd(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, Model model) {
         if (user == null) return "redirect:/teams";
@@ -136,6 +205,13 @@ public class TeamController {
         return "redirect:/team/" + id;
     }
 
+    /**
+     * Метод для отображения страницы добавления команды в чемпионат
+     * @param user Пользователь
+     * @param id Идентификатор команды
+     * @param model Модель
+     * @return Шаблон или переадресация
+     */
     @GetMapping("/team/{id}/champs/add")
     public String teamChampsAdd(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, Model model) {
         if (user == null) return "redirect:/teams";
@@ -149,6 +225,13 @@ public class TeamController {
         return "redirect:/team/" + id;
     }
 
+    /**
+     * Метод для удаления игрока из команды
+     * @param user Пользователь
+     * @param id Идентификатор команды
+     * @param tpId Идентификатор игрока команды
+     * @return Переадресация
+     */
     @GetMapping("/team/{id}/players/{tp}/delete")
     public String teamPlayersDelete(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                              @PathVariable(value = "tp") Long tpId) {
@@ -158,6 +241,13 @@ public class TeamController {
         return "redirect:/team/" + id;
     }
 
+    /**
+     * Метод для удаления команды
+     * @param user Пользователь
+     * @param id Идентификатор команды
+     * @param admin Флаг администратора
+     * @return Переадресация
+     */
     @GetMapping("/team/{id}/delete/{admin}")
     public String teamDelete(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                                @PathVariable(value = "admin", required = false) Boolean admin) {
@@ -168,6 +258,13 @@ public class TeamController {
         else return "redirect:/teams";
     }
 
+    /**
+     * Метод для создания новой команды
+     * @param user Пользователь
+     * @param name Название
+     * @param privat Приватность
+     * @return Переадресация
+     */
     @PostMapping("/post/team/add")
     public String postTeamAdd(@AuthenticationPrincipal User user, @RequestParam String name,
                                @RequestParam(defaultValue = "false") boolean privat) {
@@ -179,6 +276,14 @@ public class TeamController {
         return "redirect:/teams?subpage=" + AppService.Subpage.USER_OWNER;
     }
 
+    /**
+     * Метод для добавления игрока в команду
+     * @param user Пользователь
+     * @param id Идентификатор команды
+     * @param player Игрок
+     * @param position Позиция
+     * @return Переадресация
+     */
     @PostMapping("/post/team/{id}/players/add")
     public String postTeamPlayerAdd(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                                     @RequestParam Player player, @RequestParam String position) {
@@ -191,6 +296,13 @@ public class TeamController {
         return "redirect:/team/" + id;
     }
 
+    /**
+     * Метод для добавления команды в чемпионат
+     * @param user Пользователь
+     * @param id Идентификатор команды
+     * @param champ Чемпионат
+     * @return Переадресация
+     */
     @PostMapping("/post/team/{id}/champs/add")
     public String postTeamChampAdd(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                                     @RequestParam Champ champ) {
@@ -203,6 +315,14 @@ public class TeamController {
         return "redirect:/team/" + id;
     }
 
+    /**
+     * Метод для редактирования команды по идентификатору
+     * @param user Пользователь
+     * @param id Идентификатор команды
+     * @param name Название
+     * @param privat Приватность
+     * @return Переадресация
+     */
     @PostMapping("/post/team/{id}/edit")
     public String postTeamEdit(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                                  @RequestParam String name, @RequestParam(defaultValue = "false") boolean privat) {
@@ -216,4 +336,5 @@ public class TeamController {
         }
         return "redirect:/team/" + id;
     }
+
 }

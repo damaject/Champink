@@ -15,12 +15,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Класс-сервис для обработки модели, вычисления результирующих таблиц и перечислений
+ * Класс-сервис для обработки модели, вычисления результирующих таблиц и подклассов с константами
  * @author Maxim
  */
 @Service
 public class AppService implements UserDetailsService {
 
+    /**
+     * Статический класс с константами для разделов на страницах чемпионатов, команд и игроков
+     * @author Maxim
+     */
     public static class Subpage {
         public static final String GLOBAL = "global";
         public static final String USER_ALL = "u-all";
@@ -30,6 +34,10 @@ public class AppService implements UserDetailsService {
         public static final String USER_VIEWER = "u-viewer";
     }
 
+    /**
+     * Статический класс с константами для пользовательских ролей в чемпионатах, командах и игроках
+     * @author Maxim
+     */
     public static class Role {
         public static final int NONE = 0;
         public static final int VIEWER = 1;
@@ -42,10 +50,23 @@ public class AppService implements UserDetailsService {
 
     public String subpage;
 
+    /**
+     * Метод для получения объекта UserDetails по пользовательскому имени
+     * @param username Имя пользователя для поиска
+     * @return Возвращает объект UserDetails
+     * @throws UsernameNotFoundException Исключение, если пользователь с таким именем не найден
+     */
     @Override public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return service.getUserByUsername(username);
     }
 
+    /**
+     * Метод для добавления данных в модель
+     * @param user Пользователь
+     * @param model Модель из контроллера
+     * @param page Название страницы
+     * @param title Заголовок страницы
+     */
     public void updateModel(User user, Model model, String page, String title) {
         String name = user != null ? user.getName() : "Гость";
 
@@ -58,11 +79,21 @@ public class AppService implements UserDetailsService {
         model.addAttribute("name", name);
     }
 
+    /**
+     * Метод для создания результатов чемпоината
+     * @param model Модель из контроллера
+     * @param champ Чемпионат
+     */
     public void makeChampResult(Model model, Champ champ) {
         if (champ.getFormat().equals("Плей-офф")) makePlayOff(model, champ);
         else makeTable(model, champ);
     }
 
+    /**
+     * Метод для вычисления результатов чемпионата по группе
+     * @param model Модель из контроллера
+     * @param champ Чемпионат
+     */
     private void makeTable(Model model, Champ champ) {
         model.addAttribute("tableType", "T");
 
@@ -132,6 +163,11 @@ public class AppService implements UserDetailsService {
         model.addAttribute("tableStats", stats);
     }
 
+    /**
+     * Метод для вычисления результатов чемпионата по сетке плей-офф
+     * @param model Модель из контроллера
+     * @param champ Чемпионат
+     */
     private void makePlayOff(Model model, Champ champ) {
         model.addAttribute("tableType", "P");
 
@@ -194,4 +230,5 @@ public class AppService implements UserDetailsService {
         model.addAttribute("tableNames", names);
         model.addAttribute("tableStats", stages);
     }
+
 }

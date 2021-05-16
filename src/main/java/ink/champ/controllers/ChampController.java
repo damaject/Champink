@@ -29,6 +29,14 @@ public class ChampController {
 
     private final String page = "champ";
 
+    /**
+     * Метод для отображения страницы чемпионатов
+     * @param subpage Раздел страницы
+     * @param search Часть названия для поиска
+     * @param user Пользователь
+     * @param model Модель
+     * @return Шаблон или переадресация
+     */
     @GetMapping("/champs")
     public String champs(@RequestParam(required = false) String subpage, @RequestParam(required = false) String search,
                          @AuthenticationPrincipal User user, Model model) {
@@ -45,19 +53,41 @@ public class ChampController {
             title += " - поиск «" + search + "»";
         }
 
-        if (app.subpage.equals(AppService.Subpage.GLOBAL)) model.addAttribute("champs", service.getGlobalChamps(s));
-        else if (app.subpage.equals(AppService.Subpage.USER_ALL)) model.addAttribute("champs", service.getUserChampsAll(user, s));
-        else if (app.subpage.equals(AppService.Subpage.USER_OWNER)) model.addAttribute("champs", service.getUserChampsRole(user, AppService.Role.OWNER, s));
-        else if (app.subpage.equals(AppService.Subpage.USER_JUDGE)) model.addAttribute("champs", service.getUserChampsRole(user, AppService.Role.JUDGE, s));
-        else if (app.subpage.equals(AppService.Subpage.USER_MANAGER)) model.addAttribute("champs", service.getUserChampsRole(user, AppService.Role.MANAGER, s));
-        else if (app.subpage.equals(AppService.Subpage.USER_VIEWER)) model.addAttribute("champs", service.getUserChampsRole(user, AppService.Role.VIEWER, s));
-        else return "redirect:/champs?subpage=" + AppService.Subpage.GLOBAL;
+        switch (app.subpage) {
+            case AppService.Subpage.GLOBAL:
+                model.addAttribute("champs", service.getGlobalChamps(s));
+                break;
+            case AppService.Subpage.USER_ALL:
+                model.addAttribute("champs", service.getUserChampsAll(user, s));
+                break;
+            case AppService.Subpage.USER_OWNER:
+                model.addAttribute("champs", service.getUserChampsRole(user, AppService.Role.OWNER, s));
+                break;
+            case AppService.Subpage.USER_JUDGE:
+                model.addAttribute("champs", service.getUserChampsRole(user, AppService.Role.JUDGE, s));
+                break;
+            case AppService.Subpage.USER_MANAGER:
+                model.addAttribute("champs", service.getUserChampsRole(user, AppService.Role.MANAGER, s));
+                break;
+            case AppService.Subpage.USER_VIEWER:
+                model.addAttribute("champs", service.getUserChampsRole(user, AppService.Role.VIEWER, s));
+                break;
+            default:
+                return "redirect:/champs?subpage=" + AppService.Subpage.GLOBAL;
+        }
 
         model.addAttribute("headerTitle", title);
         app.updateModel(user, model, page, title);
         return "champ/list";
     }
 
+    /**
+     * Метод для отображения страницы чемпионата по идентификатору
+     * @param user Пользователь
+     * @param id Идентификатор чемпионата
+     * @param model Модель
+     * @return Шаблон или переадресация
+     */
     @GetMapping("/champ/{id}")
     public String champById(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, Model model) {
         Champ champ = service.getChampById(id);
@@ -68,6 +98,12 @@ public class ChampController {
         return "champ/view";
     }
 
+    /**
+     * Метод для отображения страницы создания нового чемпионата
+     * @param user Пользователь
+     * @param model Модель
+     * @return Шаблон
+     */
     @GetMapping("/champ/new")
     public String champNew(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("sports", service.getSports(""));
@@ -76,6 +112,13 @@ public class ChampController {
         return "champ/new";
     }
 
+    /**
+     * Метод для отображения страницы редактирования чемпионата по идентификатору
+     * @param user Пользователь
+     * @param id Идентификатор чемпионата
+     * @param model Модель
+     * @return Шаблон или переадресация
+     */
     @GetMapping("/champ/{id}/edit")
     public String champEdit(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, Model model) {
         if (user != null) {
@@ -90,6 +133,13 @@ public class ChampController {
         return "redirect:/champs";
     }
 
+    /**
+     * Метод для установки роли чемпионата
+     * @param user Пользователь
+     * @param id Идентификатор чемпионата
+     * @param role Роль
+     * @return Переадресация
+     */
     @GetMapping("/champ/{id}/roles/set")
     public String champRoleSet(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, @RequestParam Integer role) {
         if (user != null) {
@@ -117,25 +167,46 @@ public class ChampController {
         return "redirect:/champ/" + id;
     }
 
+    /**
+     * Метод для принятия, отклонения или удаления роли чемпионата
+     * @param user Пользователь
+     * @param id Идентификатор чемпионата
+     * @param crId Идентификатор роли чемпионата
+     * @param action Действие
+     * @return Переадресация
+     */
     @GetMapping("/champ/{id}/roles/{cr}/{action}")
-    public String teamRoleAction(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
+    public String champRoleAction(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                                  @PathVariable(value = "cr") Long crId, @PathVariable(value = "action") String action) {
         if (user != null) {
             Champ champ = service.getChampById(id);
             if (champ != null && champ.getUserRole(user) == AppService.Role.OWNER) {
                 ChampRole champRole = service.getChampRoleById(crId);
-                if (action.equals("accept")) {
-                    champRole.setRole(champRole.getRequest());
-                    champRole.setRequest(AppService.Role.NONE);
+                switch (action) {
+                    case "accept":
+                        champRole.setRole(champRole.getRequest());
+                        champRole.setRequest(AppService.Role.NONE);
+                        break;
+                    case "reject":
+                        champRole.setRequest(AppService.Role.NONE);
+                        break;
+                    case "delete":
+                        champRole.setRole(AppService.Role.VIEWER);
+                        break;
                 }
-                else if (action.equals("reject")) champRole.setRequest(AppService.Role.NONE);
-                else if (action.equals("delete")) champRole.setRole(AppService.Role.VIEWER);
                 service.saveChampRole(champRole);
             }
         }
         return "redirect:/champ/" + id;
     }
 
+    /**
+     * Метод для отображения страницы добавления команды в чемпионат
+     * @param user Пользователь
+     * @param id Идентификатор чемпионата
+     * @param model Модель
+     * @return Шаблон или переадресация
+     */
     @GetMapping("/champ/{id}/teams/add")
     public String champTeamsAdd(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, Model model) {
         if (user == null) return "redirect:/champs";
@@ -149,6 +220,13 @@ public class ChampController {
         return "redirect:/champ/" + id;
     }
 
+    /**
+     * Метод для отображения страницы добавления события в чемпионат
+     * @param user Пользователь
+     * @param id Идентификатор чемпионата
+     * @param model Модель
+     * @return Шаблон или переадресация
+     */
     @GetMapping("/champ/{id}/events/add")
     public String champEventsAdd(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, Model model) {
         if (user == null) return "redirect:/champs";
@@ -161,6 +239,14 @@ public class ChampController {
         return "redirect:/champ/" + id;
     }
 
+    /**
+     * Метод для отображения страницы изменения счета события в чемпионате
+     * @param user Пользователь
+     * @param id Идентификатор чемпионата
+     * @param ceId Идентификатор события чемпионата
+     * @param model Модель
+     * @return Шаблон или переадресация
+     */
     @GetMapping("/champ/{id}/events/{ce}/score")
     public String champEventsScore(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                                    @PathVariable(value = "ce") Long ceId, Model model) {
@@ -178,6 +264,13 @@ public class ChampController {
         return "redirect:/champ/" + id;
     }
 
+    /**
+     * Метод для удаления команды из чемпионата
+     * @param user Пользователь
+     * @param id Идентификатор чемпионата
+     * @param ctId Идентификатор команды чемпионата
+     * @return Переадресация
+     */
     @GetMapping("/champ/{id}/teams/{ct}/delete")
     public String champTeamsDelete(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                                     @PathVariable(value = "ct") Long ctId) {
@@ -187,6 +280,13 @@ public class ChampController {
         return "redirect:/champ/" + id;
     }
 
+    /**
+     * Метод для удаления события из чемпионата
+     * @param user Пользователь
+     * @param id Идентификатор чемпионата
+     * @param ceId Идентификатор события чемпионата
+     * @return Переадресация
+     */
     @GetMapping("/champ/{id}/events/{ce}/delete")
     public String champEventsDelete(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                                    @PathVariable(value = "ce") Long ceId) {
@@ -196,6 +296,13 @@ public class ChampController {
         return "redirect:/champ/" + id;
     }
 
+    /**
+     * Метод для удаления чемпионата
+     * @param user Пользователь
+     * @param id Идентификатор чемпионата
+     * @param admin Флаг администратора
+     * @return Переадресация
+     */
     @GetMapping("/champ/{id}/delete/{admin}")
     public String champDelete(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                              @PathVariable(value = "admin", required = false) Boolean admin) {
@@ -206,6 +313,15 @@ public class ChampController {
         else return "redirect:/champs";
     }
 
+    /**
+     * Метод для создания нового чемпионата
+     * @param user Пользователь
+     * @param name Название
+     * @param format Формат
+     * @param privat Приватность
+     * @param sport Вид спорта
+     * @return Переадресация
+     */
     @PostMapping("/post/champ/add")
     public String postChampAdd(@AuthenticationPrincipal User user, @RequestParam String name, @RequestParam String format,
                                @RequestParam(defaultValue = "false") boolean privat, @RequestParam Long sport) {
@@ -217,8 +333,15 @@ public class ChampController {
         return "redirect:/champs?subpage=" + AppService.Subpage.USER_OWNER;
     }
 
+    /**
+     * Метод для добавления команды в чемпионат
+     * @param user Пользователь
+     * @param id Идентификатор чемпионата
+     * @param team Команда
+     * @return Переадресация
+     */
     @PostMapping("/post/champ/{id}/teams/add")
-    public String postTeamPlayerAdd(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
+    public String postChampTeamAdd(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                                     @RequestParam Team team) {
         if (user != null) {
             Champ champ = service.getChampById(id);
@@ -229,8 +352,17 @@ public class ChampController {
         return "redirect:/champ/" + id;
     }
 
+    /**
+     * Метод для добавления события в чемпионат
+     * @param user Пользователь
+     * @param id Идентификатор чемпионата
+     * @param timestamp Дата и время события
+     * @param team1 Команда 1
+     * @param team2 Команда 2
+     * @return Переадресация
+     */
     @PostMapping("/post/champ/{id}/events/add")
-    public String postTeamEventAdd(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
+    public String postChampEventAdd(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                                    @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timestamp,
                                    @RequestParam Team team1, @RequestParam Team team2) {
         if (user != null && !team1.getId().equals(team2.getId())) {
@@ -242,6 +374,17 @@ public class ChampController {
         return "redirect:/champ/" + id;
     }
 
+    /**
+     * Метод для изменения счета события в чемпионате
+     * @param user Пользователь
+     * @param id Идентификатор чемпионата
+     * @param ceId Идентификатор события чемпионата
+     * @param gol1 Голы команды 1
+     * @param gol2 Голы команды 2
+     * @param pen1 Пенальти команды 1
+     * @param pen2 Пенальти команды 2
+     * @return Переадресация
+     */
     @PostMapping("/post/champ/{id}/events/{ce}/score")
     public String postTeamEventScore(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                                      @PathVariable(value = "ce") Long ceId, @RequestParam int gol1, @RequestParam int gol2,
@@ -260,6 +403,16 @@ public class ChampController {
         return "redirect:/champ/" + id;
     }
 
+    /**
+     * Метод для редактирования чемпионата по идентификатору
+     * @param user Пользователь
+     * @param id Идентификатор чемпионата
+     * @param name Название
+     * @param format Формат
+     * @param privat Приватность
+     * @param sport Вид спорта
+     * @return Переадресация
+     */
     @PostMapping("/post/champ/{id}/edit")
     public String postChampEdit(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id, @RequestParam String name,
                                 @RequestParam String format, @RequestParam(defaultValue = "false") boolean privat, @RequestParam Long sport) {
@@ -275,4 +428,5 @@ public class ChampController {
         }
         return "redirect:/champ/" + id;
     }
+
 }

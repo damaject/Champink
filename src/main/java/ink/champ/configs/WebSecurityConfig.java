@@ -2,15 +2,12 @@ package ink.champ.configs;
 
 import ink.champ.service.AppService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
 /**
  * Класс конфигурации SpringSecurity
@@ -22,6 +19,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired private AppService service;
 
+    /**
+     * Метод для настройки конфигурации SpringSecurity http
+     * @param http Объект HttpSecurity
+     * @throws Exception Исключение
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -44,8 +46,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll();
     }
 
+    /**
+     * Метод для настройки конфигурации SpringSecurity авторизации
+     * @param auth Объект AuthenticationManagerBuilder
+     * @throws Exception Исключение
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(service).passwordEncoder(new BCryptPasswordEncoder());
     }
+
 }

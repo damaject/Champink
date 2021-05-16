@@ -11,11 +11,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ChampinkApplication {
 
     /**
-     * Начальный метод запуска программы
+     * Метод запуска программы
      * @param args Аргументы для запуска программы
      */
     public static void main(String[] args) {
         SpringApplication.run(ChampinkApplication.class, args);
         System.out.println("Champink is started... http://localhost:20202/");
     }
+
 }

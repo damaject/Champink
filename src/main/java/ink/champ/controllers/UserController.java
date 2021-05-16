@@ -29,6 +29,13 @@ public class UserController {
 
     private String preLoginUrl;
 
+    /**
+     * Метод для отображения страницы авторизации пользователя
+     * @param user Пользователь
+     * @param model Модель
+     * @param request HTTP-запрос
+     * @return Шаблон
+     */
     @GetMapping("/login")
     public String login(@AuthenticationPrincipal User user, Model model, HttpServletRequest request) {
         app.updateModel(user, model, "auth", "Авторизация");
@@ -36,18 +43,36 @@ public class UserController {
         return "auth/login";
     }
 
+    /**
+     * Метод для отображения страницы регистрации пользователя
+     * @param user Пользователь
+     * @param model Модель
+     * @return Шаблон
+     */
     @GetMapping("/registration")
     public String registration(@AuthenticationPrincipal User user, Model model) {
         app.updateModel(user, model, "auth", "Регистрация");
         return "auth/registration";
     }
 
+    /**
+     * Метод для отображения страницы восстановления пользователя
+     * @param user Пользователь
+     * @param model Модель
+     * @return Шаблон
+     */
     @GetMapping("/restore")
     public String restore(@AuthenticationPrincipal User user, Model model) {
         app.updateModel(user, model, "auth", "Восстановление");
         return "auth/restore";
     }
 
+    /**
+     * Метод для отображения страницы профиля
+     * @param user Пользователь
+     * @param model Модель
+     * @return Шаблон
+     */
     @GetMapping("/profile")
     public String profile(@AuthenticationPrincipal User user, Model model) {
         app.updateModel(user, model, "profile", "Профиль");
@@ -55,6 +80,12 @@ public class UserController {
         return "user/view";
     }
 
+    /**
+     * Метод для отображения страницы редактирования профиля
+     * @param user Пользователь
+     * @param model Модель
+     * @return Шаблон
+     */
     @GetMapping("/profile/edit")
     public String profileEdit(@AuthenticationPrincipal User user, Model model) {
         app.updateModel(user, model, "profile", "Профиль - редактирование");
@@ -62,6 +93,12 @@ public class UserController {
         return "user/edit";
     }
 
+    /**
+     * Метод для отображения страницы изменения пароля
+     * @param user Пользователь
+     * @param model Модель
+     * @return Шаблон
+     */
     @GetMapping("/profile/password")
     public String profilePassword(@AuthenticationPrincipal User user, Model model) {
         app.updateModel(user, model, "profile", "Профиль - изменение пароля");
@@ -69,6 +106,10 @@ public class UserController {
         return "user/password";
     }
 
+    /**
+     * Метод для переадресации после успешной авторизации
+     * @return Переадресация
+     */
     @GetMapping("/login/success")
     public String loginSuccess() {
         if (preLoginUrl == null || preLoginUrl.equals("") || preLoginUrl.contains("/login") ||
@@ -76,6 +117,12 @@ public class UserController {
         return "redirect:" + preLoginUrl;
     }
 
+    /**
+     * Метод для удаления пользователя
+     * @param user Пользователь
+     * @param id Идентификатор пользователя
+     * @return Переадресация
+     */
     @GetMapping("/user/{id}/delete")
     public String userDelete(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id) {
         if (user == null) return "redirect:/";
@@ -84,6 +131,13 @@ public class UserController {
         return "redirect:/admin?subpage=users";
     }
 
+    /**
+     * Метод для изменения активности пользователя
+     * @param user Пользователь
+     * @param id Идентификатор пользователя
+     * @param active Активность
+     * @return Переадресация
+     */
     @GetMapping("/user/{id}/active/{active}")
     public String userActive(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                              @PathVariable(value = "active") Long active) {
@@ -96,6 +150,14 @@ public class UserController {
         return "redirect:/admin?subpage=users";
     }
 
+    /**
+     * Метод для редактирования пользователя
+     * @param user Пользователь
+     * @param id Идентификатор пользователя
+     * @param name Имя
+     * @param email Адрес электронной почты
+     * @return Переадресация
+     */
     @PostMapping("/post/user/{id}/edit")
     public String postUserEdit(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                                @RequestParam String name, @RequestParam String email) {
@@ -106,6 +168,15 @@ public class UserController {
         return "redirect:/profile";
     }
 
+    /**
+     *
+     * @param user Пользователь
+     * @param id Идентификатор пользователя
+     * @param password1 Старый пароль
+     * @param password2 Новый пароль
+     * @param password3 Подтверждение нового пароля
+     * @return Переадресация
+     */
     @PostMapping("/post/user/{id}/password")
     public String postUserPassword(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id,
                                @RequestParam String password1, @RequestParam String password2, @RequestParam String password3) {
@@ -117,10 +188,18 @@ public class UserController {
         return "redirect:/profile";
     }
 
+    /**
+     * Метод для регистрации пользователя
+     * @param username Логин
+     * @param password Пароль
+     * @param password2 Подтверждение пароля
+     * @param name Имя
+     * @param email Адрес электронной почты
+     * @return Переадресация
+     */
     @PostMapping("/post/auth/registration")
-    public String postAuthRegistration(@AuthenticationPrincipal User user, @RequestParam String username,
-                                       @RequestParam String password, @RequestParam String password2,
-                                       @RequestParam String name, @RequestParam String email) {
+    public String postAuthRegistration(@RequestParam String username, @RequestParam String password,
+                                       @RequestParam String password2, @RequestParam String name, @RequestParam String email) {
         if (!password.equals(password2)) return "redirect:/auth?action=registration";
         User newUser = new User(username, password, name, email);
         HashSet<Role> roles = new HashSet<>();
@@ -130,4 +209,5 @@ public class UserController {
         service.addNewUser(newUser);
         return "redirect:/auth?action=login";
     }
+
 }

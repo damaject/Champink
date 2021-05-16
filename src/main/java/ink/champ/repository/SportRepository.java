@@ -12,6 +12,12 @@ import java.util.List;
  */
 public interface SportRepository extends JpaRepository<Sport, Long> {
 
+    /**
+     * Метод для получения отсортированного списка видов спорта с фильтром по имени
+     * @param search Часть названия для поиска
+     * @param sort Сортировка
+     * @return Список видов спорта
+     */
     List<Sport> findSportByNameContainingIgnoreCase(String search, Sort sort);
 
 }

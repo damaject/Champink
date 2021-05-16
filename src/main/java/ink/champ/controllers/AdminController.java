@@ -20,6 +20,14 @@ public class AdminController {
     @Autowired private AppService app;
     @Autowired private RepositoryService service;
 
+    /**
+     * Метод для просмотра пользователей, видов спорта, чемпионатов, команд и игроков с правами администратора
+     * @param subpage Раздел страницы
+     * @param search Текст для поиска
+     * @param user Пользователь
+     * @param model Модель
+     * @return Шаблон или переадресация
+     */
     @GetMapping("/admin")
     public String admin(@RequestParam(required = false) String subpage, @RequestParam(required = false) String search,
                         @AuthenticationPrincipal User user, Model model) {
@@ -41,27 +49,25 @@ public class AdminController {
 
         model.addAttribute("headerTitle", hTitle);
         app.updateModel(user, model, "admin", title);
-        if (app.subpage.equals("users")) {
-            model.addAttribute("users", service.getUsers(s));
-            return "admin/users";
-        }
-        else if (app.subpage.equals("sports")) {
-            model.addAttribute("sports", service.getSports(s));
-            return "admin/sports";
-        }
-        else if (app.subpage.equals("champs")) {
-            model.addAttribute("champs", service.getChamps(s));
-            return "admin/champs";
-        }
-        else if (app.subpage.equals("teams")) {
-            model.addAttribute("teams", service.getTeams(s));
-            return "admin/teams";
-        }
-        else if (app.subpage.equals("players")) {
-            model.addAttribute("players", service.getPlayers(s));
-            return "admin/players";
+        switch (app.subpage) {
+            case "users":
+                model.addAttribute("users", service.getUsers(s));
+                return "admin/users";
+            case "sports":
+                model.addAttribute("sports", service.getSports(s));
+                return "admin/sports";
+            case "champs":
+                model.addAttribute("champs", service.getChamps(s));
+                return "admin/champs";
+            case "teams":
+                model.addAttribute("teams", service.getTeams(s));
+                return "admin/teams";
+            case "players":
+                model.addAttribute("players", service.getPlayers(s));
+                return "admin/players";
         }
 
         return "redirect:/admin?subpage=users";
     }
+
 }

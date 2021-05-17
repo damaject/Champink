@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"ink.champ"},{"l":"ink.champ.configs"},{"l":"ink.champ.controllers"},{"l":"ink.champ.models"},{"l":"ink.champ.repository"},{"l":"ink.champ.service"}];updateSearchResults();

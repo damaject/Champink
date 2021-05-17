@@ -96,13 +96,13 @@ public class Team {
     public void setChamps(Set<ChampTeam> champs) { this.champs = champs; }
 
     /**
-     * Метод для установки событий команды в которых она является хозяином
+     * Метод для установки событий команды, в которых она является хозяином
      * @param champEvents События команды
      */
     public void setChampEventsH(Set<ChampEvent> champEvents) { this.champEventsH = champEvents; }
 
     /**
-     * Метод для установки событий команды в которых она является гостем
+     * Метод для установки событий команды, в которых она является гостем
      * @param champEvents События команды
      */
     public void setChampEventsA(Set<ChampEvent> champEvents) { this.champEventsA = champEvents; }
@@ -150,13 +150,13 @@ public class Team {
     public Set<ChampTeam> getChamps() { return champs; }
 
     /**
-     * Метод для получения событий команды в которых она является хозяином
+     * Метод для получения событий команды, в которых она является хозяином
      * @return События команды
      */
     public Set<ChampEvent> getChampEventsH() { return champEventsH; }
 
     /**
-     * Метод для получения событий команды в которых она является гостем
+     * Метод для получения событий команды, в которых она является гостем
      * @return События команды
      */
     public Set<ChampEvent> getChampEventsA() { return champEventsA; }
